@@ -1,5 +1,5 @@
-var nodeEnv = process.env.NODE_ENV || 'dockerdev';
-var config = {
+const nodeEnv = process.env.NODE_ENV || 'dockerdev';
+const config = {
   dockerdev: require('./dockerdev'),
 };
 
