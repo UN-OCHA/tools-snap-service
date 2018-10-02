@@ -128,8 +128,10 @@ app.post('/print', (req, res) => {
             '--disable-dev-shm-usage',
           ],
         });
+
         const page = await browser.newPage();
-        await page.goto(fnHtml);
+        await page.setContent(fnHtml);
+
         if (fnFormat === 'png') {
           await page.screenshot({ path: fnPng });
         } else {
@@ -140,21 +142,23 @@ app.post('/print', (req, res) => {
 
       createSnap().then(() => {
         res.charset = 'utf-8';
+
         if (fnFormat === 'png') {
           res.contentType('image/png');
           res.sendfile(fnPng, () => {
-            res.end();
             const duration = ((Date.now() - startTime) / 1000);
+            res.end();
             log.info({ duration, inputSize: sizeHtml }, `PNG ${fnPng} successfully generated for HTML ${fnHtml} in ${duration} seconds.`);
           });
         } else {
           res.contentType('application/pdf');
-          res.sendfile(fnPdf, () => {
-            res.end();
+          res.sendFile(fnPdf, () => {
             const duration = ((Date.now() - startTime) / 1000);
+            res.end();
             log.info({ duration, inputSize: sizeHtml }, `PDF ${fnPdf} successfully generated for HTML ${fnHtml} in ${duration} seconds.`);
           });
         }
+
         if (fnHtml.length && fnUrl === false) {
           return fs.unlink(fnHtml, cb);
         }
