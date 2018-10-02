@@ -71,6 +71,8 @@ app.post('/print', (req, res) => {
 
       // Validate uploaded HTML file
       if (req.files && req.files.html && req.files.html.path) {
+        console.info('💰 upload');
+
         fs.stat(req.files.html.path, (err, stats) => {
           if (err || !stats || !stats.isFile()) {
             log.error({ files: req.files, stats }, 'An error occurred while trying to validate the HTML upload.');
@@ -81,10 +83,10 @@ app.post('/print', (req, res) => {
           sizeHtml = stats.size || 0;
           fnPdf = `${fnHtml}.pdf`;
           fnPng = `${fnHtml}.png`;
-
-          return cb();
         });
       } else if (req.body && req.body.html && req.body.html.length) {
+        console.info('💰 text payload');
+
         fnHtml = `/tmp/htmltopdf-${Date.now()}.html`;
         sizeHtml = req.body.html.length;
         fs.writeFile(fnHtml, req.body.html, (err) => {
@@ -95,10 +97,10 @@ app.post('/print', (req, res) => {
 
           fnPdf = `${fnHtml}.pdf`;
           fnPng = `${fnHtml}.png`;
-
-          return cb();
         });
       } else if (req.query && req.query.url && req.query.url.length && (req.query.url.substr(0, 7) === 'http://' || req.query.url.substr(0, 8) === 'https://')) {
+        console.info('💰 URL query');
+
         const md5sum = crypto.createHash('md5');
         const digest = md5sum.digest('hex');
 
@@ -108,11 +110,12 @@ app.post('/print', (req, res) => {
         fnPng = `/tmp/htmltopdf-${digest}-${Date.now()}.png`;
         fnUrl = true;
       } else {
+        console.info('💰 🚫');
         log.error('An HTML file was not uploaded or could not be accessed.');
         return cb(new Error('An HTML file was not uploaded or could not be accessed.'));
       }
 
-      return cb();
+      return cb(null, 'everything is fine');
     },
     function generateResponse(cb) {
       async function createSnap() {
@@ -168,17 +171,19 @@ app.post('/print', (req, res) => {
         if (fnFormat === 'pdf' && fnPdf.length) {
           return fs.unlink(fnPdf, cb);
         }
+
         log.info(`Successfully removed input (${fnHtml}) and output (${fnPdf}) files.`);
 
-        return true;
+        return cb(null, 'everything is fine');
       }).catch((err) => {
         console.error('createSnap', err);
       });
     },
   ],
   (err) => {
+    const duration = ((Date.now() - startTime) / 1000);
+
     if (err) {
-      const duration = ((Date.now() - startTime) / 1000);
       log.warn({ duration, inputSize: sizeHtml }, `Hardcopy generation failed for HTML ${fnHtml} in ${duration} seconds.`);
       res.send(500, 'Error');
     }

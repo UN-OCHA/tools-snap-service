@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "start": "./node_modules/.bin/pm2 start app.js --no-daemon --watch",
-    "dev": "./node_modules/.bin/nodemon ./node_modules/.bin/node-debug app.js"
+    "dev": "./node_modules/.bin/nodemon ./node_modules/.bin/node-debug app.js",
+    "lint": "./node_modules/.bin/eslint *.js"
   },
   "dependencies": {
     "async": "^2.6.1",
