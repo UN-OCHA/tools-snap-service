@@ -18,6 +18,8 @@ const http = require('http');
 const https = require('https');
 const puppeteer = require('puppeteer');
 const express = require('express');
+const bodyParser = require('body-parser');
+const methodOverride = require('method-override');
 const log = require('./log');
 
 // We don't set this as a variable because it defines its own vars inside
@@ -34,12 +36,13 @@ const app = express();
 app.set('env', process.env.NODE_ENV || 'dockerdev');
 app.set('port', process.env.PORT || 80);
 
-app.use(express.bodyParser({
+app.use(bodyParser.urlencoded({
+  extended: true,
   limit: '10mb',
   uploadDir: '/tmp',
 }));
 
-app.use(express.methodOverride());
+app.use(methodOverride());
 
 app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
   if (process.env.NODE_ENV !== 'test') {
