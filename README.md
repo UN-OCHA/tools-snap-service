@@ -1,6 +1,6 @@
 # UN OCHA PDF/PNG GNRTR
 
-Everyone does this their own way. Do it our way!
+✨ Everyone does this their own way. Do it our way! ✨
 
 ## Install / Develop
 
@@ -15,3 +15,21 @@ docker-compose up
 ```
 
 To use nodemon and have the service restart automatically as you edit the code, edit `debian-snapper-nodejs/run_node` and change the last command to `exec npm dev`.
+
+It will probably be necessary to use an app that helps you formulate and store common queries you want to test. Command line tools like `curl` are perfectly capable, but if you want something more visual try [Insomnia](https://insomnia.rest/). It lets you configure everything and save each query for repeated use.
+
+## API
+
+- `POST` to `/print`
+- `Content-Type: application/x-www-form-urlencoded`
+
+**Parameters:**
+
+- `url` — the URL you want to render
+- `user` — HTTP Basic Authentication username
+- `pass` — HTTP Basic Authentication password
+
+**Examples:** (they won't work when you click because that's `GET` not `POST`)
+
+- http://localhost:8442/print?url=https%3A%2F%2Fexample.com
+- http://localhost:8442/print?url=https%3A%2F%2Freports.dev.ahconu.org%2Fcountry%2Fburundi&user=ocha&pass=dev
