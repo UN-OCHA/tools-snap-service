@@ -153,6 +153,11 @@ app.post('/print', (req, res) => {
         if (fnFormat === 'png') {
           await page.screenshot({ path: fnPath });
         } else {
+          // @media(print) is default for Puppeteer PDF generation
+          if (fnMedia === 'screen') {
+            await page.emulateMedia('screen');
+          }
+
           await page.pdf({ path: fnPath, format: 'A4' });
         }
 
