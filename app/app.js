@@ -9,7 +9,6 @@
  *
  * This service is not meant to be exposed to the public, and use of this
  * service should be mediated by another application with access controls.
- *
  */
 const fs = require('fs');
 const crypto = require('crypto');
@@ -24,11 +23,6 @@ const log = require('./log');
 
 // We don't set this as a variable because it defines its own vars inside
 require('./config');
-
-// Set http and https default maxSockets to Infinity to avoid artificial
-// constraints in Node < 0.12.
-http.globalAgent.maxSockets = Infinity;
-https.globalAgent.maxSockets = Infinity;
 
 // Set up the application
 const app = express();
