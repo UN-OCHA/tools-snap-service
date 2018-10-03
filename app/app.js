@@ -49,10 +49,13 @@ app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
 
 app.post('/print', (req, res) => {
   let sizeHtml = 0;
+  let fnMedia = 'screen'; // assume ppl want WYSIWYG screenshots, not print CSS
   let fnHtml = '';
   let fnFormat = 'pdf';
   let fnPath = '';
   let fnUrl = false;
+  let fnAuthUser = '';
+  let fnAuthPass = '';
   const startTime = Date.now();
 
   async.series([
@@ -94,8 +97,10 @@ app.post('/print', (req, res) => {
       }
       else if (req.query && req.query.url && req.query.url.length && (req.query.url.substr(0, 7) === 'http://' || req.query.url.substr(0, 8) === 'https://')) {
         console.info('💰 URL query');
-        fnHtml = req.query.url;
         fnUrl = true;
+        fnHtml = req.query.url;
+        fnAuthUser = (req.query.user) ? req.query.user : '';
+        fnAuthPass = (req.query.pass) ? req.query.pass : '';
 
         const digest = crypto.createHash('md5').update(fnHtml).digest('hex');
 
@@ -129,6 +134,11 @@ app.post('/print', (req, res) => {
 
         // New Puppeteer tab
         const page = await browser.newPage();
+
+        // Use HTTP auth if needed (for testing staging envs)
+        if (fnAuthUser && fnAuthPass) {
+          await page.authenticate({ username: fnAuthUser, password: fnAuthPass });
+        }
 
         // We need to load the HTML differently depending on whether it's local
         // text in the POST or a URL in the querystring.
