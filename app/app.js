@@ -176,7 +176,8 @@ app.post('/print', (req, res) => {
             res.end();
             log.info({ duration, inputSize: sizeHtml }, `PNG ${fnPath} successfully generated for HTML ${fnHtml} in ${duration} seconds.`);
           });
-        } else {
+        }
+        else {
           res.contentType('application/pdf');
           res.sendFile(fnPath, () => {
             const duration = ((Date.now() - startTime) / 1000);
@@ -200,7 +201,8 @@ app.post('/print', (req, res) => {
 
         return cb(null, 'everything is fine');
       }).catch((err) => {
-        console.error('createSnap', err);
+        log.error('createSnap', err);
+        return cb(err);
       });
     },
   ],
@@ -215,5 +217,5 @@ app.post('/print', (req, res) => {
 });
 
 http.createServer(app).listen(app.get('port'), () => {
-  console.log('Express server listening on port:', app.get('port'));
+  console.info('⚡️ Express server listening on port:', app.get('port'));
 });
