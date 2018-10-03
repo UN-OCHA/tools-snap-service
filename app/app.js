@@ -54,11 +54,10 @@ app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
 });
 
 app.post('/print', (req, res) => {
-  let fnHtml = '';
   let sizeHtml = 0;
+  let fnHtml = '';
   let fnFormat = 'pdf';
-  let fnPdf = '';
-  let fnPng = '';
+  let fnPath = '';
   let fnUrl = false;
   const startTime = Date.now();
 
@@ -71,7 +70,7 @@ app.post('/print', (req, res) => {
 
       // Validate uploaded HTML file
       if (req.files && req.files.html && req.files.html.path) {
-        console.info('💰 upload');
+        console.info('💰 file payload');
 
         fs.stat(req.files.html.path, (err, stats) => {
           if (err || !stats || !stats.isFile()) {
@@ -79,46 +78,48 @@ app.post('/print', (req, res) => {
             return cb(new Error('An error occurred while trying to validate the HTML upload.'));
           }
 
-          fnHtml = req.files.html.path;
           sizeHtml = stats.size || 0;
-          fnPdf = `${fnHtml}.pdf`;
-          fnPng = `${fnHtml}.png`;
+          fnHtml = req.files.html.path;
+          fnPath = `${fnHtml}.${fnFormat}`;
         });
-      } else if (req.body && req.body.html && req.body.html.length) {
+      }
+      else if (req.body && req.body.html && req.body.html.length) {
         console.info('💰 text payload');
 
-        fnHtml = `/tmp/htmltopdf-${Date.now()}.html`;
+        const tmpPath = `/tmp/htmltopdf-${Date.now()}.html`;
         sizeHtml = req.body.html.length;
-        fs.writeFile(fnHtml, req.body.html, (err) => {
+
+        fs.writeFile(tmpPath, req.body.html, (err) => {
           if (err) {
             log.error({ body: req.body }, 'An error occurred while trying to validate the HTML post data.');
             return cb(new Error('An error occurred while trying to validate the HTML post data.'));
           }
 
-          fnPdf = `${fnHtml}.pdf`;
-          fnPng = `${fnHtml}.png`;
+          fnPath = `${tmpPath}.${fnFormat}`;
         });
-      } else if (req.query && req.query.url && req.query.url.length && (req.query.url.substr(0, 7) === 'http://' || req.query.url.substr(0, 8) === 'https://')) {
+      }
+      else if (req.query && req.query.url && req.query.url.length && (req.query.url.substr(0, 7) === 'http://' || req.query.url.substr(0, 8) === 'https://')) {
         console.info('💰 URL query');
-
-        const md5sum = crypto.createHash('md5');
-        const digest = md5sum.digest('hex');
-
         fnHtml = req.query.url;
-        md5sum.update(fnHtml);
-        fnPdf = `/tmp/htmltopdf-${digest}-${Date.now()}.pdf`;
-        fnPng = `/tmp/htmltopdf-${digest}-${Date.now()}.png`;
         fnUrl = true;
-      } else {
-        console.info('💰 🚫');
-        log.error('An HTML file was not uploaded or could not be accessed.');
-        return cb(new Error('An HTML file was not uploaded or could not be accessed.'));
+
+        const digest = crypto.createHash('md5').update(fnHtml).digest('hex');
+
+        fnPath = `/tmp/htmltopdf-${Date.now()}-${digest}.${fnFormat}`;
+      }
+      else {
+        const noCaseErrMsg = 'An HTML file was not uploaded or could not be accessed.';
+        console.info('🐛', noCaseErrMsg);
+        log.error(noCaseErrMsg);
+        return cb(new Error(noCaseErrMsg));
       }
 
       return cb(null, 'everything is fine');
     },
     function generateResponse(cb) {
       async function createSnap() {
+        console.log('📸 createSnap()');
+
         // Process HTML file with puppeteer
         const browser = await puppeteer.launch({
           executablePath: '/usr/bin/google-chrome',
@@ -132,47 +133,61 @@ app.post('/print', (req, res) => {
           ],
         });
 
+        // New Puppeteer tab
         const page = await browser.newPage();
-        await page.setContent(fnHtml);
 
-        if (fnFormat === 'png') {
-          await page.screenshot({ path: fnPng });
-        } else {
-          await page.pdf({ path: fnPdf, format: 'A4' });
+        // We need to load the HTML differently depending on whether it's local
+        // text in the POST or a URL in the querystring.
+        if (fnUrl === true) {
+          await page.goto(fnHtml);
         }
+        else {
+          await page.setContent(fnHtml);
+        }
+
+        // PNG or PDF?
+        if (fnFormat === 'png') {
+          await page.screenshot({ path: fnPath });
+        } else {
+          await page.pdf({ path: fnPath, format: 'A4' });
+        }
+
+        // Close tab
         await browser.close();
       }
 
       createSnap().then(() => {
+        console.log('🗃  saving file...');
         res.charset = 'utf-8';
 
         if (fnFormat === 'png') {
           res.contentType('image/png');
-          res.sendfile(fnPng, () => {
+          res.sendfile(fnPath, () => {
             const duration = ((Date.now() - startTime) / 1000);
             res.end();
-            log.info({ duration, inputSize: sizeHtml }, `PNG ${fnPng} successfully generated for HTML ${fnHtml} in ${duration} seconds.`);
+            log.info({ duration, inputSize: sizeHtml }, `PNG ${fnPath} successfully generated for HTML ${fnHtml} in ${duration} seconds.`);
           });
         } else {
           res.contentType('application/pdf');
-          res.sendFile(fnPdf, () => {
+          res.sendFile(fnPath, () => {
             const duration = ((Date.now() - startTime) / 1000);
             res.end();
-            log.info({ duration, inputSize: sizeHtml }, `PDF ${fnPdf} successfully generated for HTML ${fnHtml} in ${duration} seconds.`);
+            log.info({ duration, inputSize: sizeHtml }, `PDF ${fnPath} successfully generated for HTML ${fnHtml} in ${duration} seconds.`);
           });
         }
 
-        if (fnHtml.length && fnUrl === false) {
-          return fs.unlink(fnHtml, cb);
-        }
-        if (fnFormat === 'png' && fnPng.length) {
-          return fs.unlink(fnPng, cb);
-        }
-        if (fnFormat === 'pdf' && fnPdf.length) {
-          return fs.unlink(fnPdf, cb);
-        }
+        // if (fnHtml.length && fnUrl === false) {
+        //   return fs.unlink(fnHtml, cb);
+        // }
+        // if (fnFormat === 'png' && fnPath.length) {
+        //   return fs.unlink(fnPath, cb);
+        // }
+        // if (fnFormat === 'pdf' && fnPath.length) {
+        //   return fs.unlink(fnPath, cb);
+        // }
 
-        log.info(`Successfully removed input (${fnHtml}) and output (${fnPdf}) files.`);
+        // console.info(`🐛 Successfully removed input (${fnHtml}) and output (${fnPath}) files.`);
+        // log.info(`Successfully removed input (${fnHtml}) and output (${fnPath}) files.`);
 
         return cb(null, 'everything is fine');
       }).catch((err) => {
