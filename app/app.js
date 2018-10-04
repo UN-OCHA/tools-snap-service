@@ -56,6 +56,8 @@ app.post('/print', (req, res) => {
   let fnUrl = false;
   let fnAuthUser = '';
   let fnAuthPass = '';
+  let fnFragment = '';
+  let fnBackground = false;
   const startTime = Date.now();
 
   async.series([
@@ -101,6 +103,7 @@ app.post('/print', (req, res) => {
         fnHtml = req.query.url;
         fnAuthUser = (req.query.user) ? req.query.user : '';
         fnAuthPass = (req.query.pass) ? req.query.pass : '';
+        fnFragment = (req.query.frag) ? req.query.frag : '';
 
         const digest = crypto.createHash('md5').update(fnHtml).digest('hex');
 
@@ -117,6 +120,8 @@ app.post('/print', (req, res) => {
     },
     function generateResponse(cb) {
       async function createSnap() {
+        let pngOptions = {};
+        let pdfOptions = {};
         console.log('📸 createSnap()');
 
         // Process HTML file with puppeteer
@@ -151,7 +156,18 @@ app.post('/print', (req, res) => {
 
         // PNG or PDF?
         if (fnFormat === 'png') {
-          await page.screenshot({ path: fnPath });
+          pngOptions.path = fnPath;
+          pngOptions.omitBackground = true;
+
+          // Whole document or fragment?
+          if (fnFragment) {
+            pngOptions.omitBackground = true;
+            let fragment = await page.$(fnFragment);
+            await fragment.screenshot(pngOptions);
+          }
+          else {
+            await page.screenshot(pngOptions);
+          }
         } else {
           // @media(print) is default for Puppeteer PDF generation
           if (fnMedia === 'screen') {
