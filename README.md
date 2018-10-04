@@ -25,9 +25,10 @@ It will probably be necessary to use an app that helps you formulate and store c
 
 **Parameters:**
 
-- `url` — the URL you want to render
-- `user` — HTTP Basic Authentication username
-- `pass` — HTTP Basic Authentication password
+- `url` — (**required**) the URL you want to render
+- `format` — (default `pdf`) specify `png` if you want a PNG image or `pdf` for PDF
+- `user` — (optional) HTTP Basic Authentication username
+- `pass` — (optional) HTTP Basic Authentication password
 
 **Examples:** (they won't work when you click because that's `GET` not `POST`)
 

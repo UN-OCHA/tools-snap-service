@@ -61,7 +61,7 @@ app.post('/print', (req, res) => {
   async.series([
     function validateRequest(cb) {
       // What output?
-      if (req.format && req.format === 'png') {
+      if (req.query && req.query.format && req.query.format === 'png') {
         fnFormat = 'png';
       }
 
@@ -171,7 +171,7 @@ app.post('/print', (req, res) => {
 
         if (fnFormat === 'png') {
           res.contentType('image/png');
-          res.sendfile(fnPath, () => {
+          res.sendFile(fnPath, () => {
             const duration = ((Date.now() - startTime) / 1000);
             res.end();
             log.info({ duration, inputSize: sizeHtml }, `PNG ${fnPath} successfully generated for HTML ${fnHtml} in ${duration} seconds.`);
