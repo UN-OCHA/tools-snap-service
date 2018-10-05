@@ -69,8 +69,6 @@ app.post('/print', (req, res) => {
 
       // Validate uploaded HTML file
       if (req.files && req.files.html && req.files.html.path) {
-        console.info('💰 file payload');
-
         fs.stat(req.files.html.path, (err, stats) => {
           if (err || !stats || !stats.isFile()) {
             log.error({ files: req.files, stats }, 'An error occurred while trying to validate the HTML upload.');
@@ -83,8 +81,6 @@ app.post('/print', (req, res) => {
         });
       }
       else if (req.body && req.body.html && req.body.html.length) {
-        console.info('💰 text payload');
-
         const tmpPath = `/tmp/htmltopdf-${Date.now()}.html`;
         sizeHtml = req.body.html.length;
 
@@ -98,7 +94,6 @@ app.post('/print', (req, res) => {
         });
       }
       else if (req.query && req.query.url && req.query.url.length && (req.query.url.substr(0, 7) === 'http://' || req.query.url.substr(0, 8) === 'https://')) {
-        console.info('💰 URL query');
         fnUrl = true;
         fnHtml = req.query.url;
         fnAuthUser = (req.query.user) ? req.query.user : '';
@@ -111,7 +106,6 @@ app.post('/print', (req, res) => {
       }
       else {
         const noCaseErrMsg = 'An HTML file was not uploaded or could not be accessed.';
-        console.info('🐛', noCaseErrMsg);
         log.error(noCaseErrMsg);
         return cb(new Error(noCaseErrMsg));
       }
@@ -122,7 +116,6 @@ app.post('/print', (req, res) => {
       async function createSnap() {
         let pngOptions = {};
         let pdfOptions = {};
-        console.log('📸 createSnap()');
 
         // Process HTML file with puppeteer
         const browser = await puppeteer.launch({
@@ -182,7 +175,6 @@ app.post('/print', (req, res) => {
       }
 
       createSnap().then(() => {
-        console.log('🗃  saving file...');
         res.charset = 'utf-8';
 
         if (fnFormat === 'png') {
@@ -207,8 +199,6 @@ app.post('/print', (req, res) => {
         // if (fnHtml.length && fnUrl === false) {
         //   return fs.unlink(fnHtml, cb);
         // }
-
-        // console.info(`🐛 Successfully removed input (${fnHtml}) and output (${fnPath}) files.`);
         // log.info(`Successfully removed input (${fnHtml}) and output (${fnPath}) files.`);
 
         // return cb(null, 'everything is fine');
