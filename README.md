@@ -15,7 +15,7 @@ docker-compose build
 docker-compose up
 ```
 
-Now you can `POST` to `localhost:8442/print` and it should return Snaps to you.
+Now you can `POST` to `localhost:8442/snap` and it should return Snaps to you.
 
 To use nodemon and have the service restart automatically as you edit the code, edit `debian-snapper-nodejs/run_node` and change the last command to `exec npm dev`.
 

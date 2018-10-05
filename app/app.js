@@ -2,7 +2,7 @@
  * print-api
  * node.js web service for puppeteer/chrome for generating PDFs or PNGs from HTML.
  *
- * Accepts POST requests to /print with either a HTTP file upload sent with
+ * Accepts POST requests to /snap with either a HTTP file upload sent with
  * the name "html" or body form data with HTML content in a field named "html".
  *
  * The service will run hrome and return the generated PDF or PNG data.
@@ -47,7 +47,7 @@ app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
   res.send('Error');
 });
 
-app.post('/print', (req, res) => {
+app.post('/snap', (req, res) => {
   let sizeHtml = 0;
   let fnMedia = 'screen'; // assume ppl want WYSIWYG screenshots, not print CSS
   let fnHtml = '';
