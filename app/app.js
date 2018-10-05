@@ -191,6 +191,7 @@ app.post('/print', (req, res) => {
             const duration = ((Date.now() - startTime) / 1000);
             res.end();
             log.info({ duration, inputSize: sizeHtml }, `PNG ${fnPath} successfully generated for HTML ${fnHtml} in ${duration} seconds.`);
+            return fs.unlink(fnPath, cb);
           });
         }
         else {
@@ -199,23 +200,18 @@ app.post('/print', (req, res) => {
             const duration = ((Date.now() - startTime) / 1000);
             res.end();
             log.info({ duration, inputSize: sizeHtml }, `PDF ${fnPath} successfully generated for HTML ${fnHtml} in ${duration} seconds.`);
+            return fs.unlink(fnPath, cb);
           });
         }
 
         // if (fnHtml.length && fnUrl === false) {
         //   return fs.unlink(fnHtml, cb);
         // }
-        // if (fnFormat === 'png' && fnPath.length) {
-        //   return fs.unlink(fnPath, cb);
-        // }
-        // if (fnFormat === 'pdf' && fnPath.length) {
-        //   return fs.unlink(fnPath, cb);
-        // }
 
         // console.info(`🐛 Successfully removed input (${fnHtml}) and output (${fnPath}) files.`);
         // log.info(`Successfully removed input (${fnHtml}) and output (${fnPath}) files.`);
 
-        return cb(null, 'everything is fine');
+        // return cb(null, 'everything is fine');
       }).catch((err) => {
         log.error('createSnap', err);
         return cb(err);
