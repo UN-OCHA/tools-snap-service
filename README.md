@@ -8,11 +8,14 @@ The node container will do all the npm installation for you. No need to do it lo
 
 ```bash
 # installation
+vim .env # set BASEDIR
 docker-compose build
 
 # development
 docker-compose up
 ```
+
+Now you can `POST` to `localhost:8442/print` and it should return Snaps to you.
 
 To use nodemon and have the service restart automatically as you edit the code, edit `debian-snapper-nodejs/run_node` and change the last command to `exec npm dev`.
 
