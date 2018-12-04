@@ -387,6 +387,9 @@ app.post('/snap', [
           } else {
             await page.pdf(pdfOptions);
           }
+          
+          // Close the browser tab.
+          await page.close();
 
           // Disconnect from Puppeteer process
           await browser.disconnect();
