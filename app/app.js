@@ -133,15 +133,15 @@ app.post('/snap', [
   query('user', 'Must be an alphanumeric string').optional().isAlphanumeric(),
   query('pass', 'Must be an alphanumeric string').optional().isAlphanumeric(),
   query('logo', `Must be one of the following values: ${Object.keys(logos).join(', ')}. If you would like to use your site's logo with Snap Service, please read how to add it at https://github.com/UN-OCHA/tools-snap-service#custom-logos`).optional().isIn(Object.keys(logos)),
-  query('service', `Must be an alphanumeric (plus ._-) string identifier for the requesting service. Must match /^[\.0-9A-z_-]+$/.`).optional().matches(/^[\.0-9A-z_-]+$/),
+  query('service', 'Must be an alphanumeric string (hyphens and underscores are also allowed) identifier for the requesting service.').optional().matches(/^[A-Za-z0-9_-]+$/),
   query('ua', '').optional(),
 ], (req, res) => {
   // debug
   log.debug({ 'query': url.parse(req.url).query }, 'Request received');
 
-  // If neither `url` and `html` are present, return 400 requiring valid input.
+  // If neither `url` and `html` are present, return 422 requiring valid input.
   if (!req.query.url && !req.body.html) {
-    return res.status(400).json({ errors: [
+    return res.status(422).json({ errors: [
       {
         'location': 'query',
         'param': 'url',
@@ -157,9 +157,9 @@ app.post('/snap', [
     ]});
   }
 
-  // If both `url` and `html` are present, return 400 requiring valid input.
+  // If both `url` and `html` are present, return 422 requiring valid input.
   if (req.query.url && req.body.html) {
-    return res.status(400).json({ errors: [
+    return res.status(422).json({ errors: [
       {
         'location': 'query',
         'param': 'url',
