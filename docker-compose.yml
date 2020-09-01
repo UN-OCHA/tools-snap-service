@@ -14,6 +14,7 @@ services:
       - DEBUG="*"
       - PORT=${HTTP_PORT}
       - NODE_ENV=dockerdev
+      - MAX_CONCURRENT_REQUESTS=${MAX_CONCURRENT_REQUESTS:-4}
     ports:
       - "${HTTP_ADDR}:${HTTP_PORT}:${HTTP_PORT}"
     mem_limit: 2g
