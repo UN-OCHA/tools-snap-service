@@ -336,7 +336,7 @@ The node container will do all the npm installation for you. No need to do it lo
 
 ```bash
 # installation
-vim .env # set BASEDIR
+vim .env # set BASEDIR and tweak MAX_CONCURRENT_REQUESTS for your hardware
 docker-compose build
 
 # development

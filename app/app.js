@@ -72,7 +72,7 @@ let browserWSEndpoint = '';
  * puppeteer, and require that new requests wait until previous ones are
  * disconnected before connecting.
  */
-const PUPPETEER_SEMAPHORE = new Semaphore(process.env.MAX_CONCURRENT_REQS || 10);
+const PUPPETEER_SEMAPHORE = new Semaphore(process.env.MAX_CONCURRENT_REQUESTS || 4);
 
 async function connectPuppeteer() {
   let browser;
@@ -605,5 +605,5 @@ app.post('/snap', [
 });
 
 http.createServer(app).listen(app.get('port'), () => {
-  log.info('⚡️ Express server listening on port:', app.get('port'));
+  log.info('⚡️ Express server configured for', (process.env.MAX_CONCURRENT_REQUESTS || 4), 'concurrent requests listening on port:', app.get('port'));
 });
