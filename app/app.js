@@ -132,7 +132,7 @@ app.get('/status', (req, res) => res.status(204).send());
 // Snaps
 app.post('/snap', [
   body('html', '').optional(),
-  query('url', 'Must be a valid, fully-qualified URL').optional().isURL({ require_protocol: true, disallow_auth: true }),
+  query('url', 'Must be a valid, fully-qualified URL').optional().isURL({ require_protocol: true, disallow_auth: true, validate_length: false }),
   query('width', 'Must be an integer with no units').optional().isInt(),
   query('height', 'Must be an integer with no units').optional().isInt(),
   query('scale', 'Must be an integer in the range: 1-3').optional().isInt({ min: 1, max: 3 }),
