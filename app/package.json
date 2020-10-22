@@ -4,7 +4,7 @@
   "version": "2.4.4",
   "private": true,
   "scripts": {
-    "start": "./node_modules/.bin/pm2 start app.js --no-daemon --watch",
+    "start": "./node_modules/.bin/pm2 start app.js --no-daemon --watch --node-args='--max-http-header-size=16384'",
     "dev": "./node_modules/.bin/nodemon ./node_modules/.bin/node-debug app.js",
     "lint": "./node_modules/.bin/eslint *.js"
   },
