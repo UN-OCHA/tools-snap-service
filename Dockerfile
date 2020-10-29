@@ -1,4 +1,4 @@
-FROM unocha/debian-snap-base:10-buster-chrome88-node12-202010-01 as builder
+FROM unocha/debian-snap-base:10-buster-node12-202010-02 as builder
 
 WORKDIR /srv/src
 COPY . .
