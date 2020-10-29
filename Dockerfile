@@ -10,7 +10,7 @@ RUN cd app && \
     npm install
 
 # The base image to build our app into. this already contains fonts and utilities.
-FROM unocha/debian-snap-base:10-buster-chrome88-node12-202010-01
+FROM unocha/debian-snap-base:10-buster-node12-202010-02
 
 # Configure the service container.
 ENV NODE_APP_DIR=/srv/www \
