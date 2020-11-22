@@ -23,7 +23,7 @@ RUN \
     echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list && \
     # Install Chrome, so it can match
     apt-get update && \
-    apt-get -qy install --no-install-recommends google-chrome-stable && \
+    apt-get -qy install --no-install-recommends google-chrome-stable google-chrome-unstable- && \
     # Ok, cleanup!
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
