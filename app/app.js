@@ -198,16 +198,19 @@ app.post('/snap', [
     ]});
   }
 
-  // Ensure a passed url is on the permitted list.
+  // Ensure a passed url is on the permitted list or includes a substring that is on the permitted list.
   if (req.query.url) {
     const urlHash = new URL(req.query.url);
-    if (!allowedHostnames.includes(urlHash.hostname)) {
+
+    // Check if any of the allowed hostnames are a substring of the url.hostname.
+    // This allowed a domain suffix match as well as a full hostname match.
+    if (!allowedHostnames.some(allowedHost => urlHash.hostname.includes(allowedHost))) {
       return res.status(422).json({ errors: [
         {
           'location': 'query',
           'param': 'url',
           'value': urlHash.hostname,
-          'msg': 'The supplied `url.hostname` is not on the list of allowed hostnames.',
+          'msg': 'The supplied `url.hostname` does not match any allowed hostname.',
         }
       ]});
     }
