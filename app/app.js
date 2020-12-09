@@ -52,6 +52,9 @@ const allowedFormats = ['Letter', 'Legal', 'Tabloid', 'Ledger', 'A0', 'A1', 'A2'
 // PDF margin units
 const allowedPdfMarginUnits = ['px', 'mm', 'cm', 'in'];
 
+// An array of hostnames snap is allowed to connect to.
+const allowedHostnames = (process.env.ALLOWED_HOSTNAMES || 'localhost').split(',');
+
 // Helper function.
 function ated(request) {
   return request.headers['x-forwarded-for'] ||
@@ -193,6 +196,21 @@ app.post('/snap', [
         'msg': 'You must supply either `url` as a querystring parameter, OR `html` as a URL-encoded form field, but not both.',
       },
     ]});
+  }
+
+  // Ensure a passed url is on the permitted list.
+  if (req.query.url) {
+    const urlHash = new URL(req.query.url);
+    if (!allowedHostnames.includes(urlHash.hostname)) {
+      return res.status(422).json({ errors: [
+        {
+          'location': 'query',
+          'param': 'url',
+          'value': urlHash.hostname,
+          'msg': 'The supplied `url.hostname` is not on the list of allowed hostnames.',
+        }
+      ]});
+    }
   }
 
   // Validate input errors, return 422 for any problems.
