@@ -210,7 +210,7 @@ app.post('/snap', [
           'location': 'query',
           'param': 'url',
           'value': urlHash.hostname,
-          'msg': 'The supplied `url.hostname` does not match any allowed hostname.',
+          'msg': `${urlHash.hostname} does not match any allowed hostname.`,
         }
       ]});
     }
