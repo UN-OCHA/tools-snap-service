@@ -1,4 +1,4 @@
-FROM unocha/debian-snap-base:10-buster-node12-202010-02 as builder
+FROM unocha/debian-snap-base:10-buster-node12-202102-01 as builder
 
 WORKDIR /srv/src
 COPY . .
@@ -10,7 +10,7 @@ RUN cd app && \
     npm install
 
 # The base image to build our app into. this already contains fonts and utilities.
-FROM unocha/debian-snap-base:10-buster-node12-202010-02
+FROM unocha/debian-snap-base:10-buster-node12-202102-01
 
 # Configure the service container.
 ENV NODE_APP_DIR=/srv/www \
