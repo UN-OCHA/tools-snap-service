@@ -20,8 +20,8 @@ const http = require('http');
 const express = require('express');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
-const { query, body, validationResult } = require('express-validator/check');
-const { sanitize } = require('express-validator/filter');
+const { query, body, validationResult } = require('express-validator');
+const { sanitize } = require('express-validator');
 const url = require('url');
 const { Semaphore } = require('await-semaphore');
 
@@ -210,7 +210,7 @@ app.post('/snap', [
           'location': 'query',
           'param': 'url',
           'value': urlHash.hostname,
-          'msg': 'The supplied `url.hostname` does not match any allowed hostname.',
+          'msg': `${urlHash.hostname} does not match any allowed hostname.`,
         }
       ]});
     }

@@ -284,6 +284,14 @@ html[class^='snap'] .my-selector {
 This class can be used anywhere in your CSS, including within Media Queries (e.g. `@media print`, `@media screen and (min-width: 700px)`, etc).
 
 
+### Adding new domains to the allow-list
+
+The shared Snap service now limits which domains it will interact with on dev and production. We maintain an allow-list of hostnames (e.g. `unocha.org`). It does not need to be more specific.
+
+If you are receiving HTTP 422 errors about the hostname on Dev, please open an OPS ticket before deploying to production to ensure that everything works.
+
+For local development, you can set the `ALLOWED_HOSTNAMES` environment variable in `docker-compose.yml`.
+
 ### Localization
 
 It is up to the requesting service to manage localization of all strings sent to Snap Service. The service is designed to be as agnostic to your website as possible in order to support the broadest set of use-cases. We support a very versatile font-family by default (Roboto) in order to ensure that many character sets are supported.
