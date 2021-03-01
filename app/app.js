@@ -20,8 +20,8 @@ const http = require('http');
 const express = require('express');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
-const { query, body, validationResult } = require('express-validator/check');
-const { sanitize } = require('express-validator/filter');
+const { query, body, validationResult } = require('express-validator');
+const { sanitize } = require('express-validator');
 const url = require('url');
 const { Semaphore } = require('await-semaphore');
 
