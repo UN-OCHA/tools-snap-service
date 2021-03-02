@@ -370,7 +370,7 @@ app.post('/snap', [
             },
           };
 
-          // Do string substitution on the fnPdfHeader is the logo was specified.
+          // Do string substitution on the fnPdfHeader if the logo was specified.
           if (logos.hasOwnProperty(fnLogo)) {
             hasLogo = true;
             const pdfLogoFile = __dirname + '/logos/' + logos[fnLogo].filename;
