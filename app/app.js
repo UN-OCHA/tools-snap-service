@@ -98,6 +98,11 @@ async function connectPuppeteer() {
       dumpio: false, // set to `true` for debugging
     });
 
+    // Log UA for visibility in ELK.
+    const ua = await browser.userAgent();
+    log.info(`New connection to Chrome. UA: ${ua}`);
+
+    // Create re-usable connection.
     browserWSEndpoint = browser.wsEndpoint();
   }
 
