@@ -63,13 +63,6 @@ function ated(request) {
          (request.connection.socket ? request.connection.socket.remoteAddress : null);
 }
 
-// Launch Puppeteer.
-//
-// Using the launch() command multiple times results in multiple Chromium procs
-// but (just like a normal web browser) we only want one. We'll open a new "tab"
-// each time our `/snap` route is invoked by reusing the established connection.
-let browserWSEndpoint = '';
-
 /**
  * A semaphore to limit the maximum number of concurrent active requests to
  * puppeteer, and require that new requests wait until previous ones are
@@ -77,36 +70,48 @@ let browserWSEndpoint = '';
  */
 const PUPPETEER_SEMAPHORE = new Semaphore(process.env.MAX_CONCURRENT_REQUESTS || 4);
 
+/**
+ * Launch Puppeteer.
+ *
+ * Using the launch() command multiple times results in multiple Chromium procs
+ * but (just like a normal web browser) we only want one. We'll open a new "tab"
+ * each time our `/snap` route is invoked by reusing the established connection.
+ */
+let browserWSEndpoint = '';
+
 async function connectPuppeteer() {
-  let browser;
+  try {
+    let browser;
 
-  if (browserWSEndpoint) {
-    browser = await puppeteer.connect({browserWSEndpoint});
+    if (browserWSEndpoint) {
+      browser = await puppeteer.connect({browserWSEndpoint});
+    } else {
+      // Initialize Puppeteer
+      browser = await puppeteer.launch({
+        executablePath: '/usr/bin/google-chrome',
+        args: [
+          '--headless',
+          '--disable-gpu',
+          '--remote-debugging-port=9222',
+          '--remote-debugging-address=0.0.0.0',
+          '--no-sandbox',
+          '--disable-dev-shm-usage',
+        ],
+        dumpio: false, // set to `true` for debugging
+      });
+
+      // Log UA for visibility in ELK.
+      const ua = await browser.userAgent();
+      log.info(`New connection to Chrome. UA: ${ua}`);
+
+      // Create re-usable connection.
+      browserWSEndpoint = browser.wsEndpoint();
+    }
+
+    return browser;
+  } catch (err) {
+    throw err;
   }
-  else {
-    // Initialize Puppeteer
-    browser = await puppeteer.launch({
-      executablePath: '/usr/bin/google-chrome',
-      args: [
-        '--headless',
-        '--disable-gpu',
-        '--remote-debugging-port=9222',
-        '--remote-debugging-address=0.0.0.0',
-        '--no-sandbox',
-        '--disable-dev-shm-usage',
-      ],
-      dumpio: false, // set to `true` for debugging
-    });
-
-    // Log UA for visibility in ELK.
-    const ua = await browser.userAgent();
-    log.info(`New connection to Chrome. UA: ${ua}`);
-
-    // Create re-usable connection.
-    browserWSEndpoint = browser.wsEndpoint();
-  }
-
-  return browser;
 }
 
 // Set up the Express app
@@ -400,7 +405,9 @@ app.post('/snap', [
           try {
             // Access the Chromium instance by either launching or connecting to
             // Puppeteer.
-            const browser = await connectPuppeteer();
+            const browser = await connectPuppeteer().catch(err => {
+              throw err;
+            });
 
             // New Puppeteer Incognito context and create a new page within.
             const context = await browser.createIncognitoBrowserContext();
@@ -583,7 +590,7 @@ app.post('/snap', [
             await browser.disconnect();
           }
           catch (err) {
-            throw new Error(err);
+            throw err;
           }
         });
       }
@@ -600,7 +607,7 @@ app.post('/snap', [
             const duration = ((Date.now() - startTime) / 1000);
             res.end();
             lgParams.duration = duration
-            log.info(lgParams, `PNG ${tmpPath} successfully generated in ${duration} seconds.`);
+            log.info(lgParams, `PNG successfully generated in ${duration} seconds.`);
             return fs.unlink(tmpPath, cb);
           });
         } else {
@@ -609,7 +616,7 @@ app.post('/snap', [
             const duration = ((Date.now() - startTime) / 1000);
             res.end();
             lgParams.duration = duration
-            log.info(lgParams, `PDF ${tmpPath} successfully generated in ${duration} seconds.`);
+            log.info(lgParams, `PDF successfully generated in ${duration} seconds.`);
             return fs.unlink(tmpPath, cb);
           });
         }
@@ -623,9 +630,11 @@ app.post('/snap', [
     const duration = ((Date.now() - startTime) / 1000);
 
     if (err) {
-      lgParams.duration = duration
-      log.warn(lgParams, `Snap FAILED in ${duration} seconds. ${err}`);
-      res.status(500).send('' + err);
+      lgParams.fail = true;
+      lgParams.stack_trace = err.stack;
+      lgParams.duration = duration;
+      log.error(lgParams, `Snap FAILED in ${duration} seconds. ${err}`);
+      res.status(500).send('Internal Server Error');
     }
   });
 });
