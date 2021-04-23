@@ -607,7 +607,7 @@ app.post('/snap', [
             const duration = ((Date.now() - startTime) / 1000);
             res.end();
             lgParams.duration = duration
-            log.info(lgParams, `PNG ${tmpPath} successfully generated in ${duration} seconds.`);
+            log.info(lgParams, `PNG successfully generated in ${duration} seconds.`);
             return fs.unlink(tmpPath, cb);
           });
         } else {
@@ -616,7 +616,7 @@ app.post('/snap', [
             const duration = ((Date.now() - startTime) / 1000);
             res.end();
             lgParams.duration = duration
-            log.info(lgParams, `PDF ${tmpPath} successfully generated in ${duration} seconds.`);
+            log.info(lgParams, `PDF successfully generated in ${duration} seconds.`);
             return fs.unlink(tmpPath, cb);
           });
         }
