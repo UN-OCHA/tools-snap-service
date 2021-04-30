@@ -92,10 +92,10 @@ async function connectPuppeteer() {
         args: [
           '--headless',
           '--disable-gpu',
+          '--disable-software-rasterizer',
           '--remote-debugging-port=9222',
           '--remote-debugging-address=0.0.0.0',
           '--no-sandbox',
-          '--disable-dev-shm-usage',
         ],
         dumpio: false, // set to `true` for debugging
       });
