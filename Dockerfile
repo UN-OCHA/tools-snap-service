@@ -17,12 +17,9 @@ ENV NODE_APP_DIR=/srv/www \
     PORT=8442
 
 RUN \
-    # Configure Chrome repo.
-    curl -s https://dl-ssl.google.com/linux/linux_signing_key.pub -o linux_signing_key.pub && \
-    apt-key add linux_signing_key.pub && \
-    echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list && \
-    # Install Chrome, so it can match
+    # Install Chrome, so it can match. The base image already has the repo.
     apt-get update && \
+    apt-get -qy dist-upgrade && \
     apt-get -qy install --no-install-recommends google-chrome-stable && \
     # Ok, cleanup!
     apt-get clean && \
