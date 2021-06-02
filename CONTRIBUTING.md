@@ -37,7 +37,7 @@ docker-compose build --no-cache
 
 Watch the console output and note the STABLE version of Chrome as the logs stream by. It can help to highlight the whole log block and once you see it, copy the text as quickly as you can. There might be a smarter way to do this, but copying logs is reliable enough. Example of the log you're looking for:
 
-_image TBD_
+![SNAP logs](https://user-images.githubusercontent.com/254753/120500125-e64ee780-c3c0-11eb-8e23-0603c1c733ef.png)
 
 Once you have the stable version of Chromium identified, use an INCOGNITO window and visit https://pptr.dev/ to view the official Puppeteer releases. The site has aggressive caching and opening in a regular window often loads stale data.
 
@@ -48,7 +48,7 @@ You will see a version number in the upper left. Click that version number to se
 
 The Puppeteer releases get tagged against dev releases of Chromium so you'll typically see a release date that lags approximately 6 weeks behind the current date. The screenshot shows 21 April and this particular Snap build was created on 31 May:
 
-_image TBD_
+![SNAP-92-puppeteer](https://user-images.githubusercontent.com/254753/120500143-e949d800-c3c0-11eb-932b-376476331642.png)
 
 Once the Puppeteer version is noted, go and manually update `app/package.json`inside the Snap repo, then run one the following commands to ensure the codebase is fully updated:
 
