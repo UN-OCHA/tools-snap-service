@@ -64,6 +64,6 @@ Make sure to bump the `version` inside `package.json` as well. For routine updat
 
 Conversely, for the example release depicted here, the 8.0.0 to 9.0.0 only involved one method which changed from async to sync. That doesn't affect our codebase at all because we don't use it, and if it did we would probably be able to make changes that don't affect the Snap users themselves. So the 9.0.0 breaking change does NOT warrant a major version bump on our side.
 
-Now you can run some local tests using either cURL (see installation section) or another tool of your choice, with the API docs as your guide to craft the requests. TODO: I will also link a GitHub Gist of a few example commands that represent real-world Snaps with sufficient complexity to test most of the moving parts.
+Now you can run some local tests using either cURL (see installation section) or another tool of your choice, with [the API docs](README.md) as your guide to craft the requests.
 
 Finally, please keep in mind that the Chromium version is dynamically fetched at image build time, so once you merge this to dev/master, **the work is not finalized until a release has been tagged and built by DockerHub**. Ideally, the tag should be created as soon as dev is considered to be stable, i.e. within an hour of the dev deploy. Then you have the exact same version of Chromium in the prod release as the untagged dev deploy.
