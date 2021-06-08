@@ -16,26 +16,19 @@ const fs = require('fs');
 const crypto = require('crypto');
 const async = require('async');
 const http = require('http');
-// const https = require('https');
 const express = require('express');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const { query, body, validationResult } = require('express-validator');
-const { sanitize } = require('express-validator');
 const url = require('url');
 const { Semaphore } = require('await-semaphore');
-
 const puppeteer = require('puppeteer');
-const moment = require('moment');
 const mime = require('mime-types');
 const imgSize = require('image-size');
-const he = require('he');
-const log = require('./log');
 const util = require('util');
-const dump = util.inspect;
+const log = require('./log');
 
-// We don't set this as a variable because it defines its own vars inside
-require('./config');
+const dump = util.inspect;
 
 // Load our list of custom logos. We do it early on in order to validate against
 // the possible values and give a more informative validation error.
