@@ -163,59 +163,66 @@ app.post('/snap', [
   query('block', 'Must be a comma-separated list of domains (alphanumeric, hyphens, dots, commas)').optional().matches(/^[A-Za-z0-9.,-]+$/),
 ], (req, res) => {
   // debug
-  log.debug({ 'query': url.parse(req.url).query }, 'Request received');
+  log.debug('Request received', { query: url.parse(req.url).query });
 
   // If neither `url` and `html` are present, return 422 requiring valid input.
   if (!req.query.url && !req.body.html) {
-    return res.status(422).json({ errors: [
-      {
-        'location': 'query',
-        'param': 'url',
-        'value': undefined,
-        'msg': 'You must supply either `url` as a querystring parameter, or `html` as a URL-encoded form field.',
-      },
-      {
-        'location': 'body',
-        'param': 'html',
-        'value': undefined,
-        'msg': 'You must supply either `url` as a querystring parameter, or `html` as a URL-encoded form field.',
-      },
-    ]});
+    return res.status(422).json({
+      errors: [
+        {
+          location: 'query',
+          param: 'url',
+          value: undefined,
+          msg: 'You must supply either `url` as a querystring parameter, or `html` as a URL-encoded form field.',
+        },
+        {
+          location: 'body',
+          param: 'html',
+          value: undefined,
+          msg: 'You must supply either `url` as a querystring parameter, or `html` as a URL-encoded form field.',
+        },
+      ],
+    });
   }
 
   // If both `url` and `html` are present, return 422 requiring valid input.
   if (req.query.url && req.body.html) {
-    return res.status(422).json({ errors: [
-      {
-        'location': 'query',
-        'param': 'url',
-        'value': req.query.url,
-        'msg': 'You must supply either `url` as a querystring parameter, OR `html` as a URL-encoded form field, but not both.',
-      },
-      {
-        'location': 'body',
-        'param': 'html',
-        'value': req.body.html,
-        'msg': 'You must supply either `url` as a querystring parameter, OR `html` as a URL-encoded form field, but not both.',
-      },
-    ]});
+    return res.status(422).json({
+      errors: [
+        {
+          location: 'query',
+          param: 'url',
+          value: req.query.url,
+          msg: 'You must supply either `url` as a querystring parameter, OR `html` as a URL-encoded form field, but not both.',
+        },
+        {
+          location: 'body',
+          param: 'html',
+          value: req.body.html,
+          msg: 'You must supply either `url` as a querystring parameter, OR `html` as a URL-encoded form field, but not both.',
+        },
+      ],
+    });
   }
 
-  // Ensure a passed url is on the permitted list or includes a substring that is on the permitted list.
+  // Ensure a passed url is on the permitted list or includes a substring that
+  // is on the permitted list.
   if (req.query.url) {
     const urlHash = new URL(req.query.url);
 
-    // Check if any of the allowed hostnames are a substring of the url.hostname.
+    // Check if any of the allowed hostnames are substrings of `url.hostname`
     // This allowed a domain suffix match as well as a full hostname match.
     if (!allowedHostnames.some(allowedHost => urlHash.hostname.includes(allowedHost))) {
-      return res.status(422).json({ errors: [
-        {
-          'location': 'query',
-          'param': 'url',
-          'value': urlHash.hostname,
-          'msg': `${urlHash.hostname} does not match any allowed hostname.`,
-        }
-      ]});
+      return res.status(422).json({
+        errors: [
+          {
+            location: 'query',
+            param: 'url',
+            value: urlHash.hostname,
+            msg: `${urlHash.hostname} does not match any allowed hostname.`,
+          },
+        ],
+      });
     }
   }
 
@@ -268,35 +275,35 @@ app.post('/snap', [
   // Blame Emma.
   const ip = ated(req);
   let lgParams = {
-    'url': fnUrl,
-    'html': fnHtml,
-    'width': fnWidth,
-    'height': fnHeight,
-    'scale': fnScale,
-    'media': fnMedia,
-    'output': fnOutput,
-    'format': fnPdfFormat,
-    'pdfLandscape': fnPdfLandscape,
-    'pdfBackground': fnPdfBackground,
-    'pdfMarginTop': fnPdfMarginTop,
-    'pdfMarginRight': fnPdfMarginRight,
-    'pdfMarginBottom': fnPdfMarginBottom,
-    'pdfMarginLeft': fnPdfMarginLeft,
-    'pdfMarginUnit': fnPdfMarginUnit,
-    'pdfHeader': fnPdfHeader,
-    'pdfFooter': fnPdfFooter,
-    'authuser': fnAuthUser,
-    'authpass': (fnAuthPass ? '*****' : ''),
-    'cookies': fnCookies,
-    'selector': fnSelector,
-    'fullpage': fnFullPage,
-    'logo': fnLogo,
-    'service': fnService,
-    'ua': fnUserAgent,
-    'ip': ip,
-    'delay': fnDelay,
-    'debug': '',
-    'block': fnBlock,
+    url: fnUrl,
+    html: fnHtml,
+    width: fnWidth,
+    height: fnHeight,
+    scale: fnScale,
+    media: fnMedia,
+    output: fnOutput,
+    format: fnPdfFormat,
+    pdfLandscape: fnPdfLandscape,
+    pdfBackground: fnPdfBackground,
+    pdfMarginTop: fnPdfMarginTop,
+    pdfMarginRight: fnPdfMarginRight,
+    pdfMarginBottom: fnPdfMarginBottom,
+    pdfMarginLeft: fnPdfMarginLeft,
+    pdfMarginUnit: fnPdfMarginUnit,
+    pdfHeader: fnPdfHeader,
+    pdfFooter: fnPdfFooter,
+    authuser: fnAuthUser,
+    authpass: (fnAuthPass ? '*****' : ''),
+    cookies: fnCookies,
+    selector: fnSelector,
+    fullpage: fnFullPage,
+    logo: fnLogo,
+    service: fnService,
+    ua: fnUserAgent,
+    ip,
+    delay: fnDelay,
+    debug: '', // gets filled in as needed
+    block: fnBlock,
   };
 
   async.series([
