@@ -77,7 +77,7 @@ async function connectPuppeteer() {
     let browser;
 
     if (browserWSEndpoint) {
-      browser = await puppeteer.connect({browserWSEndpoint});
+      browser = await puppeteer.connect({ browserWSEndpoint });
     } else {
       // Initialize Puppeteer
       browser = await puppeteer.launch({
@@ -142,8 +142,8 @@ app.post('/snap', [
   query('width', 'Must be an integer with no units').optional().isInt(),
   query('height', 'Must be an integer with no units').optional().isInt(),
   query('scale', 'Must be an integer in the range: 1-3').optional().isInt({ min: 1, max: 3 }),
-  query('media', 'Must be one of the following: print, screen').optional().isIn([ 'print', 'screen' ]),
-  query('output', 'Must be one of the following: png, pdf').optional().isIn([ 'png', 'pdf' ]),
+  query('media', 'Must be one of the following: print, screen').optional().isIn(['print', 'screen']),
+  query('output', 'Must be one of the following: png, pdf').optional().isIn(['png', 'pdf']),
   query('selector', `Must be a CSS selector made of the following characters: ${allowedSelectorChars}`).optional().isWhitelisted(allowedSelectorChars),
   query('pdfFormat', `Must be one of the following values: ${allowedFormats.join(', ')}`).optional().isIn(allowedFormats),
   query('pdfLandscape', 'Must be one of the following: true, false').optional().isBoolean(),
