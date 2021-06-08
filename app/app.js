@@ -50,10 +50,10 @@ const allowedHostnames = (process.env.ALLOWED_HOSTNAMES || 'localhost').split(',
 
 // Helper function.
 function ated(request) {
-  return request.headers['x-forwarded-for'] ||
-         request.connection.remoteAddress ||
-         request.socket.remoteAddress ||
-         (request.connection.socket ? request.connection.socket.remoteAddress : null);
+  return request.headers['x-forwarded-for']
+    || request.connection.remoteAddress
+    || request.socket.remoteAddress
+    || (request.connection.socket ? request.connection.socket.remoteAddress : null);
 }
 
 /**
