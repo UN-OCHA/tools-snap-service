@@ -259,7 +259,7 @@ app.post('/snap', [
   const fnAuthPass = req.query.pass || '';
   const fnCookies = req.query.cookies || '';
   const fnSelector = req.query.selector || '';
-  const fnFullPage = (fnSelector) ? false : true;
+  const fnFullPage = fnSelector === '' ? true : false;
   const fnLogo = req.query.logo || false;
   const fnService = req.query.service || '';
   const fnUserAgent = req.query.ua || req.headers['user-agent'] || '';
