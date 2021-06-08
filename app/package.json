@@ -1,12 +1,12 @@
 {
   "name": "tools-snap-service",
   "description": "Node.js web service interface to puppeteer/chrome for generating PDFs and PNGs from HTML.",
-  "version": "2.6.8",
+  "version": "2.7.0",
   "private": true,
   "scripts": {
     "start": "./node_modules/.bin/pm2 start app.js --no-daemon --watch --node-args='--max-http-header-size=16384'",
     "dev": "./node_modules/.bin/nodemon ./node_modules/.bin/node-debug app.js",
-    "lint": "./node_modules/.bin/eslint *.js"
+    "lint": "eslint *.js"
   },
   "dependencies": {
     "async": "^2.6.1",
@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "eslint": "^6.8.0",
-    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-config-airbnb-base": "^13.2.0",
     "eslint-plugin-import": "^2.14.0"
   }
 }
