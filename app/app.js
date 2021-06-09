@@ -427,7 +427,7 @@ app.post('/snap', [
 
                 // Block request if a blacklisted domain is found
                 if (fnBlock && blacklist.some((blocked) => domain.indexOf(blocked) !== -1)) {
-                  lgParams.debug += 'Snap blocked a request to ' + domain + '\n';
+                  lgParams.debug += `Snap blocked a request to ${domain}\n`;
                   pageReq.abort();
                 } else {
                   pageReq.continue();
@@ -449,10 +449,7 @@ app.post('/snap', [
               // Forward all console output
               page.on('console', msg => {
                 const errText = msg._args && msg._args[0] && msg._args[0]._remoteObject && msg._args[0]._remoteObject.value;
-                lgParams.debug += msg._type.padStart(7) +' '+ dump(errText) + '\n';
-                // for (let i = 0; i < msg.args().length; ++i) {
-                //   console.log(`${msg.args()[i]}`);
-                // }
+                lgParams.debug += `${msg._type.padStart(7)} ${dump(errText)}\n`;
               });
             }
 
