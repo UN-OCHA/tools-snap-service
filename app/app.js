@@ -510,6 +510,7 @@ app.post('/snap', [
             //       any arguments you need inside this function block have to be
             //       explicitly passed instead of relying on closure.
             await page.evaluate((snapOutput) => {
+              // eslint-disable-next-line no-undef
               document.documentElement.classList.add(`snap--${snapOutput}`);
             }, fnOutput);
 
