@@ -3,10 +3,10 @@
  *
  * node.js web service for puppeteer/chrome to generate PDFs or PNGs from HTML.
  *
- * Accepts POST requests to /snap with either body form data with HTML content
- * in a field named `html`. Alternatively, we accept a `url` parameter which
- * renders an arbitrary web page on the internet, subject to our internal list
- * of allowed domains.
+ * Accepts POST requests to /snap with either an HTTP file upload sent with
+ * the name "html" or body form data with HTML content in a field named `html`.
+ * Alternatively, we accept a `url` parameter which renders an arbitrary URL on
+ * the internet, subject to our internal list of allowed domains.
  *
  * This service is not meant to be exposed to the public, and use of this
  * service should be mediated by another application with access controls.
@@ -315,8 +315,8 @@ app.post('/snap', [
           }
 
           sizeHtml = stats.size || 0;
-          fnHtml = req.files.html.path;
-          tmpPath = `${fnHtml}.${fnOutput}`;
+          const fileName = req.files.html.path;
+          tmpPath = `${fileName}.${fnOutput}`;
 
           lgParams.size = sizeHtml;
           lgParams.tmpfile = tmpPath;
