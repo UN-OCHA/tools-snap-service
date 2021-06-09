@@ -523,8 +523,8 @@ app.post('/snap', [
                 // Make sure our selector is in the DOM.
                 await page.waitForSelector(fnSelector).then(async () => {
                   // Select the element from the DOM.
-                  const fragment = await page.$(fnSelector).catch(() => {
-                    throw 'Selector could not be targeted by Puppeteer';
+                  const fragment = await page.$(fnSelector).catch((err) => {
+                    throw err;
                   });
 
                   // If an artificial delay was specified, wait for that amount of time.
