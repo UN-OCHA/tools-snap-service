@@ -272,7 +272,7 @@ app.post('/snap', [
 
   // Make a nice blob for the logs. ELK will sort this out. Blame Emma.
   const ip = ated(req);
-  let lgParams = {
+  const lgParams = {
     url: fnUrl,
     html: fnHtml,
     width: fnWidth,
@@ -472,10 +472,10 @@ app.post('/snap', [
 
             // Compile cookies if present. We have to manually specify some extra
             // info such as host/path in order to create a valid cookie.
-            let cookies = [];
+            const cookies = [];
             if (!!fnCookies) {
               fnCookies.split('; ').map((cookie) => {
-                let thisCookie = {};
+                const thisCookie = {};
                 const [name, value] = cookie.split('=');
 
                 thisCookie.url = fnUrl;
