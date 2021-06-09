@@ -352,8 +352,6 @@ app.post('/snap', [
        */
       async function createSnap() {
         try {
-          let hasLogo = false;
-
           pngOptions = {
             path: tmpPath,
             fullPage: fnFullPage,
@@ -377,7 +375,6 @@ app.post('/snap', [
 
           // Do string substitution on the fnPdfHeader if the logo was specified.
           if (logos.hasOwnProperty(fnLogo)) {
-            hasLogo = true;
             const pdfLogoFile = __dirname + '/logos/' + logos[fnLogo].filename;
             const pdfLogoData = new Buffer.from(fs.readFileSync(pdfLogoFile, 'binary'));
             const pdfLogo = {
@@ -522,8 +519,8 @@ app.post('/snap', [
                 // Make sure our selector is in the DOM.
                 await page.waitForSelector(fnSelector).then(async () => {
                   // Select the element from the DOM.
-                  const fragment = await page.$(fnSelector).catch((err) => {
-                    throw ('Selector could not be targeted by Puppeteer');
+                  const fragment = await page.$(fnSelector).catch(() => {
+                    throw 'Selector could not be targeted by Puppeteer';
                   });
 
                   // If an artificial delay was specified, wait for that amount of time.
@@ -558,7 +555,7 @@ app.post('/snap', [
                   // };
                   // await page.screenshot(pngOptions);
                 }).catch((err) => {
-                  throw ('Selector never appeared in the DOM');
+                  throw err;
                 });
               } else {
 
