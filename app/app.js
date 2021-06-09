@@ -380,8 +380,10 @@ app.post('/snap', [
             const pdfLogoData = new Buffer.from(fs.readFileSync(pdfLogoFile, 'binary'));
             const pdfLogo = {
               src: `data:${mime.lookup(pdfLogoFile)};base64,${pdfLogoData.toString('base64')}`,
-              width: imgSize(pdfLogoFile).width * .75,
-              height: imgSize(pdfLogoFile).height * .75,
+              // Dimensions reduced to 3/4 size because the PDF contents are
+              // rendered at 96ppi but the header is 72ppi.
+              width: imgSize(pdfLogoFile).width * 0.75,
+              height: imgSize(pdfLogoFile).height * 0.75,
             };
 
             pdfOptions.headerTemplate = fnPdfHeader
