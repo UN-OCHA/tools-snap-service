@@ -321,8 +321,7 @@ app.post('/snap', [
           lgParams.size = sizeHtml;
           lgParams.tmpfile = tmpPath;
         });
-      }
-      else if (req.body && req.body.html && req.body.html.length) {
+      } else if (req.body && req.body.html && req.body.html.length) {
         tmpPath = `/tmp/snap-${Date.now()}.html`;
         sizeHtml = req.body.html.length;
 
@@ -335,13 +334,11 @@ app.post('/snap', [
           lgParams.size = sizeHtml;
           lgParams.tmpfile = tmpPath;
         });
-      }
-      else if (req.query.url) {
+      } else if (req.query.url) {
         const digest = crypto.createHash('md5').update(fnUrl).digest('hex');
         tmpPath = `/tmp/snap-${Date.now()}-${digest}.${fnOutput}`;
         lgParams.tmpfile = tmpPath;
-      }
-      else {
+      } else {
         const noCaseErrMsg = 'An HTML file was not uploaded or could not be accessed.';
         log.error(noCaseErrMsg);
         return cb(new Error(noCaseErrMsg));
@@ -586,8 +583,7 @@ app.post('/snap', [
             // Disconnect from Puppeteer process
             await context.close();
             await browser.disconnect();
-          }
-          catch (err) {
+          } catch (err) {
             throw err;
           }
         });
