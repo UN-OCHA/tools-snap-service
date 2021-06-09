@@ -610,9 +610,7 @@ app.post('/snap', [
             return fs.unlink(tmpPath, cb);
           });
         }
-      }).catch((err) => {
-        return cb(err);
-      });
+      }).catch(err => cb(err));
     },
   ],
   (err) => {
