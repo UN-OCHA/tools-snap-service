@@ -12,6 +12,7 @@
  * service should be mediated by another application with access controls.
  */
 const fs = require('fs');
+const path = require('path');
 const crypto = require('crypto');
 const async = require('async');
 const http = require('http');
@@ -375,7 +376,7 @@ app.post('/snap', [
 
           // Do string substitution on the fnPdfHeader if the logo was specified.
           if (Object.prototype.hasOwnProperty.call(logos, fnLogo)) {
-            const pdfLogoFile = __dirname + '/logos/' + logos[fnLogo].filename;
+            const pdfLogoFile = path.join(__dirname, '/logos/', logos[fnLogo].filename);
             const pdfLogoData = new Buffer.from(fs.readFileSync(pdfLogoFile, 'binary'));
             const pdfLogo = {
               src: `data:${mime.lookup(pdfLogoFile)};base64,${pdfLogoData.toString('base64')}`,
