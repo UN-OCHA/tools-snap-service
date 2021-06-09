@@ -374,7 +374,7 @@ app.post('/snap', [
           };
 
           // Do string substitution on the fnPdfHeader if the logo was specified.
-          if (logos.hasOwnProperty(fnLogo)) {
+          if (Object.prototype.hasOwnProperty.call(logos, fnLogo)) {
             const pdfLogoFile = __dirname + '/logos/' + logos[fnLogo].filename;
             const pdfLogoData = new Buffer.from(fs.readFileSync(pdfLogoFile, 'binary'));
             const pdfLogo = {
