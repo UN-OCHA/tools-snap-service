@@ -468,6 +468,7 @@ app.post('/snap', [
             // info such as host/path in order to create a valid cookie.
             const cookies = [];
             if (fnCookies) {
+              // eslint-disable-next-line array-callback-return
               fnCookies.split('; ').map((cookie) => {
                 const thisCookie = {};
                 const [name, value] = cookie.split('=');
