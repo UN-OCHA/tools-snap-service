@@ -392,7 +392,6 @@ app.post('/snap', [
               .replace('__LOGO_WIDTH__', pdfLogo.width)
               .replace('__LOGO_HEIGHT__', pdfLogo.height);
           }
-
         } catch (err) {
           return cb(err);
         }
@@ -562,7 +561,6 @@ app.post('/snap', [
                   throw err;
                 });
               } else {
-
                 // If an artificial delay was specified, wait for that amount of time.
                 if (fnDelay) {
                   await page.waitFor(fnDelay);
@@ -572,7 +570,6 @@ app.post('/snap', [
                 await page.screenshot(pngOptions);
               }
             } else {
-
               // If an artificial delay was specified, wait for that amount of time.
               if (fnDelay) {
                 await page.waitFor(fnDelay);
@@ -615,7 +612,6 @@ app.post('/snap', [
             return fs.unlink(tmpPath, cb);
           });
         }
-
       }).catch((err) => {
         return cb(err);
       });
