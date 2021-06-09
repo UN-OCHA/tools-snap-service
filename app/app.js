@@ -467,7 +467,7 @@ app.post('/snap', [
             // Compile cookies if present. We have to manually specify some extra
             // info such as host/path in order to create a valid cookie.
             const cookies = [];
-            if (!!fnCookies) {
+            if (fnCookies) {
               fnCookies.split('; ').map((cookie) => {
                 const thisCookie = {};
                 const [name, value] = cookie.split('=');
