@@ -484,7 +484,7 @@ app.post('/snap', [
             }
 
             // Set cookies.
-            cookies.forEach(async function(cookie) {
+            cookies.forEach(async function setCookies(cookie) {
               await page.setCookie(cookie).catch((err) => {
                 log.error(err);
               });
