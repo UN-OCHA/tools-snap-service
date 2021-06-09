@@ -400,7 +400,7 @@ app.post('/snap', [
           try {
             // Access the Chromium instance by either launching or connecting to
             // Puppeteer.
-            const browser = await connectPuppeteer().catch(err => {
+            const browser = await connectPuppeteer().catch((err) => {
               throw err;
             });
 
@@ -426,7 +426,7 @@ app.post('/snap', [
                 }
 
                 // Block request if a blacklisted domain is found
-                if (fnBlock && blacklist.some((blocked) => domain.indexOf(blocked) !== -1)) {
+                if (fnBlock && blacklist.some(blocked => domain.indexOf(blocked) !== -1)) {
                   lgParams.debug += `Snap blocked a request to ${domain}\n`;
                   pageReq.abort();
                 } else {
@@ -447,7 +447,7 @@ app.post('/snap', [
               });
 
               // Forward all console output
-              page.on('console', msg => {
+              page.on('console', (msg) => {
                 const errText = msg._args && msg._args[0] && msg._args[0]._remoteObject && msg._args[0]._remoteObject.value;
                 lgParams.debug += `${msg._type.padStart(7)} ${dump(errText)}\n`;
               });
