@@ -416,11 +416,11 @@ app.post('/snap', [
               await page.setRequestInterception(true);
 
               // BLOCK ADS/TRACKERS
-              await page.on('request', (req) => {
+              await page.on('request', (pageReq) => {
                 const blacklist = fnBlock.split(',');
 
                 let domain = null;
-                const frags = req.url().split('/');
+                const frags = pageReq.url().split('/');
                 if (frags.length > 2) {
                   domain = frags[2];
                 }
@@ -428,9 +428,9 @@ app.post('/snap', [
                 // Block request if a blacklisted domain is found
                 if (fnBlock && blacklist.some((blocked) => domain.indexOf(blocked) !== -1)) {
                   lgParams.debug += 'Snap blocked a request to ' + domain + '\n';
-                  req.abort();
+                  pageReq.abort();
                 } else {
-                  req.continue();
+                  pageReq.continue();
                 }
               });
             }
