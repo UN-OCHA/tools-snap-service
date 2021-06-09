@@ -374,7 +374,7 @@ app.post('/snap', [
             },
           };
 
-          // Do string substitution on the fnPdfHeader if the logo was specified.
+          // Do string substitution on fnPdfHeader if the logo was specified.
           if (Object.prototype.hasOwnProperty.call(logos, fnLogo)) {
             const pdfLogoFile = path.join(__dirname, '/logos/', logos[fnLogo].filename);
             const pdfLogoData = new Buffer.from(fs.readFileSync(pdfLogoFile, 'binary'));
@@ -486,7 +486,7 @@ app.post('/snap', [
               await page.setCookie(cookie).catch((err) => {
                 log.error(err);
               });
-            })
+            });
 
             // We need to load the HTML differently depending on whether it's HTML
             // in the POST or a URL in the querystring.
@@ -598,7 +598,7 @@ app.post('/snap', [
           res.sendFile(tmpPath, () => {
             const duration = ((Date.now() - startTime) / 1000);
             res.end();
-            lgParams.duration = duration
+            lgParams.duration = duration;
             log.info(lgParams, `PNG successfully generated in ${duration} seconds.`);
             return fs.unlink(tmpPath, cb);
           });
@@ -607,7 +607,7 @@ app.post('/snap', [
           res.sendFile(tmpPath, () => {
             const duration = ((Date.now() - startTime) / 1000);
             res.end();
-            lgParams.duration = duration
+            lgParams.duration = duration;
             log.info(lgParams, `PDF successfully generated in ${duration} seconds.`);
             return fs.unlink(tmpPath, cb);
           });
