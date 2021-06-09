@@ -377,6 +377,7 @@ app.post('/snap', [
           // Do string substitution on fnPdfHeader if the logo was specified.
           if (Object.prototype.hasOwnProperty.call(logos, fnLogo)) {
             const pdfLogoFile = path.join(__dirname, '/logos/', logos[fnLogo].filename);
+            // eslint-disable-next-line new-cap
             const pdfLogoData = new Buffer.from(fs.readFileSync(pdfLogoFile, 'binary'));
             const pdfLogo = {
               src: `data:${mime.lookup(pdfLogoFile)};base64,${pdfLogoData.toString('base64')}`,
