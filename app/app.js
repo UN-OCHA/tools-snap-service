@@ -35,8 +35,10 @@ const dump = util.inspect;
 const logos = require('./logos/_list.json');
 
 // It's impossible to regex a CSS selector so we'll assemble a list of the most
-// common characters. Feel free to add to this list if it's preventing a legitimate
-// selector from being used. The space at the beginning of this string is intentional.
+// common characters. Feel free to add to this list if it's preventing a legit
+// selector from being used.
+//
+// The space at the beginning of this string is intentional.
 const allowedSelectorChars = ' #.[]()-_=+:~^*abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 
 // PDF paper sizes
@@ -411,7 +413,7 @@ app.post('/snap', [
             // Set duration until Timeout
             await page.setDefaultNavigationTimeout(60 * 1000);
 
-            // We want to intercept requests in order to dump logs or block domains.
+            // We want to intercept requests to dump logs or block domains.
             if (fnDebug || fnBlock) {
               await page.setRequestInterception(true);
 
@@ -448,7 +450,10 @@ app.post('/snap', [
 
               // Forward all console output
               page.on('console', (msg) => {
-                const errText = msg._args && msg._args[0] && msg._args[0]._remoteObject && msg._args[0]._remoteObject.value;
+                const errText = msg._args
+                  && msg._args[0]
+                  && msg._args[0]._remoteObject
+                  && msg._args[0]._remoteObject.value;
                 lgParams.debug += `${msg._type.padStart(7)} ${dump(errText)}\n`;
               });
             }
@@ -464,7 +469,7 @@ app.post('/snap', [
             // Set CSS Media
             await page.emulateMediaType(fnMedia);
 
-            // Compile cookies if present. We have to manually specify some extra
+            // Compile cookies if present. We must manually specify some extra
             // info such as host/path in order to create a valid cookie.
             const cookies = [];
             if (fnCookies) {
@@ -488,8 +493,8 @@ app.post('/snap', [
               });
             });
 
-            // We need to load the HTML differently depending on whether it's HTML
-            // in the POST or a URL in the querystring.
+            // We need to load the HTML differently depending on whether it's
+            // HTML in the POST or a URL in the querystring.
             if (fnUrl) {
               await page.goto(fnUrl, {
                 waitUntil: ['load', 'networkidle0'],
@@ -500,13 +505,13 @@ app.post('/snap', [
               });
             }
 
-            // Add a conditional class indicating what type of Snap is happening.
-            // Websites can use this class to apply customizations before the final
-            // asset (PNG/PDF) is generated.
+            // Add conditional class indicating what type of Snap is happening.
+            // Websites can use this class to apply customizations before the
+            // final asset (PNG/PDF) is generated.
             //
-            // Note: page.evaluate() is a stringified injection into the runtime.
-            //       any arguments you need inside this function block have to be
-            //       explicitly passed instead of relying on closure.
+            // Note: page.evaluate() is a stringified injection into the runtime
+            // so any arguments you need inside this function block have to be
+            // explicitly passed instead of relying on closure.
             await page.evaluate((snapOutput) => {
               // eslint-disable-next-line no-undef
               document.documentElement.classList.add(`snap--${snapOutput}`);
@@ -525,7 +530,8 @@ app.post('/snap', [
                     throw err;
                   });
 
-                  // If an artificial delay was specified, wait for that amount of time.
+                  // If an artificial delay was specified, wait for that amount
+                  // of time.
                   if (fnDelay) {
                     await page.waitFor(fnDelay);
                   }
@@ -542,8 +548,8 @@ app.post('/snap', [
                   // the code back out and using the "convenience" method again:
                   // fragment.screenshot()
                   //
-                  // It might be necessary to flip-flop between these two methods
-                  // from time to time so it's been left intact but commented out.
+                  // It might be necessary to flip between these two methods
+                  // from time to time so it's been left intact as a comment.
                   //
                   // @see https://humanitarian.atlassian.net/browse/SNAP-51
                   await fragment.screenshot(pngOptions);
@@ -560,7 +566,7 @@ app.post('/snap', [
                   throw err;
                 });
               } else {
-                // If an artificial delay was specified, wait for that amount of time.
+                // If an artificial delay was specified, wait for it.
                 if (fnDelay) {
                   await page.waitFor(fnDelay);
                 }
@@ -569,7 +575,7 @@ app.post('/snap', [
                 await page.screenshot(pngOptions);
               }
             } else {
-              // If an artificial delay was specified, wait for that amount of time.
+              // If an artificial delay was specified, wait for it.
               if (fnDelay) {
                 await page.waitFor(fnDelay);
               }

@@ -17,5 +17,13 @@ module.exports = {
     "no-underscore-dangle": "off",
     "prefer-destructuring": "off",
     "consistent-return": "off",
+    "max-len": [2, {
+      code: 110,
+      comments: 80,
+      ignoreTrailingComments: true,
+      ignoreUrls: true,
+      ignoreStrings: true,
+      ignoreTemplateLiterals: true,
+    }],
   },
 };
