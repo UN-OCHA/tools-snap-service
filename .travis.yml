@@ -4,7 +4,11 @@ node_js:
 cache:
   directories:
     - app/node_modules
+before_install:
+  - cd app
 install:
   - npm install
+before_script:
+  - cd app
 script:
   - npm run lint
