@@ -27,6 +27,17 @@ curl -X POST http://localhost:8442/snap?url=https://example.com > tmp.pdf
 
 It will probably be necessary to use an app that helps you formulate and store common queries you want to test. Command line tools like `curl` are perfectly capable, but if you want something more visual try [Insomnia](https://insomnia.rest/). It lets you configure everything and save each query for repeated use.
 
+
+### Lint the codebase locally
+
+Travis will lint the codebase on every PR, but you can run it locally ahead of time:
+
+```sh
+# Lint the codebase
+docker-compose exec snap npm run lint
+```
+
+
 ## Monthly Chromium upgrades
 
 Whenever you build a new Docker image for Snap, the version of Chromium is dynamically fetched from Google servers. You can do this at any time on your local machine by running the following command from the repo root:
