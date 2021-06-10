@@ -71,7 +71,7 @@ docker-compose up
 docker-compose exec snap npm install
 ```
 
-Make sure to bump the `version` inside `package.json` as well. For routine updates, a patch increment is all that's needed most of the time. However if puppeteer got a major version bump, it might be necessary to compare their release notes and see what breaking changes are involved. Occasionally they affect how Snap behaves, and we might need to coordinate with teams to delay or provide guidance in order for them to upgrade. See [SNAP-85](https://humanitarian.atlassian.net/browse/SNAP-85) as an example of Puppeteer breaking changes which couldn't be remediated within Snap, that in turn affected an OCHA site.
+Make sure to bump the `version` inside `package.json` as well. For routine updates, a patch increment is all that's needed most of the time. However if puppeteer got a major version bump, it might be necessary to compare their release notes and see what breaking changes are involved. Occasionally they affect how Snap behaves, and we might need to coordinate with teams to delay or provide guidance in order for them to upgrade. See [SNAP-87](https://humanitarian.atlassian.net/browse/SNAP-87) as an example of Puppeteer breaking changes which couldn't be remediated within Snap, that in turn affected an OCHA site.
 
 Conversely, for the example release depicted here, the 8.0.0 to 9.0.0 only involved one method which changed from async to sync. That doesn't affect our codebase at all because we don't use it, and if it did we would probably be able to make changes that don't affect the Snap users themselves. So the 9.0.0 breaking change does NOT warrant a major version bump on our side.
 
