@@ -1,6 +1,6 @@
-# Docs for internal development
+# Contributing Guidelines
 
-This file contains some general instructions for getting set up, and also outlines the procedure to upgrade Chromium in order to maintain a version of Chrome with all necessary security patches.
+This file contains some instructions for installing, developing for, and preparing releases for the Shared Snap Service.
 
 ## Install / Develop locally
 
@@ -78,3 +78,33 @@ Conversely, for the example release depicted here, the 8.0.0 to 9.0.0 only invol
 Now you can run some local tests using either cURL (see installation section) or another tool of your choice, with [the API docs](README.md) as your guide to craft the requests.
 
 Finally, please keep in mind that the Chromium version is dynamically fetched at image build time, so once you merge this to dev/master, **the work is not finalized until a release has been tagged and built by DockerHub**. Ideally, the tag should be created as soon as dev is considered to be stable, i.e. within an hour of the dev deploy. Then you have the exact same version of Chromium in the prod release as the untagged dev deploy.
+
+## Commit messages
+
+As of `v2.7.3` we are using [standard-version](https://github.com/conventional-changelog/standard-version#standard-version) to generate a `CHANGELOG.md` for each release. This automation is only possible if our commits follow the [Conventional Commits 1.0.0 specification](https://www.conventionalcommits.org/en/v1.0.0/).
+
+Here are a few brief examples:
+
+```sh
+#
+# All examples assume you're on version 4.0.0 when creating the example commit.
+#
+
+# a normal bugfix
+# Outcome: new patch version (4.0.1)
+git cm -m "fix: remove typo from error message"
+
+# a new feature that relates to "pdf"
+# Outcome: new minor version (4.1.0)
+git cm -m "feat(pdf): add new param for PDF generation"
+
+# a bugfix that creates a breaking change
+# Outcome: new major version (5.0.0)
+git cm -m "fix!: remove legacy params from PDF generation
+
+Refs: SNAP-XXXX
+BREAKING CHANGE: we had some special cases which are no longer necessary now
+that all Snap sites are migrated to property X. Therefore we are removing our
+deprecated PDF params."
+
+```
