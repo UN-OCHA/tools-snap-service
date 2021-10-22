@@ -1,6 +1,6 @@
-# Docs for internal development
+# Contributing Guidelines
 
-This file contains some general instructions for getting set up, and also outlines the procedure to upgrade Chromium in order to maintain a version of Chrome with all necessary security patches.
+This file contains some instructions for installing, developing for, and preparing releases for the Shared Snap Service.
 
 ## Install / Develop locally
 
@@ -40,6 +40,16 @@ docker-compose exec snap npm run lint
 
 ## Monthly Chromium upgrades
 
+Right now, the process requires manual verification by a human. Please follow these steps to upgrade Chromium and ensure that the same release will be available for testing in our infrastructure.
+
+1. [Check Chromium version](#1-check-chromium-version)
+2. [Check Puppeteer version](#2-check-puppeteer-version)
+3. [Update dependencies](#3-update-dependencies)
+4. [Create commit message for CHANGELOG](#4-create-commit-message-for-changelog)
+5. [Release and verify that Docker image is available](#5-release-and-verify-that-docker-image-is-available)
+
+### 1. Check Chromium version
+
 Whenever you build a new Docker image for Snap, the version of Chromium is dynamically fetched from Google servers. You can do this at any time on your local machine by running the following command from the repo root:
 
 ```sh
@@ -49,6 +59,8 @@ docker-compose build --no-cache
 Watch the console output and note the STABLE version of Chrome as the logs stream by. It can help to highlight the whole log block and once you see it, copy the text as quickly as you can. There might be a smarter way to do this, but copying logs is reliable enough. Example of the log you're looking for:
 
 ![SNAP logs](https://user-images.githubusercontent.com/254753/120500125-e64ee780-c3c0-11eb-8e23-0603c1c733ef.png)
+
+### 2. Check Puppeteer version
 
 Once you have the stable version of Chromium identified, use an INCOGNITO window and visit https://pptr.dev/ to view the official Puppeteer releases. The site has aggressive caching and opening in a regular window often loads stale data.
 
@@ -61,7 +73,9 @@ The Puppeteer releases get tagged against dev releases of Chromium so you'll typ
 
 ![SNAP-92-puppeteer](https://user-images.githubusercontent.com/254753/120500143-e949d800-c3c0-11eb-932b-376476331642.png)
 
-Once the Puppeteer version is noted, go and manually update `app/package.json`inside the Snap repo, then run one the following commands to ensure the codebase is fully updated:
+### 3. Update dependencies
+
+Once the Puppeteer version is noted, go and manually update `app/package.json`inside the Snap repo to ensure Puppeteer will have the correct version installed, then run one the following commands to ensure the codebase is fully updated:
 
 ```sh
 # Start Snap Service in case the container isn't running
@@ -71,10 +85,46 @@ docker-compose up
 docker-compose exec snap npm install
 ```
 
-Make sure to bump the `version` inside `package.json` as well. For routine updates, a patch increment is all that's needed most of the time. However if puppeteer got a major version bump, it might be necessary to compare their release notes and see what breaking changes are involved. Occasionally they affect how Snap behaves, and we might need to coordinate with teams to delay or provide guidance in order for them to upgrade. See [SNAP-87](https://humanitarian.atlassian.net/browse/SNAP-87) as an example of Puppeteer breaking changes which couldn't be remediated within Snap, that in turn affected an OCHA site.
+### 4. Create commit message for CHANGELOG
+
+**Based on how the upgrades affect end users of Snap**, pick an appropriate [commit message](#commit-messages).
+
+For routine updates, a patch increment is all that's needed most of the time. However if puppeteer got a major version bump, it might be necessary to compare their release notes and see what breaking changes are involved. Occasionally they affect how Snap behaves, and we might need to coordinate with teams to delay or provide guidance in order for them to upgrade. See [SNAP-87](https://humanitarian.atlassian.net/browse/SNAP-87) as an example of Puppeteer breaking changes which couldn't be remediated within Snap, that in turn affected an OCHA site.
 
 Conversely, for the example release depicted here, the 8.0.0 to 9.0.0 only involved one method which changed from async to sync. That doesn't affect our codebase at all because we don't use it, and if it did we would probably be able to make changes that don't affect the Snap users themselves. So the 9.0.0 breaking change does NOT warrant a major version bump on our side.
 
 Now you can run some local tests using either cURL (see installation section) or another tool of your choice, with [the API docs](README.md) as your guide to craft the requests.
 
-Finally, please keep in mind that the Chromium version is dynamically fetched at image build time, so once you merge this to dev/master, **the work is not finalized until a release has been tagged and built by DockerHub**. Ideally, the tag should be created as soon as dev is considered to be stable, i.e. within an hour of the dev deploy. Then you have the exact same version of Chromium in the prod release as the untagged dev deploy.
+### 5. Release and verify that Docker image is available
+
+Finally, please keep in mind that the Chromium version is dynamically fetched at image build time, so once you merge this to dev/master, **the work is not finalized until a release has been tagged and built by our Docker container repository**. Ideally, the tag should be created as soon as dev is considered to be stable, i.e. within an hour of the dev deploy. Then you have the exact same version of Chromium in the prod release as the untagged dev deploy.
+
+## Commit messages
+
+As of `v2.7.3` we are using [standard-version](https://github.com/conventional-changelog/standard-version#standard-version) to generate a `CHANGELOG.md` for each release. This automation is only possible if our commits follow the [Conventional Commits 1.0.0 specification](https://www.conventionalcommits.org/en/v1.0.0/).
+
+Here are a few brief examples:
+
+```sh
+#
+# All examples assume you're on version 4.0.0 when creating the example commit.
+#
+
+# a normal bugfix
+# Outcome: new patch version (4.0.1)
+git cm -m "fix: remove typo from error message"
+
+# a new feature that relates to "pdf"
+# Outcome: new minor version (4.1.0)
+git cm -m "feat(pdf): add new param for PDF generation"
+
+# a bugfix that creates a breaking change
+# Outcome: new major version (5.0.0)
+git cm -m "fix!: remove legacy params from PDF generation
+
+Refs: SNAP-XXXX
+BREAKING CHANGE: we had some special cases which are no longer necessary now
+that all Snap sites are migrated to property X. Therefore we are removing our
+deprecated PDF params."
+
+```

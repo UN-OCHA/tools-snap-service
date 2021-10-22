@@ -6,7 +6,8 @@
   "scripts": {
     "start": "./node_modules/.bin/pm2 start app.js --no-daemon --watch --node-args='--max-http-header-size=16384'",
     "dev": "./node_modules/.bin/nodemon ./node_modules/.bin/node-debug app.js",
-    "lint": "eslint *.js"
+    "lint": "eslint *.js",
+    "release": "standard-version"
   },
   "dependencies": {
     "async": "^2.6.1",
@@ -26,6 +27,7 @@
   "devDependencies": {
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^13.2.0",
-    "eslint-plugin-import": "^2.14.0"
+    "eslint-plugin-import": "^2.14.0",
+    "standard-version": "^9.3.2"
   }
 }
