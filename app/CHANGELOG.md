@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.8.1](https://github.com/UN-OCHA/tools-snap-service/compare/v2.8.0...v2.8.1) (2022-01-20)
+
+
+### Bug Fixes
+
+* adjust GMS SVG ([1e4ac94](https://github.com/UN-OCHA/tools-snap-service/commit/1e4ac9431fa1bffe17794e630574fc8d906e8bb3))
+
 ## [2.8.0](https://github.com/UN-OCHA/tools-snap-service/compare/v2.3.5...v2.8.0) (2021-11-08)
 
 
