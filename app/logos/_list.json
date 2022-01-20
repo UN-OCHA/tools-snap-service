@@ -13,5 +13,8 @@
   },
   "fts": {
     "filename": "fts.svg"
+  },
+  "gms": {
+    "filename": "gms.svg"
   }
 }
