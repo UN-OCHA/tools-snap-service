@@ -95,6 +95,14 @@ Conversely, for the example release depicted here, the 8.0.0 to 9.0.0 only invol
 
 Now you can run some local tests using either cURL (see installation section) or another tool of your choice, with [the API docs](README.md) as your guide to craft the requests.
 
+To help highlight the security-related nature of your updates, you'll most often use the keyword `fix` along with a component of `security` like so:
+
+```sh
+git cm -m "fix(security): update Chromium/puppeteer"
+```
+
+This will cause it to be listed in the CHANGELOG as a security fix.
+
 ### 5. Release and verify that Docker image is available
 
 Finally, please keep in mind that the Chromium version is dynamically fetched at image build time, so once you merge this to dev/master, **the work is not finalized until a release has been tagged and built by our Docker container repository**. Ideally, the tag should be created as soon as dev is considered to be stable, i.e. within an hour of the dev deploy. Then you have the exact same version of Chromium in the prod release as the untagged dev deploy.
@@ -127,4 +135,7 @@ BREAKING CHANGE: we had some special cases which are no longer necessary now
 that all Snap sites are migrated to property X. Therefore we are removing our
 deprecated PDF params."
 
+# Regularly scheduled Chromium/puppeteer upgrade
+# Outcome: new patch version (4.0.1)
+git cm -m "fix(security): update Chromium/puppeteer"
 ```
