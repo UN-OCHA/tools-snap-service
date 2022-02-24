@@ -138,8 +138,8 @@ app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
 app.get('/status', (req, res) => {
   // Calculate the number of in-flight requests. The semaphore count is
   // decreased by 1 for each concurrent snap, so the maths are simple.
-  let semaphoreSize = process.env.MAX_CONCURRENT_REQUESTS || 4;
-  let inFlightRequests = semaphoreSize - PUPPETEER_SEMAPHORE.count;
+  const semaphoreSize = process.env.MAX_CONCURRENT_REQUESTS || 4;
+  const inFlightRequests = semaphoreSize - PUPPETEER_SEMAPHORE.count;
 
   if (inFlightRequests <= semaphoreSize) {
     res.status(200).send(`Healthy. There are ${inFlightRequests}/${process.env.MAX_CONCURRENT_REQUESTS} requests in flight.`);
