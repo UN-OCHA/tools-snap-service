@@ -144,7 +144,7 @@ app.get('/status', (req, res) => {
   if (inFlightRequests <= semaphoreSize) {
     res.status(200).send(`Healthy. There are ${inFlightRequests}/${process.env.MAX_CONCURRENT_REQUESTS} requests in flight.`);
   } else {
-    res.status(507).send(`Unhealthy. There are ${inFlightRequests}/${process.env.MAX_CONCURRENT_REQUESTS} requests in flight.`);
+    res.status(429).send(`Unhealthy. There are ${inFlightRequests}/${process.env.MAX_CONCURRENT_REQUESTS} requests in flight.`);
   }
 });
 
