@@ -135,7 +135,18 @@ app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
 });
 
 // Health check
-app.get('/status', (req, res) => res.status(204).send());
+app.get('/status', (req, res) => {
+  // Calculate the number of in-flight requests. The semaphore count is
+  // decreased by 1 for each concurrent snap, so the maths are simple.
+  let semaphoreSize = process.env.MAX_CONCURRENT_REQUESTS || 4;
+  let inFlightRequests = semaphoreSize - PUPPETEER_SEMAPHORE.count;
+
+  if (inFlightRequests <= semaphoreSize) {
+    res.status(200).send(`Healthy. There are ${inFlightRequests}/${process.env.MAX_CONCURRENT_REQUESTS} requests in flight.`);
+  } else {
+    res.status(507).send(`Unhealthy. There are ${inFlightRequests}/${process.env.MAX_CONCURRENT_REQUESTS} requests in flight.`);
+  }
+});
 
 // Snaps
 app.post('/snap', [
