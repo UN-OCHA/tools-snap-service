@@ -148,6 +148,14 @@ app.get('/status', (req, res) => {
   }
 });
 
+// I don't GET it
+app.get('/snap', (req, res) => {
+  res.set('Allow', 'POST');
+  return res.status(405).json({
+    message: 'GET requests are not allowed. Use POST instead.',
+  });
+});
+
 // Snaps
 app.post('/snap', [
   body('html', '').optional(),
