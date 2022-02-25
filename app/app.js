@@ -178,9 +178,9 @@ app.post('/snap', [
   // debug
   log.debug('Request received', { query: url.parse(req.url).query });
 
-  // If neither `url` and `html` are present, return 422 requiring valid input.
+  // If neither `url` and `html` are present, return 400 requiring valid input.
   if (!req.query.url && !req.body.html) {
-    return res.status(422).json({
+    return res.status(400).json({
       errors: [
         {
           location: 'query',
@@ -198,9 +198,9 @@ app.post('/snap', [
     });
   }
 
-  // If both `url` and `html` are present, return 422 requiring valid input.
+  // If both `url` and `html` are present, return 400 requiring valid input.
   if (req.query.url && req.body.html) {
-    return res.status(422).json({
+    return res.status(400).json({
       errors: [
         {
           location: 'query',
@@ -226,23 +226,23 @@ app.post('/snap', [
     // Check if any of the allowed hostnames are substrings of `url.hostname`
     // This allowed a domain suffix match as well as a full hostname match.
     if (!allowedHostnames.some(allowedHost => urlHash.hostname.includes(allowedHost))) {
-      return res.status(422).json({
+      return res.status(403).json({
         errors: [
           {
             location: 'query',
             param: 'url',
             value: urlHash.hostname,
-            msg: `${urlHash.hostname} does not match any allowed hostname.`,
+            msg: `${urlHash.hostname} does not match any allowed hostname. Please file an OPS ticket if you want to allow a new hostname.`,
           },
         ],
       });
     }
   }
 
-  // Validate input errors, return 422 for any problems.
+  // Validate input errors, return 400 for any problems.
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(422).json({ errors: errors.array() });
+    return res.status(400).json({ errors: errors.array() });
   }
 
   // Housekeeping
