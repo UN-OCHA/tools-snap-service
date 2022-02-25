@@ -24,9 +24,9 @@ This service is the result of auditing several internally-maintained PDF/PNG gen
 
 ## API
 
-You **MUST** use `POST /snap` to request Snaps. We do not serve `GET` requests because we want to discourage people hotlinking to Snaps, and also to control bot traffic.
+You **MUST** use `POST /snap` to request Snaps. We do not serve `GET` requests because we want to discourage people hotlinking to Snaps, and also to control bot traffic. If you try to `GET /snap` it returns **`HTTP 405 Method Not Allowed`**.
 
-If you still want to use a GET request, you may proxy the request through your server and change the verb to `POST` on your web head before passing the request through to the Snap Service.
+If you still want to use a GET request, you may proxy the request through your server and change the verb to `POST` on your web head before passing the request through to the Snap Service. This places the risk of high volume `GET` traffic on your server, instead of Snap Service.
 
 #### `POST /snap`
 
@@ -53,7 +53,7 @@ The URL-encoded HTML you want to render. Send with `Content-Type: application/x-
 |---------|----------|--------|
 |_null_   |**yes**¹  |String  |
 
-¹ **EITHER** `url` or `html` are required, but send only one of them! If you do not specify either of these, or you specify both, Snap Service will return **`HTTP 422 Unprocessable Entity`**.
+¹ **EITHER** `url` or `html` are required, but send only one of them! If you do not specify either of these, or you specify both, Snap Service will return **`HTTP 400 Bad Request`**.
 
 #### `service`
 While it won't affect the output you receive from Snap Service, this parameter allows our Ops team to monitor and report your usage of the shared Snap service. It also allows us to prioritize support/feature requests.
@@ -67,7 +67,7 @@ Must be an alphanumeric string (hyphens, underscores are also allowed) such as `
 
 ### Optional Parameters
 
-Send any combination of the following as querystring parameters. We do our best to validate your input. When found to be invalid, we return **`HTTP 422 Unprocessable Entity`** and the response body will be a JSON object containing all failed validations.
+Send any combination of the following as querystring parameters. We do our best to validate your input. When found to be invalid, we return **`HTTP 400 Bad Request`** and the response body will be a JSON object containing all failed validations.
 
 #### `output`
 Specify `png` if you want a PNG image or `pdf` for PDF.
@@ -288,7 +288,7 @@ This class can be used anywhere in your CSS, including within Media Queries (e.g
 
 The shared Snap service now limits which domains it will interact with on dev and production. We maintain an allow-list of hostnames (e.g. `unocha.org`). It does not need to be more specific.
 
-If you are receiving HTTP 422 errors about the hostname on Dev, please open an OPS ticket before deploying to production to ensure that everything works.
+If you are receiving HTTP 400 errors about the hostname on Dev, please open an OPS ticket before deploying to production to ensure that everything works.
 
 For local development, you can set the `ALLOWED_HOSTNAMES` environment variable in `docker-compose.yml`.
 
