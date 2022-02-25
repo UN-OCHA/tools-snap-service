@@ -226,13 +226,13 @@ app.post('/snap', [
     // Check if any of the allowed hostnames are substrings of `url.hostname`
     // This allowed a domain suffix match as well as a full hostname match.
     if (!allowedHostnames.some(allowedHost => urlHash.hostname.includes(allowedHost))) {
-      return res.status(422).json({
+      return res.status(403).json({
         errors: [
           {
             location: 'query',
             param: 'url',
             value: urlHash.hostname,
-            msg: `${urlHash.hostname} does not match any allowed hostname.`,
+            msg: `${urlHash.hostname} does not match any allowed hostname. Please file an OPS ticket if you want to allow a new hostname.`,
           },
         ],
       });
