@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.0.1](https://github.com/UN-OCHA/tools-snap-service/compare/v3.0.0...v3.0.1) (2022-04-25)
+
+
+### Bug Fixes
+
+* upgrade puppteer to match latest Chromium stable ([e48163b](https://github.com/UN-OCHA/tools-snap-service/commit/e48163b8a53a68fdfc3dc975ad5b7ff833cd0a87))
 
 ## [3.0.0](https://github.com/UN-OCHA/tools-snap-service/compare/v2.8.2...v3.0.0) (2022-03-14)
 
