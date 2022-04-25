@@ -29,5 +29,10 @@
     "eslint-config-airbnb-base": "^13.2.0",
     "eslint-plugin-import": "^2.14.0",
     "standard-version": "^9.3.2"
+  },
+  "standard-version": {
+    "skip": {
+      "tag": true
+    }
   }
 }
