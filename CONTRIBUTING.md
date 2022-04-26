@@ -1,8 +1,17 @@
 # Contributing Guidelines
 
-This file contains some instructions for installing, developing for, and preparing releases for the Shared Snap Service.
+| Audience |
+| :------- |
+| Everyone |
+
+This file contains some instructions for installing, developing for, and preparing releases for the Shared Snap Service. Each section is marked with an Audience to help you decide whether the docs are for your current task.
+
 
 ## Install / Develop locally
+
+| Audience     |
+| :----------- |
+| Contributors |
 
 The node container will do all the npm installation for you. No need to do it locally. Just run the Docker commands to get started.
 
@@ -39,6 +48,10 @@ docker-compose exec snap npm run lint
 
 
 ## Monthly Chromium upgrades
+
+| Audience    |
+| :---------- |
+| Maintainers |
 
 Right now, the process requires manual verification by a human. Please follow these steps to upgrade Chromium and ensure that the same release will be available for testing in our infrastructure.
 
@@ -105,9 +118,50 @@ This will cause it to be listed in the CHANGELOG as a security fix.
 
 ### 5. Release and verify that Docker image is available
 
-Finally, please keep in mind that the Chromium version is dynamically fetched at image build time, so once you merge this to dev/master, **the work is not finalized until a release has been tagged and built by our Docker container repository**. Ideally, the tag should be created as soon as dev is considered to be stable, i.e. within an hour of the dev deploy. Then you have the exact same version of Chromium in the prod release as the untagged dev deploy.
+_Note: Since the Chromium version is dynamically fetched at image build time, so once you merge this to `master`, **the work is not finalized until a release has been tagged and built by our Docker container repository**. Ideally, the tag should be created as soon as dev is considered to be stable, i.e. within an hour of the dev deploy. Then you have the exact same version of Chromium in the prod release as the untagged dev deploy._
+
+Create a new branch from `develop` and run the release command to generate the new CHANGELOG and increment the version number in our `package.json` and other related files. There's a dry-run flag to preview what will happen:
+
+```sh
+# Example with the dry-run flag.
+$ npm run release -- --dry-run
+
+> tools-snap-service@3.0.0 release
+> standard-version "--dry-run"
+
+✔ bumping version in package.json from 3.0.0 to 3.0.1
+✔ bumping version in package-lock.json from 3.0.0 to 3.0.1
+✔ outputting changes to CHANGELOG.md
+```
+
+The command to make a release contains no flags:
+
+```sh
+$ npm run release
+```
+
+Review the commit and make any necessary adjustments to the CHANGELOG, using `git commit --amend` to add your changes to the existing commit that standard-verion just created. Push your branch and open a PR to `develop`, which you can merge without review.
+
+Once the changes are merged to `develop`, [create a PR from `develop` to `master`][pr-dev-master] which will include all work since the previous tagged release. You can merge that without review as well.
+
+[Create the new Release][new-release] using the GitHub UI with the following properties:
+
+- **Tag:** new tag with format `v0.0.0` — numbers should match [`package.json` in the `master` branch][master-package].
+- **Target branch:** `master`
+- **Title:** `Production YYYY-MM-DD` using the PROD date (it's normally the coming Thursday)
+- **Release notes:** Copy the new CHANGELOG bullets. If dependabot made any updates during this cycle, you can include "regular security updates" without being specific.
+
+  [pr-dev-master]: https://github.com/UN-OCHA/tools-snap-service/compare/master...develop
+  [new-release]: https://github.com/UN-OCHA/tools-snap-service/releases/new?target=master
+  [master-package]: https://github.com/UN-OCHA/tools-snap-service/blob/master/app/package.json
+
+
 
 ## Commit messages
+
+| Audience     |
+| :----------- |
+| Contributors |
 
 As of `v2.7.3` we are using [standard-version](https://github.com/conventional-changelog/standard-version#standard-version) to generate a `CHANGELOG.md` for each release. This automation is only possible if our commits follow the [Conventional Commits 1.0.0 specification](https://www.conventionalcommits.org/en/v1.0.0/).
 
