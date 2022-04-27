@@ -120,7 +120,7 @@ This will cause it to be listed in the CHANGELOG as a security fix.
 
 _Note: Since the Chromium version is dynamically fetched at image build time, so once you merge this to `master`, **the work is not finalized until a release has been tagged and built by our Docker container repository**. Ideally, the tag should be created as soon as dev is considered to be stable, i.e. within an hour of the dev deploy. Then you have the exact same version of Chromium in the prod release as the untagged dev deploy._
 
-Create a new branch from `develop` and run the release command to generate the new CHANGELOG and increment the version number in our `package.json` and other related files. There's a dry-run flag to preview what will happen:
+Create a new branch from `dev` and run the release command to generate the new CHANGELOG and increment the version number in our `package.json` and other related files. There's a dry-run flag to preview what will happen:
 
 ```sh
 # Example with the dry-run flag.
@@ -140,21 +140,20 @@ The command to make a release contains no flags:
 $ npm run release
 ```
 
-Review the commit and make any necessary adjustments to the CHANGELOG, using `git commit --amend` to add your changes to the existing commit that standard-verion just created. Push your branch and open a PR to `develop`, which you can merge without review.
-
-Once the changes are merged to `develop`, [create a PR from `develop` to `master`][pr-dev-master] which will include all work since the previous tagged release. You can merge that without review as well.
+Review the commit and make any necessary adjustments to the CHANGELOG, using `git commit --amend` to add your changes to the existing commit that `standard-version` just created. Push your branch and open a PR to `dev`, which you can merge without review.
 
 [Create the new Release][new-release] using the GitHub UI with the following properties:
 
-- **Tag:** new tag with format `v0.0.0` — numbers should match [`package.json` in the `master` branch][master-package].
-- **Target branch:** `master`
+- **Tag:** new tag with format `v0.0.0` — numbers should match [`package.json` in the `dev` branch][dev-package].
+- **Target branch:** `dev`
 - **Title:** `Production YYYY-MM-DD` using the PROD date (it's normally the coming Thursday)
 - **Release notes:** Copy the new CHANGELOG bullets. If dependabot made any updates during this cycle, you can include "regular security updates" without being specific.
 
-  [pr-dev-master]: https://github.com/UN-OCHA/tools-snap-service/compare/master...develop
-  [new-release]: https://github.com/UN-OCHA/tools-snap-service/releases/new?target=master
-  [master-package]: https://github.com/UN-OCHA/tools-snap-service/blob/master/app/package.json
+Once the tagged Release has been created, [create a PR from `dev` to `master`][pr-dev-master] which will include all work within the tagged release. You can merge that without review as well. This step allows hotfixes to be created from `master` should the need arise.
 
+  [pr-dev-master]: https://github.com/UN-OCHA/tools-snap-service/compare/master...dev
+  [new-release]: https://github.com/UN-OCHA/tools-snap-service/releases/new?target=dev
+  [dev-package]: https://github.com/UN-OCHA/tools-snap-service/blob/dev/app/package.json#L4
 
 
 ## Commit messages
