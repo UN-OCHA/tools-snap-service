@@ -149,7 +149,7 @@ Review the commit and make any necessary adjustments to the CHANGELOG, using `gi
 - **Title:** `Production YYYY-MM-DD` using the PROD date (it's normally the coming Thursday)
 - **Release notes:** Copy the new CHANGELOG bullets. If dependabot made any updates during this cycle, you can include "regular security updates" without being specific.
 
-Once the tagged Release has been created, [create a PR from `dev` to `master`][pr-dev-master] which will include all work since the previous tagged release. You can merge that without review as well. This step allows hotfixes to be created from `master` should the need arise.
+Once the tagged Release has been created, [create a PR from `dev` to `master`][pr-dev-master] which will include all work within the tagged release. You can merge that without review as well. This step allows hotfixes to be created from `master` should the need arise.
 
   [pr-dev-master]: https://github.com/UN-OCHA/tools-snap-service/compare/master...dev
   [new-release]: https://github.com/UN-OCHA/tools-snap-service/releases/new?target=dev
