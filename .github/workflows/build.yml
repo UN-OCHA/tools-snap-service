@@ -6,6 +6,8 @@ on:
       - dev
       - main
       - master
+      - OPS-*
+      - HID-*
   release:
     types: [published]
 
