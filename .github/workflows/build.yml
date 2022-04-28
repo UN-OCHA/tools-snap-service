@@ -8,8 +8,8 @@ on:
       - master
       - OPS-*
       - ops-*
-      - HID-*
-      - hid-*
+      - SNAP-*
+      - snap-*
   release:
     types: [published]
 
