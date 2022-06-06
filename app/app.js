@@ -642,7 +642,7 @@ app.post('/snap', [
         log.error(lgParams, `Snap FAILED in ${duration} seconds. ${err}`);
         res.status(500).send('Internal Server Error');
       }
-    }
+    },
   );
 });
 
