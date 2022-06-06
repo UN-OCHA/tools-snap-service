@@ -75,38 +75,34 @@ const PUPPETEER_SEMAPHORE = new Semaphore(process.env.MAX_CONCURRENT_REQUESTS ||
 let browserWSEndpoint = '';
 
 async function connectPuppeteer() {
-  try {
-    let browser;
+  let browser;
 
-    if (browserWSEndpoint) {
-      browser = await puppeteer.connect({ browserWSEndpoint });
-    } else {
-      // Initialize Puppeteer
-      browser = await puppeteer.launch({
-        executablePath: '/usr/bin/google-chrome',
-        args: [
-          '--headless',
-          '--disable-gpu',
-          '--disable-software-rasterizer',
-          '--remote-debugging-port=9222',
-          '--remote-debugging-address=0.0.0.0',
-          '--no-sandbox',
-        ],
-        dumpio: false, // set to `true` for debugging
-      });
+  if (browserWSEndpoint) {
+    browser = await puppeteer.connect({ browserWSEndpoint });
+  } else {
+    // Initialize Puppeteer
+    browser = await puppeteer.launch({
+      executablePath: '/usr/bin/google-chrome',
+      args: [
+        '--headless',
+        '--disable-gpu',
+        '--disable-software-rasterizer',
+        '--remote-debugging-port=9222',
+        '--remote-debugging-address=0.0.0.0',
+        '--no-sandbox',
+      ],
+      dumpio: false, // set to `true` for debugging
+    });
 
-      // Log UA for visibility in ELK.
-      const ua = await browser.userAgent();
-      log.info(`New connection to Chrome. UA: ${ua}`);
+    // Log UA for visibility in ELK.
+    const ua = await browser.userAgent();
+    log.info(`New connection to Chrome. UA: ${ua}`);
 
-      // Create re-usable connection.
-      browserWSEndpoint = browser.wsEndpoint();
-    }
-
-    return browser;
-  } catch (err) {
-    throw err;
+    // Create re-usable connection.
+    browserWSEndpoint = browser.wsEndpoint();
   }
+
+  return browser;
 }
 
 // Set up the Express app
@@ -233,7 +229,7 @@ app.post('/snap', [
 
     // Check if any of the allowed hostnames are substrings of `url.hostname`
     // This allowed a domain suffix match as well as a full hostname match.
-    if (!allowedHostnames.some(allowedHost => urlHash.hostname.includes(allowedHost))) {
+    if (!allowedHostnames.some((allowedHost) => urlHash.hostname.includes(allowedHost))) {
       return res.status(403).json({
         errors: [
           {
@@ -326,99 +322,99 @@ app.post('/snap', [
     block: fnBlock,
   };
 
-  async.series([
-    function validateRequest(cb) {
-      // Validate uploaded HTML file
-      if (req.files && req.files.html && req.files.html.path) {
-        fs.stat(req.files.html.path, (err, stats) => {
-          if (err || !stats || !stats.isFile()) {
-            log.error({ files: req.files, stats }, 'An error occurred while trying to validate the HTML upload.');
-            return cb(new Error('An error occurred while trying to validate the HTML upload.'));
-          }
+  async.series(
+    [
+      function validateRequest(cb) {
+        // Validate uploaded HTML file
+        if (req.files && req.files.html && req.files.html.path) {
+          fs.stat(req.files.html.path, (err, stats) => {
+            if (err || !stats || !stats.isFile()) {
+              log.error({ files: req.files, stats }, 'An error occurred while trying to validate the HTML upload.');
+              return cb(new Error('An error occurred while trying to validate the HTML upload.'));
+            }
 
-          sizeHtml = stats.size || 0;
-          const fileName = req.files.html.path;
-          tmpPath = `${fileName}.${fnOutput}`;
+            sizeHtml = stats.size || 0;
+            const fileName = req.files.html.path;
+            tmpPath = `${fileName}.${fnOutput}`;
 
-          lgParams.size = sizeHtml;
+            lgParams.size = sizeHtml;
+            lgParams.tmpfile = tmpPath;
+          });
+        } else if (req.body && req.body.html && req.body.html.length) {
+          tmpPath = `/tmp/snap-${Date.now()}.html`;
+          sizeHtml = req.body.html.length;
+
+          fs.writeFile(tmpPath, req.body.html, (err) => {
+            if (err) {
+              log.error({ body: req.body }, 'An error occurred while trying to validate the HTML post data.');
+              return cb(new Error('An error occurred while trying to validate the HTML post data.'));
+            }
+
+            lgParams.size = sizeHtml;
+            lgParams.tmpfile = tmpPath;
+          });
+        } else if (req.query.url) {
+          const digest = crypto.createHash('md5').update(fnUrl).digest('hex');
+          tmpPath = `/tmp/snap-${Date.now()}-${digest}.${fnOutput}`;
           lgParams.tmpfile = tmpPath;
-        });
-      } else if (req.body && req.body.html && req.body.html.length) {
-        tmpPath = `/tmp/snap-${Date.now()}.html`;
-        sizeHtml = req.body.html.length;
-
-        fs.writeFile(tmpPath, req.body.html, (err) => {
-          if (err) {
-            log.error({ body: req.body }, 'An error occurred while trying to validate the HTML post data.');
-            return cb(new Error('An error occurred while trying to validate the HTML post data.'));
-          }
-
-          lgParams.size = sizeHtml;
-          lgParams.tmpfile = tmpPath;
-        });
-      } else if (req.query.url) {
-        const digest = crypto.createHash('md5').update(fnUrl).digest('hex');
-        tmpPath = `/tmp/snap-${Date.now()}-${digest}.${fnOutput}`;
-        lgParams.tmpfile = tmpPath;
-      } else {
-        const noCaseErrMsg = 'An HTML file was not uploaded or could not be accessed.';
-        log.error(noCaseErrMsg);
-        return cb(new Error(noCaseErrMsg));
-      }
-
-      return cb(null, 'everything is fine');
-    },
-    function generateResponse(cb) {
-      /**
-       * Puppeteer code to generate PNG/PDF Snap.
-       */
-      async function createSnap() {
-        try {
-          pngOptions = {
-            path: tmpPath,
-            fullPage: fnFullPage,
-          };
-
-          pdfOptions = {
-            path: tmpPath,
-            format: fnPdfFormat,
-            landscape: fnPdfLandscape,
-            printBackground: fnPdfBackground,
-            displayHeaderFooter: !!fnPdfHeader || !!fnPdfFooter,
-            headerTemplate: fnPdfHeader,
-            footerTemplate: fnPdfFooter,
-            margin: {
-              top: fnPdfMarginTop + fnPdfMarginUnit,
-              right: fnPdfMarginRight + fnPdfMarginUnit,
-              bottom: fnPdfMarginBottom + fnPdfMarginUnit,
-              left: fnPdfMarginLeft + fnPdfMarginUnit,
-            },
-          };
-
-          // Do string substitution on fnPdfHeader if the logo was specified.
-          if (Object.prototype.hasOwnProperty.call(logos, fnLogo)) {
-            const pdfLogoFile = path.join(__dirname, '/logos/', logos[fnLogo].filename);
-            // eslint-disable-next-line new-cap
-            const pdfLogoData = new Buffer.from(fs.readFileSync(pdfLogoFile, 'binary'));
-            const pdfLogo = {
-              src: `data:${mime.lookup(pdfLogoFile)};base64,${pdfLogoData.toString('base64')}`,
-              // Dimensions reduced to 3/4 size because the PDF contents are
-              // rendered at 96ppi but the header is 72ppi.
-              width: imgSize(pdfLogoFile).width * 0.75,
-              height: imgSize(pdfLogoFile).height * 0.75,
-            };
-
-            pdfOptions.headerTemplate = fnPdfHeader
-              .replace('__LOGO_SRC__', pdfLogo.src)
-              .replace('__LOGO_WIDTH__', pdfLogo.width)
-              .replace('__LOGO_HEIGHT__', pdfLogo.height);
-          }
-        } catch (err) {
-          return cb(err);
+        } else {
+          const noCaseErrMsg = 'An HTML file was not uploaded or could not be accessed.';
+          log.error(noCaseErrMsg);
+          return cb(new Error(noCaseErrMsg));
         }
 
-        await PUPPETEER_SEMAPHORE.use(async () => {
+        return cb(null, 'everything is fine');
+      },
+      function generateResponse(cb) {
+        /**
+         * Puppeteer code to generate PNG/PDF Snap.
+         */
+        async function createSnap() {
           try {
+            pngOptions = {
+              path: tmpPath,
+              fullPage: fnFullPage,
+            };
+
+            pdfOptions = {
+              path: tmpPath,
+              format: fnPdfFormat,
+              landscape: fnPdfLandscape,
+              printBackground: fnPdfBackground,
+              displayHeaderFooter: !!fnPdfHeader || !!fnPdfFooter,
+              headerTemplate: fnPdfHeader,
+              footerTemplate: fnPdfFooter,
+              margin: {
+                top: fnPdfMarginTop + fnPdfMarginUnit,
+                right: fnPdfMarginRight + fnPdfMarginUnit,
+                bottom: fnPdfMarginBottom + fnPdfMarginUnit,
+                left: fnPdfMarginLeft + fnPdfMarginUnit,
+              },
+            };
+
+            // Do string substitution on fnPdfHeader if the logo was specified.
+            if (Object.prototype.hasOwnProperty.call(logos, fnLogo)) {
+              const pdfLogoFile = path.join(__dirname, '/logos/', logos[fnLogo].filename);
+              // eslint-disable-next-line new-cap
+              const pdfLogoData = new Buffer.from(fs.readFileSync(pdfLogoFile, 'binary'));
+              const pdfLogo = {
+                src: `data:${mime.lookup(pdfLogoFile)};base64,${pdfLogoData.toString('base64')}`,
+                // Dimensions reduced to 3/4 size because the PDF contents are
+                // rendered at 96ppi but the header is 72ppi.
+                width: imgSize(pdfLogoFile).width * 0.75,
+                height: imgSize(pdfLogoFile).height * 0.75,
+              };
+
+              pdfOptions.headerTemplate = fnPdfHeader
+                .replace('__LOGO_SRC__', pdfLogo.src)
+                .replace('__LOGO_WIDTH__', pdfLogo.width)
+                .replace('__LOGO_HEIGHT__', pdfLogo.height);
+            }
+          } catch (err) {
+            return cb(err);
+          }
+
+          await PUPPETEER_SEMAPHORE.use(async () => {
             // Access the Chromium instance by either launching or connecting to
             // Puppeteer.
             const browser = await connectPuppeteer().catch((err) => {
@@ -447,7 +443,7 @@ app.post('/snap', [
                 }
 
                 // Block request if a blacklisted domain is found
-                if (fnBlock && blacklist.some(blocked => domain.indexOf(blocked) !== -1)) {
+                if (fnBlock && blacklist.some((blocked) => domain.indexOf(blocked) !== -1)) {
                   lgParams.debug += `Snap blocked a request to ${domain}\n`;
                   pageReq.abort();
                 } else {
@@ -605,51 +601,49 @@ app.post('/snap', [
             // Disconnect from Puppeteer process
             await context.close();
             await browser.disconnect();
-          } catch (err) {
-            throw err;
-          }
-        });
-      }
-
-      /**
-       * Express response and tmp file cleanup.
-       */
-      createSnap().then(() => {
-        res.charset = 'utf-8';
-
-        if (fnOutput === 'png') {
-          res.contentType('image/png');
-          res.sendFile(tmpPath, () => {
-            const duration = ((Date.now() - startTime) / 1000);
-            res.end();
-            lgParams.duration = duration;
-            log.info(lgParams, `PNG successfully generated in ${duration} seconds.`);
-            return fs.unlink(tmpPath, cb);
-          });
-        } else {
-          res.contentType('application/pdf');
-          res.sendFile(tmpPath, () => {
-            const duration = ((Date.now() - startTime) / 1000);
-            res.end();
-            lgParams.duration = duration;
-            log.info(lgParams, `PDF successfully generated in ${duration} seconds.`);
-            return fs.unlink(tmpPath, cb);
           });
         }
-      }).catch(err => cb(err));
-    },
-  ],
-  (err) => {
-    const duration = ((Date.now() - startTime) / 1000);
 
-    if (err) {
-      lgParams.fail = true;
-      lgParams.stack_trace = err.stack;
-      lgParams.duration = duration;
-      log.error(lgParams, `Snap FAILED in ${duration} seconds. ${err}`);
-      res.status(500).send('Internal Server Error');
+        /**
+         * Express response and tmp file cleanup.
+         */
+        createSnap().then(() => {
+          res.charset = 'utf-8';
+
+          if (fnOutput === 'png') {
+            res.contentType('image/png');
+            res.sendFile(tmpPath, () => {
+              const duration = ((Date.now() - startTime) / 1000);
+              res.end();
+              lgParams.duration = duration;
+              log.info(lgParams, `PNG successfully generated in ${duration} seconds.`);
+              return fs.unlink(tmpPath, cb);
+            });
+          } else {
+            res.contentType('application/pdf');
+            res.sendFile(tmpPath, () => {
+              const duration = ((Date.now() - startTime) / 1000);
+              res.end();
+              lgParams.duration = duration;
+              log.info(lgParams, `PDF successfully generated in ${duration} seconds.`);
+              return fs.unlink(tmpPath, cb);
+            });
+          }
+        }).catch((err) => cb(err));
+      },
+    ],
+    (err) => {
+      const duration = ((Date.now() - startTime) / 1000);
+
+      if (err) {
+        lgParams.fail = true;
+        lgParams.stack_trace = err.stack;
+        lgParams.duration = duration;
+        log.error(lgParams, `Snap FAILED in ${duration} seconds. ${err}`);
+        res.status(500).send('Internal Server Error');
+      }
     }
-  });
+  );
 });
 
 http.createServer(app).listen(app.get('port'), () => {
