@@ -75,16 +75,10 @@ Watch the console output and note the STABLE version of Chrome as the logs strea
 
 ### 2. Check Puppeteer version
 
-Once you have the stable version of Chromium identified, use an INCOGNITO window and visit https://pptr.dev/ to view the official Puppeteer releases. The site has aggressive caching and opening in a regular window often loads stale data.
+Once you have the stable version of Chromium identified, visit https://pptr.dev/chromium-support to view the official Puppeteer releases and corresponding Chromium versions. You'll want to select the version of Puppeteer that is closest to the stable release you noted in the previous step. In this example case from July 2022, the two versions are:
 
-You will see a version number in the upper left. Click that version number to see a list of releases and their associated Chromium revision. You'll want to select the version of Puppeteer that is closest to the stable release you just wrote down. In this example case from June 2021, the two versions are:
-
-- Chromium: 91.0.4472.77-1
-- Puppeteer 9.0.0, which expects Chromium 91.0.4469.0
-
-The Puppeteer releases get tagged against dev releases of Chromium so you'll typically see a release date that lags approximately 6 weeks behind the current date. The screenshot shows 21 April and this particular Snap build was created on 31 May:
-
-![SNAP-92-puppeteer](https://user-images.githubusercontent.com/254753/120500143-e949d800-c3c0-11eb-932b-376476331642.png)
+- Chromium: 103.0.5060.114-1
+- Puppeteer 14.2.0, which expects Chromium 103.0.5059.0
 
 ### 3. Update dependencies
 
@@ -94,7 +88,8 @@ Once the Puppeteer version is noted, go and manually update `app/package.json`in
 # Start Snap Service in case the container isn't running
 docker-compose up
 
-# Use npm to install desired version of Puppeteer
+# Use npm to install after having manually edited
+# app/package.json to the desired version of Puppeteer.
 docker-compose exec snap npm install
 ```
 
@@ -118,7 +113,7 @@ This will cause it to be listed in the CHANGELOG as a security fix.
 
 ### 5. Release and verify that Docker image is available
 
-_Note: Since the Chromium version is dynamically fetched at image build time, so once you merge this to `master`, **the work is not finalized until a release has been tagged and built by our Docker container repository**. Ideally, the tag should be created as soon as dev is considered to be stable, i.e. within an hour of the dev deploy. Then you have the exact same version of Chromium in the prod release as the untagged dev deploy._
+_Note: Since the Chromium version is dynamically fetched at image build time, **the work is not finalized until a release has been tagged and built by our Docker container repository**. Ideally, the tag should be created as soon as dev is considered to be stable, i.e. within an hour of the dev deploy. Then you have the exact same version of Chromium in the prod release as the untagged dev deploy._
 
 Create a new branch from `dev` and run the release command to generate the new CHANGELOG and increment the version number in our `package.json` and other related files. There's a dry-run flag to preview what will happen:
 
