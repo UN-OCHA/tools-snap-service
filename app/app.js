@@ -163,8 +163,8 @@ app.post('/snap', [
   query('output', 'Must be one of the following: png, pdf').optional().isIn(['png', 'pdf']),
   query('selector', `Must be a CSS selector made of the following characters: ${allowedSelectorChars}`).optional().isWhitelisted(allowedSelectorChars),
   query('pdfFormat', `Must be one of the following values: ${allowedFormats.join(', ')}`).optional().isIn(allowedFormats),
-  query('pdfLandscape', 'Must be one of the following: true, false').optional().isBoolean(),
-  query('pdfBackground', 'Must be one of the following: true, false').optional().isBoolean(),
+  query('pdfLandscape', 'Must be one of the following (case insensitive): true, false').optional().toLowerCase().isBoolean(),
+  query('pdfBackground', 'Must be one of the following (case insensitive): true, false').optional().toLowerCase().isBoolean(),
   query('pdfMarginTop', 'Must be a decimal with no units. Use pdfMarginUnit to set units.').optional().isNumeric(),
   query('pdfMarginRight', 'Must be a decimal with no units. Use pdfMarginUnit to set units.').optional().isNumeric(),
   query('pdfMarginBottom', 'Must be a decimal with no units. Use pdfMarginUnit to set units.').optional().isNumeric(),
@@ -176,7 +176,7 @@ app.post('/snap', [
   query('service', 'Must be an alphanumeric string identifier (hyphens, underscores are also allowed).').optional().matches(/^[A-Za-z0-9_-]+$/),
   query('ua', '').optional(),
   query('delay', 'Must be an integer between 0-10000 inclusive.').optional().isInt({ min: 0, max: 10000 }),
-  query('debug', 'Must be a Boolean').optional().isBoolean(),
+  query('debug', 'Must be one of the following (case insensitive): true, false').optional().toLowerCase().isBoolean(),
   query('block', 'Must be a comma-separated list of domains (alphanumeric, hyphens, dots, commas)').optional().matches(/^[A-Za-z0-9.,-]+$/),
 ], (req, res) => {
   // debug
@@ -281,7 +281,7 @@ app.post('/snap', [
   const fnService = req.query.service || '';
   const fnUserAgent = req.query.ua || req.headers['user-agent'] || '';
   const fnDelay = Number(req.query.delay) || 0;
-  const fnDebug = Boolean(req.query.debug) || false;
+  const fnDebug = Boolean(req.query.debug === 'true') || false;
   const fnBlock = req.query.block || '';
 
   // Declare options objects here so that multiple scopes have access to them.
