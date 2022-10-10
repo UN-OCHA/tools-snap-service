@@ -65,6 +65,8 @@ function ated(request) {
  */
 const PUPPETEER_SEMAPHORE = new Semaphore(process.env.MAX_CONCURRENT_REQUESTS || 4);
 
+
+
 /**
  * Launch Puppeteer.
  *
@@ -548,7 +550,7 @@ app.post('/snap', [
                   // If an artificial delay was specified, wait for that amount
                   // of time.
                   if (fnDelay) {
-                    await page.waitFor(fnDelay);
+                    await new Promise(r => setTimeout(r, fnDelay));
                   }
 
                   // Finally, take the screenshot.
@@ -583,7 +585,7 @@ app.post('/snap', [
               } else {
                 // If an artificial delay was specified, wait for it.
                 if (fnDelay) {
-                  await page.waitFor(fnDelay);
+                  await new Promise(r => setTimeout(r, fnDelay));
                 }
 
                 // Finally, take the screenshot.
@@ -592,7 +594,7 @@ app.post('/snap', [
             } else {
               // If an artificial delay was specified, wait for it.
               if (fnDelay) {
-                await page.waitFor(fnDelay);
+                await new Promise(r => setTimeout(r, fnDelay));
               }
 
               await page.pdf(pdfOptions);
