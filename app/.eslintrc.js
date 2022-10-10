@@ -14,6 +14,7 @@ module.exports = {
   },
   rules: {
     "no-plusplus": "off",
+    "no-promise-executor-return": "off",
     "no-underscore-dangle": "off",
     "prefer-destructuring": "off",
     "consistent-return": "off",
