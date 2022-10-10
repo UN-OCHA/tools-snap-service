@@ -2,12 +2,36 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-### [3.0.1](https://github.com/UN-OCHA/tools-snap-service/compare/v3.0.0...v3.0.1) (2022-04-25)
+## [3.0.4](https://github.com/UN-OCHA/tools-snap-service/compare/v3.0.3...v3.0.4) (2022-10-10)
 
+### Bug Fixes
+
+* all boolean params accept case-insensitive strings ([d623b14](https://github.com/UN-OCHA/tools-snap-service/commit/d623b1405ee8116d10da6f746954fa8d6e76903a))
+* remove deprecated page.waitFor function calls ([30fcae7](https://github.com/UN-OCHA/tools-snap-service/commit/30fcae7246fc305d5ec71fb00443fcafa22aeb88))
+* **security:** update Chromium/puppeteer ([a06d07e](https://github.com/UN-OCHA/tools-snap-service/commit/a06d07e4e065068315dc0c23f893a56e1f804b89))
+
+
+## [3.0.3](https://github.com/UN-OCHA/tools-snap-service/compare/v3.0.2...v3.0.3) (2022-07-18)
+
+### Bug Fixes
+
+* **security:** update Chromium/puppeteer ([2f2ac76](https://github.com/UN-OCHA/tools-snap-service/commit/2f2ac768cc4f1d3e878f87648d1cfd7d886e183a))
+
+
+## [3.0.2](https://github.com/UN-OCHA/tools-snap-service/compare/v3.0.0...v3.0.2) (2022-06-06)
+
+### Bug Fixes
+
+* **security:** update Chromium/puppeteer ([9fc6d29](https://github.com/UN-OCHA/tools-snap-service/commit/9fc6d29fc1535025aa01bf40e2efc1dfe9049cf3))
+* upgrade puppteer to match latest Chromium stable ([e48163b](https://github.com/UN-OCHA/tools-snap-service/commit/e48163b8a53a68fdfc3dc975ad5b7ff833cd0a87))
+
+
+## [3.0.1](https://github.com/UN-OCHA/tools-snap-service/compare/v3.0.0...v3.0.1) (2022-04-25)
 
 ### Bug Fixes
 
 * upgrade puppteer to match latest Chromium stable ([e48163b](https://github.com/UN-OCHA/tools-snap-service/commit/e48163b8a53a68fdfc3dc975ad5b7ff833cd0a87))
+
 
 ## [3.0.0](https://github.com/UN-OCHA/tools-snap-service/compare/v2.8.2...v3.0.0) (2022-03-14)
 
@@ -26,7 +50,7 @@ All notable changes to this project will be documented in this file. See [standa
 * upgrade puppteer to match latest Chromium stable ([369ea02](https://github.com/UN-OCHA/tools-snap-service/commit/369ea02b0a1c9600435b085b42588a290af5ce44))
 
 
-### [2.8.2](https://github.com/UN-OCHA/tools-snap-service/compare/v2.8.1...v2.8.2) (2022-01-31)
+## [2.8.2](https://github.com/UN-OCHA/tools-snap-service/compare/v2.8.1...v2.8.2) (2022-01-31)
 
 - **security**: update ansi-regex ([3cbd72f](https://github.com/UN-OCHA/tools-snap-service/commit/3cbd72f35b308fb8cff9c63549ca18c1c535d208))
 - **security**: update eslint ([e5b12d3](https://github.com/UN-OCHA/tools-snap-service/commit/e5b12d3fe12d68a208b7bbfc48be356f188d2fbb))

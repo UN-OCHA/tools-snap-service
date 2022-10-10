@@ -1,8 +1,17 @@
 # Contributing Guidelines
 
-This file contains some instructions for installing, developing for, and preparing releases for the Shared Snap Service.
+| Audience |
+| :------- |
+| Everyone |
+
+This file contains some instructions for installing, developing for, and preparing releases for the Shared Snap Service. Each section is marked with an Audience to help you decide whether the docs are for your current task.
+
 
 ## Install / Develop locally
+
+| Audience     |
+| :----------- |
+| Contributors |
 
 The node container will do all the npm installation for you. No need to do it locally. Just run the Docker commands to get started.
 
@@ -40,6 +49,10 @@ docker-compose exec snap npm run lint
 
 ## Monthly Chromium upgrades
 
+| Audience    |
+| :---------- |
+| Maintainers |
+
 Right now, the process requires manual verification by a human. Please follow these steps to upgrade Chromium and ensure that the same release will be available for testing in our infrastructure.
 
 1. [Check Chromium version](#1-check-chromium-version)
@@ -62,16 +75,10 @@ Watch the console output and note the STABLE version of Chrome as the logs strea
 
 ### 2. Check Puppeteer version
 
-Once you have the stable version of Chromium identified, use an INCOGNITO window and visit https://pptr.dev/ to view the official Puppeteer releases. The site has aggressive caching and opening in a regular window often loads stale data.
+Once you have the stable version of Chromium identified, visit https://pptr.dev/chromium-support to view the official Puppeteer releases and corresponding Chromium versions. You'll want to select the version of Puppeteer that is closest to the stable release you noted in the previous step. In this example case from July 2022, the two versions are:
 
-You will see a version number in the upper left. Click that version number to see a list of releases and their associated Chromium revision. You'll want to select the version of Puppeteer that is closest to the stable release you just wrote down. In this example case from June 2021, the two versions are:
-
-- Chromium: 91.0.4472.77-1
-- Puppeteer 9.0.0, which expects Chromium 91.0.4469.0
-
-The Puppeteer releases get tagged against dev releases of Chromium so you'll typically see a release date that lags approximately 6 weeks behind the current date. The screenshot shows 21 April and this particular Snap build was created on 31 May:
-
-![SNAP-92-puppeteer](https://user-images.githubusercontent.com/254753/120500143-e949d800-c3c0-11eb-932b-376476331642.png)
+- Chromium: 103.0.5060.114-1
+- Puppeteer 14.2.0, which expects Chromium 103.0.5059.0
 
 ### 3. Update dependencies
 
@@ -81,7 +88,8 @@ Once the Puppeteer version is noted, go and manually update `app/package.json`in
 # Start Snap Service in case the container isn't running
 docker-compose up
 
-# Use npm to install desired version of Puppeteer
+# Use npm to install after having manually edited
+# app/package.json to the desired version of Puppeteer.
 docker-compose exec snap npm install
 ```
 
@@ -105,9 +113,49 @@ This will cause it to be listed in the CHANGELOG as a security fix.
 
 ### 5. Release and verify that Docker image is available
 
-Finally, please keep in mind that the Chromium version is dynamically fetched at image build time, so once you merge this to dev/master, **the work is not finalized until a release has been tagged and built by our Docker container repository**. Ideally, the tag should be created as soon as dev is considered to be stable, i.e. within an hour of the dev deploy. Then you have the exact same version of Chromium in the prod release as the untagged dev deploy.
+_Note: Since the Chromium version is dynamically fetched at image build time, **the work is not finalized until a release has been tagged and built by our Docker container repository**. Ideally, the tag should be created as soon as dev is considered to be stable, i.e. within an hour of the dev deploy. Then you have the exact same version of Chromium in the prod release as the untagged dev deploy._
+
+Create a new branch from `dev` and run the release command to generate the new CHANGELOG and increment the version number in our `package.json` and other related files. There's a dry-run flag to preview what will happen:
+
+```sh
+# Example with the dry-run flag.
+$ npm run release -- --dry-run
+
+> tools-snap-service@3.0.0 release
+> standard-version "--dry-run"
+
+✔ bumping version in package.json from 3.0.0 to 3.0.1
+✔ bumping version in package-lock.json from 3.0.0 to 3.0.1
+✔ outputting changes to CHANGELOG.md
+```
+
+The command to make a release contains no flags:
+
+```sh
+$ npm run release
+```
+
+Review the commit and make any necessary adjustments to the CHANGELOG, using `git commit --amend` to add your changes to the existing commit that `standard-version` just created. Push your branch and open a PR to `dev`, which you can merge without review.
+
+[Create the new Release][new-release] using the GitHub UI with the following properties:
+
+- **Tag:** new tag with format `v0.0.0` — numbers should match [`package.json` in the `dev` branch][dev-package].
+- **Target branch:** `dev`
+- **Title:** `Production YYYY-MM-DD` using the PROD date (it's normally the coming Thursday)
+- **Release notes:** Copy the new CHANGELOG bullets. If dependabot made any updates during this cycle, you can include "regular security updates" without being specific.
+
+Once the tagged Release has been created, [create a PR from `dev` to `master`][pr-dev-master] which will include all work within the tagged release. You can merge that without review as well. This step allows hotfixes to be created from `master` should the need arise.
+
+  [pr-dev-master]: https://github.com/UN-OCHA/tools-snap-service/compare/master...dev
+  [new-release]: https://github.com/UN-OCHA/tools-snap-service/releases/new?target=dev
+  [dev-package]: https://github.com/UN-OCHA/tools-snap-service/blob/dev/app/package.json#L4
+
 
 ## Commit messages
+
+| Audience     |
+| :----------- |
+| Contributors |
 
 As of `v2.7.3` we are using [standard-version](https://github.com/conventional-changelog/standard-version#standard-version) to generate a `CHANGELOG.md` for each release. This automation is only possible if our commits follow the [Conventional Commits 1.0.0 specification](https://www.conventionalcommits.org/en/v1.0.0/).
 
