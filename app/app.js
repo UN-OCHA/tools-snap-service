@@ -27,7 +27,14 @@ const mime = require('mime-types');
 const imgSize = require('image-size');
 const util = require('util');
 const log = require('./log');
-const apm = require('./apm');
+const apm = require('elastic-apm-node');
+
+apm.start({
+  serviceName: process.env.ELASTIC_APM_SERVICE,
+  secretToken: process.env.ELASTIC_APM_TOKEN,
+  serverUrl: process.env.ELASTIC_APM_SERVER_URL,
+  environment: process.env.STAGE,
+});
 
 const dump = util.inspect;
 
