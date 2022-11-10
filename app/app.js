@@ -27,6 +27,7 @@ const mime = require('mime-types');
 const imgSize = require('image-size');
 const util = require('util');
 const log = require('./log');
+const apm = require('./apm');
 
 const dump = util.inspect;
 
