@@ -26,8 +26,8 @@ const puppeteer = require('puppeteer');
 const mime = require('mime-types');
 const imgSize = require('image-size');
 const util = require('util');
-const log = require('./log');
 const apm = require('elastic-apm-node');
+const log = require('./log');
 
 apm.start({
   serviceName: process.env.ELASTIC_APM_SERVICE,
