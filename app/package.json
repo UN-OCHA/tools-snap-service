@@ -15,6 +15,7 @@
     "body-parser": "^1.18.3",
     "bunyan": "^1.8.12",
     "debug": "3.1.0",
+    "elastic-apm-node": "^3.40.0",
     "express": "^4.16.3",
     "express-validator": "^6.7.0",
     "image-size": "^0.6.3",
