@@ -663,7 +663,37 @@ app.post('/snap', [
         lgParams.stack_trace = err.stack;
         lgParams.duration = duration;
         log.error(lgParams, `Snap FAILED in ${duration} seconds. ${err}`);
-        res.status(500).send('Internal Server Error');
+
+        //
+        // Detect known issues and send more appropriate error codes.
+        //
+
+        // URL can't be reached.
+        if (err.message.indexOf('ERR_NAME_NOT_RESOLVED') !== -1) {
+          return res.status(400).json({
+            errors: [
+              {
+                location: 'query',
+                param: 'url',
+                value: req.query.url,
+                msg: 'The URL could not be loaded. Confirm that it exists.',
+              },
+            ],
+          });
+        }
+
+        //
+        // Default
+        //
+        // If we didn't detect a specific error above, send a generic 500.
+        //
+        res.status(500).json({
+          errors: [
+            {
+              msg: 'Internal Server Error',
+            },
+          ],
+        });
       }
     },
   );
