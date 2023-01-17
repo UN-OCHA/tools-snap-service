@@ -40,11 +40,13 @@ If you still want to use a GET request, you may proxy the request through your s
 You **MUST** send **ONE** of the following (`url` or `html`).
 
 #### `url`
-String representing the webpage URL you want to Snap.
+String representing the URL you want to Snap.
 
 |Default  |Required  |Type    |
 |---------|----------|--------|
 |_null_   |**yes**¹  |String  |
+
+The URL must be valid. The protocol must be included. You may not include authentication in the URL (see `user`/`pass` parameters for HTTP Basic Auth). If the URL can't be found, Snap Service will return **HTTP 400 Bad Request**.
 
 #### `html`
 The URL-encoded HTML you want to render. Send with `Content-Type: application/x-www-form-urlencoded` as your encoding.
