@@ -428,6 +428,7 @@ app.post('/snap', [
                 height: imgSize(pdfLogoFile).height * 0.75,
               };
 
+              // Inject header with placeholder substitution for logos.
               pdfOptions.headerTemplate = fnPdfHeader
                 .replace('__LOGO_SRC__', pdfLogo.src)
                 .replace('__LOGO_WIDTH__', pdfLogo.width)
