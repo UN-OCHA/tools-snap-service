@@ -2,8 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-## [3.1.1](https://github.com/UN-OCHA/tools-snap-service/compare/v3.1.0...v3.1.1) (2023-01-09)
+## [3.2.0](https://github.com/UN-OCHA/tools-snap-service/compare/v3.1.1...v3.2.0) (2023-02-13)
 
+### Features
+
+* Humanitarian Action logo ([4e1573e](https://github.com/UN-OCHA/tools-snap-service/commit/4e1573efc0f74fea85dd0c5cec103e260d7ddfcc))
+
+### Bug Fixes
+
+* return explicit 400 for invalid URLs ([9dacf9a](https://github.com/UN-OCHA/tools-snap-service/commit/9dacf9ad99c81ed137266d638414f31a39a656f3))
+* return HTTP 400 when URL isn't reachable ([4c30fe5](https://github.com/UN-OCHA/tools-snap-service/commit/4c30fe5141bae31a4e06542509f68d97971db4a5))
+* **security:** update Chromium/puppeteer ([920228a](https://github.com/UN-OCHA/tools-snap-service/commit/920228a9d429e6d3d5c12146c125413b46194b73))
+
+
+## [3.1.1](https://github.com/UN-OCHA/tools-snap-service/compare/v3.1.0...v3.1.1) (2023-01-09)
 
 ### Bug Fixes
 
