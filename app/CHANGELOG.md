@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file. See [standa
 ### Bug Fixes
 
 * **security:** update Chromium/puppeteer ([c759f90](https://github.com/UN-OCHA/tools-snap-service/commit/c759f901d590818166639e4f4aa678a800e7515a))
+* **ci:** only run tests during PRs
 
 ## [3.2.0](https://github.com/UN-OCHA/tools-snap-service/compare/v3.1.1...v3.2.0) (2023-02-13)
 
