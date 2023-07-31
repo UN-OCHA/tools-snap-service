@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.2.4](https://github.com/UN-OCHA/tools-snap-service/compare/v3.2.3...v3.2.4) (2023-07-31)
+
+### Bug Fixes
+
+* **security:** update Puppeteer ([a67f5e0](https://github.com/UN-OCHA/tools-snap-service/commit/a67f5e0fbcbaf03ecf6bc20414cc384c61779f9e))
+
+
 ## [3.2.3](https://github.com/UN-OCHA/tools-snap-service/compare/v3.2.2...v3.2.3) (2023-06-19)
 
 ### Chores
