@@ -76,7 +76,7 @@ Specify `png` if you want a PNG image or `pdf` for PDF.
 
 |Default  |Required  |Type    |
 |---------|----------|--------|
-|_null_   |no        |String  |
+|`pdf`    |no        |String  |
 
 
 #### `media`
