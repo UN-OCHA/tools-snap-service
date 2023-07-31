@@ -163,7 +163,7 @@ app.get('/snap', (req, res) => {
 // Snaps
 app.post('/snap', [
   body('html', '').optional(),
-  query('url', 'Must be a valid, fully-qualified URL').optional().isURL({ require_protocol: true, disallow_auth: true, validate_length: false }),
+  query('url', 'Must be a valid URL with protocol and no auth').optional().isURL({ require_protocol: true, disallow_auth: true, validate_length: false }),
   query('width', 'Must be an integer with no units').optional().isInt(),
   query('height', 'Must be an integer with no units').optional().isInt(),
   query('scale', 'Must be an integer in the range: 1-3').optional().isInt({ min: 1, max: 3 }),
@@ -233,7 +233,22 @@ app.post('/snap', [
   // Ensure a passed url is on the permitted list or includes a substring that
   // is on the permitted list.
   if (req.query.url) {
-    const urlHash = new URL(req.query.url);
+    let urlHash;
+
+    try {
+      urlHash = new URL(req.query.url);
+    } catch (err) {
+      return res.status(400).json({
+        errors: [
+          {
+            location: 'query',
+            param: 'url',
+            value: req.query.url,
+            msg: `${req.query.url} is not a valid URL. Make sure the protocol is present. Example: https://example.com/path`,
+          },
+        ],
+      });
+    }
 
     // Check if any of the allowed hostnames are substrings of `url.hostname`
     // This allowed a domain suffix match as well as a full hostname match.
@@ -413,6 +428,7 @@ app.post('/snap', [
                 height: imgSize(pdfLogoFile).height * 0.75,
               };
 
+              // Inject header with placeholder substitution for logos.
               pdfOptions.headerTemplate = fnPdfHeader
                 .replace('__LOGO_SRC__', pdfLogo.src)
                 .replace('__LOGO_WIDTH__', pdfLogo.width)
@@ -648,7 +664,37 @@ app.post('/snap', [
         lgParams.stack_trace = err.stack;
         lgParams.duration = duration;
         log.error(lgParams, `Snap FAILED in ${duration} seconds. ${err}`);
-        res.status(500).send('Internal Server Error');
+
+        //
+        // Detect known issues and send more appropriate error codes.
+        //
+
+        // URL can't be reached.
+        if (err.message.indexOf('ERR_NAME_NOT_RESOLVED') !== -1) {
+          return res.status(400).json({
+            errors: [
+              {
+                location: 'query',
+                param: 'url',
+                value: req.query.url,
+                msg: 'The URL could not be loaded. Confirm that it exists.',
+              },
+            ],
+          });
+        }
+
+        //
+        // Default
+        //
+        // If we didn't detect a specific error above, send a generic 500.
+        //
+        res.status(500).json({
+          errors: [
+            {
+              msg: 'Internal Server Error',
+            },
+          ],
+        });
       }
     },
   );
