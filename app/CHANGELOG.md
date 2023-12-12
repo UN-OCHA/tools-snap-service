@@ -2,8 +2,76 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-## [3.1.1](https://github.com/UN-OCHA/tools-snap-service/compare/v3.1.0...v3.1.1) (2023-01-09)
+### [3.2.8](https://github.com/UN-OCHA/tools-snap-service/compare/v3.2.7...v3.2.8) (2023-12-04)
 
+
+### Bug Fixes
+
+* **security:** update Chromium/puppeteer ([cfd22a0](https://github.com/UN-OCHA/tools-snap-service/commit/cfd22a0c1d1f2320c9957f4c3e0202dfd0cb5989))
+
+### [3.2.7](https://github.com/UN-OCHA/tools-snap-service/compare/v3.2.6...v3.2.7) (2023-10-23)
+
+
+### Bug Fixes
+
+* **security:** update Chromium/puppeteer ([e78e846](https://github.com/UN-OCHA/tools-snap-service/commit/e78e84642215918ef726f21d16e299503170a42c))
+
+## [3.2.6](https://github.com/UN-OCHA/tools-snap-service/compare/v3.2.5...v3.2.6) (2023-10-17)
+
+* **security:** updates to node.js, Chromium, Puppeteer
+
+
+## [3.2.5](https://github.com/UN-OCHA/tools-snap-service/compare/v3.2.4...v3.2.5) (2023-09-18)
+
+### Bug Fixes
+
+* **security:** updates to node.js, Chromium, Puppeteer, semver, elastic-apm-node
+* opt-in to new headless behavior ([e892b9a](https://github.com/UN-OCHA/tools-snap-service/commit/e892b9a3d8b8b0625c0bb00323f05150cf199d33))
+
+
+## [3.2.4](https://github.com/UN-OCHA/tools-snap-service/compare/v3.2.3...v3.2.4) (2023-07-31)
+
+### Bug Fixes
+
+* **security:** update Puppeteer ([a67f5e0](https://github.com/UN-OCHA/tools-snap-service/commit/a67f5e0fbcbaf03ecf6bc20414cc384c61779f9e))
+
+
+## [3.2.3](https://github.com/UN-OCHA/tools-snap-service/compare/v3.2.2...v3.2.3) (2023-06-19)
+
+### Chores
+
+* **security:** update Chromium/puppeteer
+
+
+## [3.2.2](https://github.com/UN-OCHA/tools-snap-service/compare/v3.2.1...v3.2.2) (2023-05-08)
+
+### Chores
+
+* **security:** update Chromium/puppeteer
+
+
+## [3.2.1](https://github.com/UN-OCHA/tools-snap-service/compare/v3.2.0...v3.2.1) (2023-03-27)
+
+### Bug Fixes
+
+* **security:** update Chromium/puppeteer ([c759f90](https://github.com/UN-OCHA/tools-snap-service/commit/c759f901d590818166639e4f4aa678a800e7515a))
+* **ci:** only run tests during PRs
+
+
+## [3.2.0](https://github.com/UN-OCHA/tools-snap-service/compare/v3.1.1...v3.2.0) (2023-02-13)
+
+### Features
+
+* Humanitarian Action logo ([4e1573e](https://github.com/UN-OCHA/tools-snap-service/commit/4e1573efc0f74fea85dd0c5cec103e260d7ddfcc))
+
+### Bug Fixes
+
+* return explicit 400 for invalid URLs ([9dacf9a](https://github.com/UN-OCHA/tools-snap-service/commit/9dacf9ad99c81ed137266d638414f31a39a656f3))
+* return HTTP 400 when URL isn't reachable ([4c30fe5](https://github.com/UN-OCHA/tools-snap-service/commit/4c30fe5141bae31a4e06542509f68d97971db4a5))
+* **security:** update Chromium/puppeteer ([920228a](https://github.com/UN-OCHA/tools-snap-service/commit/920228a9d429e6d3d5c12146c125413b46194b73))
+
+
+## [3.1.1](https://github.com/UN-OCHA/tools-snap-service/compare/v3.1.0...v3.1.1) (2023-01-09)
 
 ### Bug Fixes
 
