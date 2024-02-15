@@ -459,9 +459,9 @@ app.post('/snap', [
               if (fnDebug || fnBlock) {
                 await page.setRequestInterception(true);
 
-                // BLOCK ADS/TRACKERS
+                // Blocklist
                 await page.on('request', (pageReq) => {
-                  const blacklist = fnBlock.split(',');
+                  const blocklist = fnBlock.split(',');
 
                   let domain = null;
                   const frags = pageReq.url().split('/');
@@ -469,8 +469,8 @@ app.post('/snap', [
                     domain = frags[2];
                   }
 
-                  // Block request if a blacklisted domain is found
-                  if (fnBlock && blacklist.some((blocked) => domain.indexOf(blocked) !== -1)) {
+                  // Block request if a blocklisted domain is found
+                  if (fnBlock && blocklist.some((blocked) => domain.indexOf(blocked) !== -1)) {
                     lgParams.debug += `Snap blocked a request to ${domain}\n`;
                     pageReq.abort();
                   } else {
@@ -572,23 +572,22 @@ app.post('/snap', [
                       throw err;
                     });
 
-                    // If an artificial delay was specified, wait for that amount
-                    // of time.
+                    // If an artificial delay was specified, wait for it.
                     if (fnDelay) {
                       await new Promise((r) => setTimeout(r, fnDelay));
                     }
 
                     // Finally, take the screenshot.
                     //
-                    // NOTE: in previous versions of Puppeteer we had difficulties
-                    // with PNG bounding boxes. We fixed it by switching to the a
-                    // manual method of clipping PNGs using fragment.boundingBox()
+                    // NOTE: previous versions of Puppeteer had difficulties
+                    // with PNG bounding boxes. We fixed it by switching to the
+                    // method of clipping PNGs using fragment.boundingBox()
                     // then executing page.screenshot().
                     //
-                    // After a few Chrome/Puppeteer upgrades, the problem returned
-                    // in a slightly different form, again resolved by commenting
-                    // the code back out and using the "convenience" method again:
-                    // fragment.screenshot()
+                    // After a few Chrome/Puppeteer upgrades, the problem came
+                    // back in a slightly different form, again resolved by
+                    // commenting the code back out and using the "convenience"
+                    // method again: fragment.screenshot()
                     //
                     // It might be necessary to flip between these two methods
                     // from time to time so it's been left intact as a comment.
