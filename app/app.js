@@ -439,19 +439,17 @@ app.post('/snap', [
           }
 
           await PUPPETEER_SEMAPHORE.use(async () => {
-            // NOTE: there are two variables browser/context defined with `var`
-            // so that they're hoisted and available within `finally` block.
+            // Access the Chromium instance by either launching or connecting
+            // to Puppeteer.
+            const browser = await connectPuppeteer().catch((err) => {
+              throw err;
+            });
+
+            // New Puppeteer Incognito context and create a new page within.
+            const context = await browser.createIncognitoBrowserContext();
+            const page = await context.newPage();
+
             try {
-              // Access the Chromium instance by either launching or connecting to
-              // Puppeteer.
-              var browser = await connectPuppeteer().catch((err) => {
-                throw err;
-              });
-
-              // New Puppeteer Incognito context and create a new page within.
-              var context = await browser.createIncognitoBrowserContext();
-              const page = await context.newPage();
-
               // Set duration until Timeout
               await page.setDefaultNavigationTimeout(60 * 1000);
 
@@ -547,13 +545,13 @@ app.post('/snap', [
                 });
               }
 
-              // Add conditional class indicating what type of Snap is happening.
-              // Websites can use this class to apply customizations before the
-              // final asset (PNG/PDF) is generated.
+              // Add a class indicating what type of Snap is happening. Sites
+              // can use this class to apply customizations before the final
+              // asset (PNG/PDF) is generated.
               //
-              // Note: page.evaluate() is a stringified injection into the runtime
-              // so any arguments you need inside this function block have to be
-              // explicitly passed instead of relying on closure.
+              // Note: page.evaluate() is a stringified injection into the
+              // runtime so any arguments you need inside this function block
+              // have to be explicitly passed instead of relying on closure.
               await page.evaluate((snapOutput) => {
                 // eslint-disable-next-line no-undef
                 document.documentElement.classList.add(`snap--${snapOutput}`);
