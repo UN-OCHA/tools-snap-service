@@ -439,192 +439,199 @@ app.post('/snap', [
           }
 
           await PUPPETEER_SEMAPHORE.use(async () => {
-            // Access the Chromium instance by either launching or connecting to
-            // Puppeteer.
-            const browser = await connectPuppeteer().catch((err) => {
-              throw err;
-            });
-
-            // New Puppeteer Incognito context and create a new page within.
-            const context = await browser.createIncognitoBrowserContext();
-            const page = await context.newPage();
-
-            // Set duration until Timeout
-            await page.setDefaultNavigationTimeout(60 * 1000);
-
-            // We want to intercept requests to dump logs or block domains.
-            if (fnDebug || fnBlock) {
-              await page.setRequestInterception(true);
-
-              // BLOCK ADS/TRACKERS
-              await page.on('request', (pageReq) => {
-                const blacklist = fnBlock.split(',');
-
-                let domain = null;
-                const frags = pageReq.url().split('/');
-                if (frags.length > 2) {
-                  domain = frags[2];
-                }
-
-                // Block request if a blacklisted domain is found
-                if (fnBlock && blacklist.some((blocked) => domain.indexOf(blocked) !== -1)) {
-                  lgParams.debug += `Snap blocked a request to ${domain}\n`;
-                  pageReq.abort();
-                } else {
-                  pageReq.continue();
-                }
-              });
-            }
-
-            if (fnDebug) {
-              // Log caught exceptions
-              page.on('error', (err) => {
-                lgParams.debug += err.toString();
+            // NOTE: there are two variables browser/context defined with `var`
+            // so that they're hoisted and available within `finally` block.
+            try {
+              // Access the Chromium instance by either launching or connecting to
+              // Puppeteer.
+              var browser = await connectPuppeteer().catch((err) => {
+                throw err;
               });
 
-              // Log uncaught exceptions
-              page.on('pageerror', (err) => {
-                lgParams.debug += err.toString();
+              // New Puppeteer Incognito context and create a new page within.
+              var context = await browser.createIncognitoBrowserContext();
+              const page = await context.newPage();
+
+              // Set duration until Timeout
+              await page.setDefaultNavigationTimeout(60 * 1000);
+
+              // We want to intercept requests to dump logs or block domains.
+              if (fnDebug || fnBlock) {
+                await page.setRequestInterception(true);
+
+                // BLOCK ADS/TRACKERS
+                await page.on('request', (pageReq) => {
+                  const blacklist = fnBlock.split(',');
+
+                  let domain = null;
+                  const frags = pageReq.url().split('/');
+                  if (frags.length > 2) {
+                    domain = frags[2];
+                  }
+
+                  // Block request if a blacklisted domain is found
+                  if (fnBlock && blacklist.some((blocked) => domain.indexOf(blocked) !== -1)) {
+                    lgParams.debug += `Snap blocked a request to ${domain}\n`;
+                    pageReq.abort();
+                  } else {
+                    pageReq.continue();
+                  }
+                });
+              }
+
+              if (fnDebug) {
+                // Log caught exceptions
+                page.on('error', (err) => {
+                  lgParams.debug += err.toString();
+                });
+
+                // Log uncaught exceptions
+                page.on('pageerror', (err) => {
+                  lgParams.debug += err.toString();
+                });
+
+                // Forward all console output
+                page.on('console', (msg) => {
+                  const errText = msg._args
+                    && msg._args[0]
+                    && msg._args[0]._remoteObject
+                    && msg._args[0]._remoteObject.value;
+                  lgParams.debug += `${msg._type.padStart(7)} ${dump(errText)}\n`;
+                });
+              }
+
+              // Use HTTP auth if needed (for testing staging envs)
+              if (fnAuthUser && fnAuthPass) {
+                await page.authenticate({ username: fnAuthUser, password: fnAuthPass });
+              }
+
+              // Set viewport dimensions
+              await page.setViewport({ width: fnWidth, height: fnHeight, deviceScaleFactor: fnScale });
+
+              // Set CSS Media
+              await page.emulateMediaType(fnMedia);
+
+              // Compile cookies if present. We must manually specify some extra
+              // info such as host/path in order to create a valid cookie.
+              const cookies = [];
+              if (fnCookies) {
+                // eslint-disable-next-line array-callback-return
+                fnCookies.split('; ').map((cookie) => {
+                  const thisCookie = {};
+                  const [name, value] = cookie.split('=');
+
+                  thisCookie.url = fnUrl;
+                  thisCookie.name = name;
+                  thisCookie.value = value;
+
+                  cookies.push(thisCookie);
+                });
+              }
+
+              // Set cookies.
+              cookies.forEach(async (cookie) => {
+                await page.setCookie(cookie).catch((err) => {
+                  log.error(err);
+                });
               });
 
-              // Forward all console output
-              page.on('console', (msg) => {
-                const errText = msg._args
-                  && msg._args[0]
-                  && msg._args[0]._remoteObject
-                  && msg._args[0]._remoteObject.value;
-                lgParams.debug += `${msg._type.padStart(7)} ${dump(errText)}\n`;
-              });
-            }
+              // We need to load the HTML differently depending on whether it's
+              // HTML in the POST or a URL in the querystring.
+              if (fnUrl) {
+                await page.goto(fnUrl, {
+                  waitUntil: ['load', 'networkidle0'],
+                });
+              } else {
+                await page.goto(`data:text/html,${fnHtml}`, {
+                  waitUntil: ['load', 'networkidle0'],
+                });
+              }
 
-            // Use HTTP auth if needed (for testing staging envs)
-            if (fnAuthUser && fnAuthPass) {
-              await page.authenticate({ username: fnAuthUser, password: fnAuthPass });
-            }
+              // Add conditional class indicating what type of Snap is happening.
+              // Websites can use this class to apply customizations before the
+              // final asset (PNG/PDF) is generated.
+              //
+              // Note: page.evaluate() is a stringified injection into the runtime
+              // so any arguments you need inside this function block have to be
+              // explicitly passed instead of relying on closure.
+              await page.evaluate((snapOutput) => {
+                // eslint-disable-next-line no-undef
+                document.documentElement.classList.add(`snap--${snapOutput}`);
+              }, fnOutput);
 
-            // Set viewport dimensions
-            await page.setViewport({ width: fnWidth, height: fnHeight, deviceScaleFactor: fnScale });
+              // Output PNG or PDF?
+              if (fnOutput === 'png') {
+                // Output whole document or DOM fragment?
+                if (fnSelector) {
+                  pngOptions.omitBackground = true;
 
-            // Set CSS Media
-            await page.emulateMediaType(fnMedia);
+                  // Make sure our selector is in the DOM.
+                  await page.waitForSelector(fnSelector).then(async () => {
+                    // Select the element from the DOM.
+                    const fragment = await page.$(fnSelector).catch((err) => {
+                      throw err;
+                    });
 
-            // Compile cookies if present. We must manually specify some extra
-            // info such as host/path in order to create a valid cookie.
-            const cookies = [];
-            if (fnCookies) {
-              // eslint-disable-next-line array-callback-return
-              fnCookies.split('; ').map((cookie) => {
-                const thisCookie = {};
-                const [name, value] = cookie.split('=');
+                    // If an artificial delay was specified, wait for that amount
+                    // of time.
+                    if (fnDelay) {
+                      await new Promise((r) => setTimeout(r, fnDelay));
+                    }
 
-                thisCookie.url = fnUrl;
-                thisCookie.name = name;
-                thisCookie.value = value;
+                    // Finally, take the screenshot.
+                    //
+                    // NOTE: in previous versions of Puppeteer we had difficulties
+                    // with PNG bounding boxes. We fixed it by switching to the a
+                    // manual method of clipping PNGs using fragment.boundingBox()
+                    // then executing page.screenshot().
+                    //
+                    // After a few Chrome/Puppeteer upgrades, the problem returned
+                    // in a slightly different form, again resolved by commenting
+                    // the code back out and using the "convenience" method again:
+                    // fragment.screenshot()
+                    //
+                    // It might be necessary to flip between these two methods
+                    // from time to time so it's been left intact as a comment.
+                    //
+                    // @see https://humanitarian.atlassian.net/browse/SNAP-51
+                    await fragment.screenshot(pngOptions);
 
-                cookies.push(thisCookie);
-              });
-            }
-
-            // Set cookies.
-            cookies.forEach(async (cookie) => {
-              await page.setCookie(cookie).catch((err) => {
-                log.error(err);
-              });
-            });
-
-            // We need to load the HTML differently depending on whether it's
-            // HTML in the POST or a URL in the querystring.
-            if (fnUrl) {
-              await page.goto(fnUrl, {
-                waitUntil: ['load', 'networkidle0'],
-              });
-            } else {
-              await page.goto(`data:text/html,${fnHtml}`, {
-                waitUntil: ['load', 'networkidle0'],
-              });
-            }
-
-            // Add conditional class indicating what type of Snap is happening.
-            // Websites can use this class to apply customizations before the
-            // final asset (PNG/PDF) is generated.
-            //
-            // Note: page.evaluate() is a stringified injection into the runtime
-            // so any arguments you need inside this function block have to be
-            // explicitly passed instead of relying on closure.
-            await page.evaluate((snapOutput) => {
-              // eslint-disable-next-line no-undef
-              document.documentElement.classList.add(`snap--${snapOutput}`);
-            }, fnOutput);
-
-            // Output PNG or PDF?
-            if (fnOutput === 'png') {
-              // Output whole document or DOM fragment?
-              if (fnSelector) {
-                pngOptions.omitBackground = true;
-
-                // Make sure our selector is in the DOM.
-                await page.waitForSelector(fnSelector).then(async () => {
-                  // Select the element from the DOM.
-                  const fragment = await page.$(fnSelector).catch((err) => {
+                    // const elementBoundingBox = await fragment.boundingBox();
+                    // pngOptions.clip = {
+                    //   x: elementBoundingBox.x,
+                    //   y: elementBoundingBox.y,
+                    //   width: elementBoundingBox.width,
+                    //   height: elementBoundingBox.height,
+                    // };
+                    // await page.screenshot(pngOptions);
+                  }).catch((err) => {
                     throw err;
                   });
-
-                  // If an artificial delay was specified, wait for that amount
-                  // of time.
+                } else {
+                  // If an artificial delay was specified, wait for it.
                   if (fnDelay) {
                     await new Promise((r) => setTimeout(r, fnDelay));
                   }
 
                   // Finally, take the screenshot.
-                  //
-                  // NOTE: in previous versions of Puppeteer we had difficulties
-                  // with PNG bounding boxes. We fixed it by switching to the a
-                  // manual method of clipping PNGs using fragment.boundingBox()
-                  // then executing page.screenshot().
-                  //
-                  // After a few Chrome/Puppeteer upgrades, the problem returned
-                  // in a slightly different form, again resolved by commenting
-                  // the code back out and using the "convenience" method again:
-                  // fragment.screenshot()
-                  //
-                  // It might be necessary to flip between these two methods
-                  // from time to time so it's been left intact as a comment.
-                  //
-                  // @see https://humanitarian.atlassian.net/browse/SNAP-51
-                  await fragment.screenshot(pngOptions);
-
-                  // const elementBoundingBox = await fragment.boundingBox();
-                  // pngOptions.clip = {
-                  //   x: elementBoundingBox.x,
-                  //   y: elementBoundingBox.y,
-                  //   width: elementBoundingBox.width,
-                  //   height: elementBoundingBox.height,
-                  // };
-                  // await page.screenshot(pngOptions);
-                }).catch((err) => {
-                  throw err;
-                });
+                  await page.screenshot(pngOptions);
+                }
               } else {
                 // If an artificial delay was specified, wait for it.
                 if (fnDelay) {
                   await new Promise((r) => setTimeout(r, fnDelay));
                 }
 
-                // Finally, take the screenshot.
-                await page.screenshot(pngOptions);
+                await page.pdf(pdfOptions);
               }
-            } else {
-              // If an artificial delay was specified, wait for it.
-              if (fnDelay) {
-                await new Promise((r) => setTimeout(r, fnDelay));
-              }
-
-              await page.pdf(pdfOptions);
+            } catch (err) {
+              log.error(err);
+              throw err;
+            } finally {
+              // Disconnect from Puppeteer process
+              await context.close();
+              await browser.disconnect();
             }
-
-            // Disconnect from Puppeteer process
-            await context.close();
-            await browser.disconnect();
           });
         }
 
@@ -678,6 +685,17 @@ app.post('/snap', [
                 param: 'url',
                 value: req.query.url,
                 msg: 'The URL could not be loaded. Confirm that it exists.',
+              },
+            ],
+          });
+        }
+
+        // URL timed out.
+        if (err.message.indexOf('ERR_TIMED_OUT') !== -1) {
+          return res.status(502).json({
+            errors: [
+              {
+                msg: 'Snap is working, but the target URL timed out.',
               },
             ],
           });

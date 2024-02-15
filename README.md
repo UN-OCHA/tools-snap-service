@@ -46,7 +46,12 @@ String representing the URL you want to Snap.
 |---------|----------|--------|
 |_null_   |**yes**¹  |String  |
 
-The URL must be valid. The protocol must be included. You may not include authentication in the URL (see `user`/`pass` parameters for HTTP Basic Auth). If the URL can't be found, Snap Service will return **HTTP 400 Bad Request**.
+The URL must be valid. The protocol must be included. You may not include authentication in the URL (see `user`/`pass` parameters for HTTP Basic Auth).
+
+**Errors**
+
+- If the URL can't be found, Snap Service will return **HTTP 400 Bad Request**.
+- If the URL times out, Snap Service will return **HTTP 502 Bad Gateway**.
 
 #### `html`
 The URL-encoded HTML you want to render. Send with `Content-Type: application/x-www-form-urlencoded` as your encoding.
