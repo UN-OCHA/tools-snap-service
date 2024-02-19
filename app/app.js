@@ -687,7 +687,7 @@ app.post('/snap', [
           });
         }
 
-        // URL timed out.
+        // URL timed out, throw shade.
         if (err.message.indexOf('ERR_TIMED_OUT') !== -1) {
           return res.status(502).json({
             errors: [
