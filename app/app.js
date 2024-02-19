@@ -625,7 +625,7 @@ app.post('/snap', [
               log.error(err);
               throw err;
             } finally {
-              // Disconnect from Puppeteer process
+              // Disconnect from Puppeteer process.
               await context.close();
               await browser.disconnect();
             }
