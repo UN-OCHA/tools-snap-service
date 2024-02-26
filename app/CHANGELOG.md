@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.3.0](https://github.com/UN-OCHA/tools-snap-service/compare/v3.2.9...v3.3.0) (2024-02-26)
+
+
+### Features
+
+* wrap our cleanup in a finally block so it always runs ([0e668ea](https://github.com/UN-OCHA/tools-snap-service/commit/0e668eac1c862f0cda8a0c3e1c031100b94d0310))
+
+
+### Bug Fixes
+
+* **security:** update Chromium/puppeteer ([41b80a5](https://github.com/UN-OCHA/tools-snap-service/commit/41b80a595f26ba8d592de5634cbcadc40c260dd8))
+
 ## [3.2.9](https://github.com/UN-OCHA/tools-snap-service/compare/v3.2.8...v3.2.9) (2024-01-15)
 
 ### Bug Fixes

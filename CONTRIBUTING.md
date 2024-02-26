@@ -82,7 +82,7 @@ Once you have the stable version of Chromium identified, visit https://pptr.dev/
 
 ### 3. Update dependencies
 
-Once the Puppeteer version is noted, go and manually update `app/package.json`inside the Snap repo to ensure Puppeteer will have the correct version installed, then run one the following commands to ensure the codebase is fully updated:
+Once the Puppeteer version is noted, go and manually update `app/package.json`inside the Snap repo to ensure Puppeteer will have the correct version installed, then run one the following commands to ensure the codebase is fully updated and working like normal:
 
 ```sh
 # Start Snap Service in case the container isn't running
@@ -91,7 +91,15 @@ docker-compose up
 # Use npm to install after having manually edited
 # app/package.json to the desired version of Puppeteer.
 docker-compose exec snap npm install
+
+# If you want to be really safe, restart the container.
+docker-compose restart snap
+
+# Output the version of Puppeteer Snap is using.
+docker-compose exec snap npm ls puppeteer
 ```
+
+**NOTE:** Nowadays, the breaking changes are listed under `puppeteer-core` in the repo's releases list. An example is `22.0.0` which took away `browser.createIncognitoBrowsercontext` and replaced with `browser.createBrowserContext` (same functionality).
 
 ### 4. Create commit message for CHANGELOG
 

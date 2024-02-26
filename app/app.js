@@ -445,8 +445,16 @@ app.post('/snap', [
               throw err;
             });
 
-            // New Puppeteer Incognito context and create a new page within.
-            const context = await browser.createIncognitoBrowserContext();
+            // Create a new browser context. As of Puppeteer 22.0.0 all new
+            // browser contexts are isolated (cookies/localStorage/etc).
+            // So they renamed the previous function name to remove the word
+            // Incognito. It still offers the same isolation as before.
+            //
+            // @see https://github.com/puppeteer/puppeteer/releases/tag/puppeteer-core-v22.0.0
+            // @see https://github.com/puppeteer/puppeteer/pull/11834/files
+            const context = await browser.createBrowserContext();
+
+            // Create a new tab/page within the context.
             const page = await context.newPage();
 
             try {
