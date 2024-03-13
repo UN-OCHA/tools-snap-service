@@ -181,7 +181,7 @@ app.post('/snap', [
   query('user', 'Must be an alphanumeric string').optional().isAlphanumeric(),
   query('pass', 'Must be an alphanumeric string').optional().isAlphanumeric(),
   query('logo', `Must be one of the following values: ${Object.keys(logos).join(', ')}. If you would like to use your site's logo with Snap Service, please read how to add it at https://github.com/UN-OCHA/tools-snap-service#custom-logos`).optional().isIn(Object.keys(logos)),
-  query('service', 'Must be an alphanumeric string identifier (hyphens, underscores are also allowed).').optional().matches(/^[A-Za-z0-9_-]+$/),
+  query('service', 'Must be an alphanumeric string identifier (hyphens, underscores are also allowed).').matches(/^[A-Za-z0-9_-]+$/),
   query('ua', '').optional(),
   query('delay', 'Must be an integer between 0-10000 inclusive.').optional().isInt({ min: 0, max: 10000 }),
   query('debug', 'Must be one of the following (case insensitive): true, false').optional().toLowerCase().isBoolean(),
