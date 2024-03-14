@@ -79,6 +79,8 @@ const PUPPETEER_SEMAPHORE = new Semaphore(process.env.MAX_CONCURRENT_REQUESTS ||
  * Using the launch() command multiple times results in multiple Chromium procs
  * but (just like a normal web browser) we only want one. We'll open a new "tab"
  * each time our `/snap` route is invoked by reusing the established connection.
+ *
+ * Allow the use of the standard puppeteer browser executable override.
  */
 let browserWSEndpoint = '';
 
@@ -90,7 +92,7 @@ async function connectPuppeteer() {
   } else {
     // Initialize Puppeteer
     browser = await puppeteer.launch({
-      executablePath: '/usr/bin/google-chrome',
+      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/google-chrome',
       args: [
         '--disable-gpu',
         '--disable-software-rasterizer',
@@ -696,7 +698,7 @@ app.post('/snap', [
         }
 
         // URL timed out, throw shade.
-        if (err.message.indexOf('ERR_TIMED_OUT') !== -1) {
+        if (err.message.indexOf('ERR_TIMED_OUT') !== -1 || err.name === 'TimeoutError') {
           return res.status(502).json({
             errors: [
               {
