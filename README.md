@@ -65,7 +65,7 @@ The URL-encoded HTML you want to render. Send with `Content-Type: application/x-
 #### `service`
 While it won't affect the output you receive from Snap Service, this parameter allows our Ops team to monitor and report your usage of the shared Snap service. It also allows us to prioritize support/feature requests.
 
-Must be an alphanumeric string (hyphens, underscores are also allowed) such as `dsreports`, `hr-info` or `hid_api`.
+Must be an alphanumeric string (hyphens, underscores are also allowed) such as `dsreports`, `hr-info` or `hid_api`. If you don't send a `service` param, or it doesn't match the formatting requirements, Snap Service will return **`HTTP 400 Bad Request`**.
 
 |Default  |Required  |Type    |
 |---------|----------|--------|
