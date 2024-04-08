@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.0](https://github.com/UN-OCHA/tools-snap-service/compare/v3.3.0...v4.0.0) (2024-04-08)
+
+
+### ⚠ BREAKING CHANGES
+
+* `service` parameter is now required for all requests to `/snap` - SNAP-76
+
+### Features
+
+* Maintain the puppeteeer browser path override, so we can run with chromium or firefox on ARM hardware ([9a73862](https://github.com/UN-OCHA/tools-snap-service/commit/9a73862c374aa6fea44dc6938675248dd2545bdd))
+
+### Bug Fixes
+
+* catch Chromium timeout errors too ([1187075](https://github.com/UN-OCHA/tools-snap-service/commit/11870759e13c17a3d6a2d7a6e4b0a98d92b66121))
+* enforce required service param ([0521944](https://github.com/UN-OCHA/tools-snap-service/commit/05219442e3b164274529cd87f413328dbce5439a))
+* **security:** update Chromium/puppeteer ([b277343](https://github.com/UN-OCHA/tools-snap-service/commit/b2773433b962ab526b931212900e7a2d70a17c6f))
+
+
 ## [3.3.0](https://github.com/UN-OCHA/tools-snap-service/compare/v3.2.9...v3.3.0) (2024-02-26)
 
 
