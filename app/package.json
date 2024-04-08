@@ -23,7 +23,7 @@
     "method-override": "^3.0.0",
     "mime-types": "^2.1.20",
     "pm2": "^5.3.1",
-    "puppeteer": "22.3.0"
+    "puppeteer": "22.6.3"
   },
   "devDependencies": {
     "eslint": "^8.8.0",
