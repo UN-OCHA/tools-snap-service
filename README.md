@@ -122,13 +122,13 @@ Specify a PDF page format from one of the following options available within Pup
 - `Legal`: 8.5in x 14in
 - `Tabloid`: 11in x 17in
 - `Ledger`: 17in x 11in
-- `A0`: 33.1in x 46.8in
-- `A1`: 23.4in x 33.1in
-- `A2`: 16.5in x 23.4in
-- `A3`: 11.7in x 16.5in
-- `A4`: 8.27in x 11.7in
-- `A5`: 5.83in x 8.27in
-- `A6`: 4.13in x 5.83in
+- `A0`: 841 mm x 1189 mm
+- `A1`: 594 mm x 841 mm
+- `A2`: 420 mm x 594 mm
+- `A3`: 297 mm x 420 mm
+- `A4`: 210 mm x 297 mm
+- `A5`: 148 mm x 210 mm
+- `A6`: 105 mm x 148 mm
 
 |Default  |Required  |Type    |
 |---------|----------|--------|
