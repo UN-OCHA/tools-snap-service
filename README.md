@@ -46,7 +46,12 @@ String representing the URL you want to Snap.
 |---------|----------|--------|
 |_null_   |**yes**¹  |String  |
 
-The URL must be valid. The protocol must be included. You may not include authentication in the URL (see `user`/`pass` parameters for HTTP Basic Auth). If the URL can't be found, Snap Service will return **HTTP 400 Bad Request**.
+The URL must be valid. The protocol must be included. You may not include authentication in the URL (see `user`/`pass` parameters for HTTP Basic Auth).
+
+**Errors**
+
+- If the URL can't be found, Snap Service will return **HTTP 400 Bad Request**.
+- If the URL times out, Snap Service will return **HTTP 502 Bad Gateway**.
 
 #### `html`
 The URL-encoded HTML you want to render. Send with `Content-Type: application/x-www-form-urlencoded` as your encoding.
@@ -60,7 +65,7 @@ The URL-encoded HTML you want to render. Send with `Content-Type: application/x-
 #### `service`
 While it won't affect the output you receive from Snap Service, this parameter allows our Ops team to monitor and report your usage of the shared Snap service. It also allows us to prioritize support/feature requests.
 
-Must be an alphanumeric string (hyphens, underscores are also allowed) such as `dsreports`, `hr-info` or `hid_api`.
+Must be an alphanumeric string (hyphens, underscores are also allowed) such as `dsreports`, `hr-info` or `hid_api`. If you don't send a `service` param, or it doesn't match the formatting requirements, Snap Service will return **`HTTP 400 Bad Request`**.
 
 |Default  |Required  |Type    |
 |---------|----------|--------|
@@ -117,13 +122,13 @@ Specify a PDF page format from one of the following options available within Pup
 - `Legal`: 8.5in x 14in
 - `Tabloid`: 11in x 17in
 - `Ledger`: 17in x 11in
-- `A0`: 33.1in x 46.8in
-- `A1`: 23.4in x 33.1in
-- `A2`: 16.5in x 23.4in
-- `A3`: 11.7in x 16.5in
-- `A4`: 8.27in x 11.7in
-- `A5`: 5.83in x 8.27in
-- `A6`: 4.13in x 5.83in
+- `A0`: 841 mm x 1189 mm
+- `A1`: 594 mm x 841 mm
+- `A2`: 420 mm x 594 mm
+- `A3`: 297 mm x 420 mm
+- `A4`: 210 mm x 297 mm
+- `A5`: 148 mm x 210 mm
+- `A6`: 105 mm x 148 mm
 
 |Default  |Required  |Type    |
 |---------|----------|--------|
