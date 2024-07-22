@@ -1,4 +1,4 @@
-FROM public.ecr.aws/unocha/debian-snap-base:20-debian as builder
+FROM public.ecr.aws/unocha/debian-snap-base:22-debian as builder
 
 WORKDIR /srv/src
 COPY . .
@@ -10,7 +10,7 @@ RUN cd app && \
     npm install
 
 # The base image to build our app into. this already contains fonts and utilities.
-FROM public.ecr.aws/unocha/debian-snap-base:20-debian
+FROM public.ecr.aws/unocha/debian-snap-base:22-debian
 
 # Configure the service container.
 ENV NODE_APP_DIR=/srv/www \
