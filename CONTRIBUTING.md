@@ -16,7 +16,7 @@ This file contains some instructions for installing, developing for, and prepari
 The node container will do all the npm installation for you. No need to do it locally. Just run the Docker commands to get started.
 
 ```sh
-# set BASEDIR and tweak MAX_CONCURRENT_REQUESTS for your hardware
+# set BASEDIR and ALLOWED_HOSTNAMES and tweak MAX_CONCURRENT_REQUESTS for your hardware
 vim .env
 docker-compose build
 
