@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.1](https://github.com/UN-OCHA/tools-snap-service/compare/v4.0.0...v4.0.1) (2024-06-13)
+
+### Updates
+
+* chore: Update all the things, but specifically puppeteer (and thus chrome) by @cafuego in #222
+* fix(doc): Switch the ISO 216 paper size units to sensible ones. by @cafuego in #223
+* chore: Bump the actions used to current versions, so they are on a supported node version. by @cafuego in #225
+
+
 ## [4.0.0](https://github.com/UN-OCHA/tools-snap-service/compare/v3.3.0...v4.0.0) (2024-04-08)
 
 
