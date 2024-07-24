@@ -20,7 +20,10 @@ RUN \
     # Install Chrome, so it can match. The base image already has the repo.
     apt-get update && \
     apt-get -qy dist-upgrade && \
+    # For x86_64
     apt-get -qy install --no-install-recommends google-chrome-stable && \
+    # For aarch64
+    # apt-get -qy install --no-install-recommends chromium && \
     # Ok, cleanup!
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
