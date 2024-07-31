@@ -2,6 +2,36 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.1.0](https://github.com/UN-OCHA/tools-snap-service/compare/v3.2.3...v4.1.0) (2024-07-31)
+
+### Features
+
+* wrap our cleanup in a finally block so it always runs ([0e668ea](https://github.com/UN-OCHA/tools-snap-service/commit/0e668eac1c862f0cda8a0c3e1c031100b94d0310))
+
+### Bug Fixes
+
+* Add (but comment) the command needed to install the browser on ARM hardware. ([c8a4495](https://github.com/UN-OCHA/tools-snap-service/commit/c8a449556469151316fcef85923441e7f03d1df2))
+* Amend the changelog with the previous release info. ([63050da](https://github.com/UN-OCHA/tools-snap-service/commit/63050da5cf137d8bc7210441d4bed3923b59a41e))
+* catch Chromium timeout errors too ([1187075](https://github.com/UN-OCHA/tools-snap-service/commit/11870759e13c17a3d6a2d7a6e4b0a98d92b66121))
+* **doc:** Mention the ALLOWED_HOSTNAMES env var, which is useful. ([9a427f0](https://github.com/UN-OCHA/tools-snap-service/commit/9a427f00bf75ec3d8beff8751c6aa811a96f95dc))
+* **doc:** Switch the ISO 216 paper size units to sensible ones. ([d6e8c7c](https://github.com/UN-OCHA/tools-snap-service/commit/d6e8c7cd86775f518d4ef54053adf9f313438fd4))
+* enforce required service param ([0521944](https://github.com/UN-OCHA/tools-snap-service/commit/05219442e3b164274529cd87f413328dbce5439a))
+* opt-in to new headless behavior ([e892b9a](https://github.com/UN-OCHA/tools-snap-service/commit/e892b9a3d8b8b0625c0bb00323f05150cf199d33))
+* **security:** update Chromium/puppeteer ([b277343](https://github.com/UN-OCHA/tools-snap-service/commit/b2773433b962ab526b931212900e7a2d70a17c6f))
+* **security:** update Chromium/puppeteer ([41b80a5](https://github.com/UN-OCHA/tools-snap-service/commit/41b80a595f26ba8d592de5634cbcadc40c260dd8))
+* **security:** update Chromium/puppeteer ([cfd22a0](https://github.com/UN-OCHA/tools-snap-service/commit/cfd22a0c1d1f2320c9957f4c3e0202dfd0cb5989))
+* **security:** update Chromium/puppeteer ([e78e846](https://github.com/UN-OCHA/tools-snap-service/commit/e78e84642215918ef726f21d16e299503170a42c))
+* **security:** update Puppeteer ([a67f5e0](https://github.com/UN-OCHA/tools-snap-service/commit/a67f5e0fbcbaf03ecf6bc20414cc384c61779f9e))
+
+## [4.0.1](https://github.com/UN-OCHA/tools-snap-service/compare/v4.0.0...v4.0.1) (2024-06-13)
+
+### Updates
+
+* chore: Update all the things, but specifically puppeteer (and thus chrome) by @cafuego in #222
+* fix(doc): Switch the ISO 216 paper size units to sensible ones. by @cafuego in #223
+* chore: Bump the actions used to current versions, so they are on a supported node version. by @cafuego in #225
+
+
 ## [4.0.0](https://github.com/UN-OCHA/tools-snap-service/compare/v3.3.0...v4.0.0) (2024-04-08)
 
 

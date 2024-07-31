@@ -1,4 +1,4 @@
-FROM public.ecr.aws/unocha/debian-snap-base:20-debian as builder
+FROM public.ecr.aws/unocha/debian-snap-base:22-debian as builder
 
 WORKDIR /srv/src
 COPY . .
@@ -10,7 +10,7 @@ RUN cd app && \
     npm install
 
 # The base image to build our app into. this already contains fonts and utilities.
-FROM public.ecr.aws/unocha/debian-snap-base:20-debian
+FROM public.ecr.aws/unocha/debian-snap-base:22-debian
 
 # Configure the service container.
 ENV NODE_APP_DIR=/srv/www \
@@ -20,7 +20,10 @@ RUN \
     # Install Chrome, so it can match. The base image already has the repo.
     apt-get update && \
     apt-get -qy dist-upgrade && \
+    # For x86_64
     apt-get -qy install --no-install-recommends google-chrome-stable && \
+    # For aarch64
+    # apt-get -qy install --no-install-recommends chromium && \
     # Ok, cleanup!
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \

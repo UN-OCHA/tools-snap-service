@@ -16,7 +16,7 @@ This file contains some instructions for installing, developing for, and prepari
 The node container will do all the npm installation for you. No need to do it locally. Just run the Docker commands to get started.
 
 ```sh
-# set BASEDIR and tweak MAX_CONCURRENT_REQUESTS for your hardware
+# set BASEDIR and ALLOWED_HOSTNAMES and tweak MAX_CONCURRENT_REQUESTS for your hardware
 vim .env
 docker-compose build
 
@@ -31,7 +31,7 @@ Now you can `POST` to `localhost:8442/snap` and it should return Snaps to you. T
 curl -X GET http://localhost:8442/status
 
 # Snap a PDF of example.com and save to tmp.pdf
-curl -X POST http://localhost:8442/snap?url=https://example.com > tmp.pdf
+curl -X POST 'http://localhost:8442/snap?url=https://example.com&service=test' > tmp.pdf
 ```
 
 It will probably be necessary to use an app that helps you formulate and store common queries you want to test. Command line tools like `curl` are perfectly capable, but if you want something more visual try [Insomnia](https://insomnia.rest/). It lets you configure everything and save each query for repeated use.
