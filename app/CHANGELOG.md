@@ -2,9 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-## [4.1.0](https://github.com/UN-OCHA/tools-snap-service/compare/v3.2.3...v4.1.0) (2024-07-31)
+### [4.1.1](https://github.com/UN-OCHA/tools-snap-service/compare/v4.0.0...v4.1.1) (2024-09-26)
 
-### Features
+### Bug Fixes
+
+* Add (but comment) the command needed to install the browser on ARM hardware. ([c8a4495](https://github.com/UN-OCHA/tools-snap-service/commit/c8a449556469151316fcef85923441e7f03d1df2))chore(version): Set the version in package(-lock).json to the actual version.
+
+### Security
+
+* Bump puppeteer (and thus chrome) to the current release.
+* fix(security:) Bump dependencies for security fixes.
+  - body-parser  <1.20.3
+  - path-to-regexp  <0.1.10
+  - send  <0.19.0
+
+## [4.1.0](https://github.com/UN-OCHA/tools-snap-service/compare/v4.0.1...v4.1.0) (2024-07-31)
+
+## Features
 
 * wrap our cleanup in a finally block so it always runs ([0e668ea](https://github.com/UN-OCHA/tools-snap-service/commit/0e668eac1c862f0cda8a0c3e1c031100b94d0310))
 

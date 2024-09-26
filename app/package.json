@@ -1,7 +1,7 @@
 {
   "name": "tools-snap-service",
   "description": "Node.js web service interface to puppeteer/chrome for generating PDFs and PNGs from HTML.",
-  "version": "5.0.0",
+  "version": "4.1.1",
   "private": true,
   "scripts": {
     "start": "./node_modules/.bin/pm2 start app.js --no-daemon --watch --node-args='--max-http-header-size=16384'",
@@ -23,7 +23,7 @@
     "method-override": "^3.0.0",
     "mime-types": "^2.1.35",
     "pm2": "^5.4.2",
-    "puppeteer": "^22.14.0"
+    "puppeteer": "^23.4.1"
   },
   "devDependencies": {
     "eslint": "^8.57.0",

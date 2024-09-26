@@ -3,9 +3,8 @@ name: Create image
 on:
   push:
     branches:
-      - dev
+      - develop
       - main
-      - master
       - OPS-*
       - ops-*
       - SNAP-*
