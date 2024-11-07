@@ -131,7 +131,7 @@ app.use(methodOverride());
 
 app.disable('x-powered-by');
 
-app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
+app.use((err, req, res, next) => {
   if (process.env.NODE_ENV !== 'test') {
     log.error(`Error: ${JSON.stringify(err)}`);
   }
@@ -420,7 +420,6 @@ app.post('/snap', [
             // Do string substitution on fnPdfHeader if the logo was specified.
             if (Object.prototype.hasOwnProperty.call(logos, fnLogo)) {
               const pdfLogoFile = path.join(__dirname, '/logos/', logos[fnLogo].filename);
-              // eslint-disable-next-line new-cap
               const pdfLogoData = new Buffer.from(fs.readFileSync(pdfLogoFile, 'binary'));
               const pdfLogo = {
                 src: `data:${mime.lookup(pdfLogoFile)};base64,${pdfLogoData.toString('base64')}`,
@@ -523,7 +522,6 @@ app.post('/snap', [
               // info such as host/path in order to create a valid cookie.
               const cookies = [];
               if (fnCookies) {
-                // eslint-disable-next-line array-callback-return
                 fnCookies.split('; ').map((cookie) => {
                   const thisCookie = {};
                   const [name, value] = cookie.split('=');
@@ -563,7 +561,6 @@ app.post('/snap', [
               // runtime so any arguments you need inside this function block
               // have to be explicitly passed instead of relying on closure.
               await page.evaluate((snapOutput) => {
-                // eslint-disable-next-line no-undef
                 document.documentElement.classList.add(`snap--${snapOutput}`);
               }, fnOutput);
 
