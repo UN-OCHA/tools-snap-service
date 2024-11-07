@@ -1,4 +1,4 @@
-FROM public.ecr.aws/unocha/debian-snap-base:22-debian as builder
+FROM public.ecr.aws/unocha/debian-snap-base:22-debian AS builder
 
 WORKDIR /srv/src
 COPY . .
