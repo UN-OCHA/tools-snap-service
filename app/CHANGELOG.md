@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.1.2](https://github.com/UN-OCHA/tools-snap-service/compare/v4.0.0...v4.1.2) (2025-01-28)
+
+
+### Bug Fixes
+
+* Add (but comment) the command needed to install the browser on ARM hardware. ([c8a4495](https://github.com/UN-OCHA/tools-snap-service/commit/c8a449556469151316fcef85923441e7f03d1df2))
+* Amend the changelog with the previous release info. ([63050da](https://github.com/UN-OCHA/tools-snap-service/commit/63050da5cf137d8bc7210441d4bed3923b59a41e))
+* **doc:** Mention the ALLOWED_HOSTNAMES env var, which is useful. ([9a427f0](https://github.com/UN-OCHA/tools-snap-service/commit/9a427f00bf75ec3d8beff8751c6aa811a96f95dc))
+* **doc:** Switch the ISO 216 paper size units to sensible ones. ([d6e8c7c](https://github.com/UN-OCHA/tools-snap-service/commit/d6e8c7cd86775f518d4ef54053adf9f313438fd4))
+* **security:** Bump `cookie` which is a depend of elastic-apm-node. ([74dae63](https://github.com/UN-OCHA/tools-snap-service/commit/74dae63ec3c2e73fb7bb74a73f52ec98df9283a3))
+* **security:** Bump puppeteer (and thus chrome) to the current release. ([74f0483](https://github.com/UN-OCHA/tools-snap-service/commit/74f04839ac8b4cb895e2e478af29e24fcf39df14))
+* **tests:** These exceptions are not needed with the new (current) eslint. ([7227d8f](https://github.com/UN-OCHA/tools-snap-service/commit/7227d8fdebd6930abe0634c9548b34d3470f165d))
+
 ### [4.1.1](https://github.com/UN-OCHA/tools-snap-service/compare/v4.0.0...v4.1.1) (2024-09-26)
 
 ### Bug Fixes
