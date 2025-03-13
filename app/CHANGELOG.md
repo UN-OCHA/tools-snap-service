@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.1.4](https://github.com/UN-OCHA/tools-snap-service/compare/v4.1.0...v4.1.4) (2025-03-11)
+
+
+### Bug Fixes
+
+* **security:** Bump `cookie` which is a depend of elastic-apm-node. ([74dae63](https://github.com/UN-OCHA/tools-snap-service/commit/74dae63ec3c2e73fb7bb74a73f52ec98df9283a3))
+* **security:** Bump puppeteer (and thus chrome) to the current release. ([74f0483](https://github.com/UN-OCHA/tools-snap-service/commit/74f04839ac8b4cb895e2e478af29e24fcf39df14))
+* **tests:** These exceptions are not needed with the new (current) eslint. ([7227d8f](https://github.com/UN-OCHA/tools-snap-service/commit/7227d8fdebd6930abe0634c9548b34d3470f165d))
+
 ### [4.1.3](https://github.com/UN-OCHA/tools-snap-service/compare/v4.1.2...v4.1.3) (2025-01-28)
 
 ### Security
