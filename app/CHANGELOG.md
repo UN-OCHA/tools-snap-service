@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.1.5](https://github.com/UN-OCHA/tools-snap-service/compare/v4.1.4...v4.1.5) (2025-04-07)
+
+* Bump puppeteer (and thus chrome) to the current release.
+
 ### [4.1.4](https://github.com/UN-OCHA/tools-snap-service/compare/v4.1.0...v4.1.4) (2025-03-11)
 
 
