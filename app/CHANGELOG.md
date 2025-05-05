@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.1.6](https://github.com/UN-OCHA/tools-snap-service/compare/v4.1.2...v4.1.6) (2025-05-05)
+
+
+### Bug Fixes
+
+* **security:** Update Chromium/puppeteer to the current stable releases. ([757fa9e](https://github.com/UN-OCHA/tools-snap-service/commit/757fa9e8a946bbf62ceb9b310533dfea03347d36))
+
 ### [4.1.5](https://github.com/UN-OCHA/tools-snap-service/compare/v4.1.4...v4.1.5) (2025-04-07)
 
 * Bump puppeteer (and thus chrome) to the current release.
