@@ -77,7 +77,7 @@ Must be an alphanumeric string (hyphens, underscores are also allowed) such as `
 Send any combination of the following as querystring parameters. We do our best to validate your input. When found to be invalid, we return **`HTTP 400 Bad Request`** and the response body will be a JSON object containing all failed validations.
 
 #### `output`
-Specify `png` if you want a PNG image or `pdf` for PDF.
+Specify `jpeg` or `jpg` for a JPEG image, `png` for a PNG image, `webp` for a WEBP image, or `pdf` for a PDF file.
 
 |Default  |Required  |Type    |
 |---------|----------|--------|

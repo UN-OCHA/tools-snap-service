@@ -26,15 +26,7 @@ const puppeteer = require('puppeteer');
 const mime = require('mime-types');
 const imgSize = require('image-size');
 const util = require('util');
-const apm = require('elastic-apm-node');
 const log = require('./log');
-
-apm.start({
-  serviceName: process.env.ELASTIC_APM_SERVICE,
-  secretToken: process.env.ELASTIC_APM_TOKEN,
-  serverUrl: process.env.ELASTIC_APM_SERVER_URL,
-  environment: process.env.STAGE,
-});
 
 const dump = util.inspect;
 
@@ -170,7 +162,7 @@ app.post('/snap', [
   query('height', 'Must be an integer with no units').optional().isInt(),
   query('scale', 'Must be an integer in the range: 1-3').optional().isInt({ min: 1, max: 3 }),
   query('media', 'Must be one of the following: print, screen').optional().isIn(['print', 'screen']),
-  query('output', 'Must be one of the following: png, pdf').optional().isIn(['png', 'pdf']),
+  query('output', 'Must be one of the following: jpeg, jpg, png, webp, pdf (default)').optional().isIn(['jpeg', 'jpg','png', 'webp', 'pdf']),
   query('selector', `Must be a CSS selector made of the following characters: ${allowedSelectorChars}`).optional().isWhitelisted(allowedSelectorChars),
   query('pdfFormat', `Must be one of the following values: ${allowedFormats.join(', ')}`).optional().isIn(allowedFormats),
   query('pdfLandscape', 'Must be one of the following (case insensitive): true, false').optional().toLowerCase().isBoolean(),
@@ -310,7 +302,7 @@ app.post('/snap', [
   const fnBlock = req.query.block || '';
 
   // Declare options objects here so that multiple scopes have access to them.
-  let pngOptions = {};
+  let imgOptions = {};
   let pdfOptions = {};
 
   // Make a nice blob for the logs. ELK will sort this out. Blame Emma.
@@ -396,9 +388,10 @@ app.post('/snap', [
          */
         async function createSnap() {
           try {
-            pngOptions = {
+            imgOptions = {
               path: tmpPath,
               fullPage: fnFullPage,
+              type: fnOutput,
             };
 
             pdfOptions = {
@@ -564,11 +557,18 @@ app.post('/snap', [
                 document.documentElement.classList.add(`snap--${snapOutput}`);
               }, fnOutput);
 
-              // Output PNG or PDF?
-              if (fnOutput === 'png') {
+              // Output PDF or JPG, PNG, WEBP image?
+              if (fnOutput === 'pdf') {
+                // If an artificial delay was specified, wait for it.
+                if (fnDelay) {
+                  await new Promise((r) => setTimeout(r, fnDelay));
+                }
+
+                await page.pdf(pdfOptions);
+              } else {
                 // Output whole document or DOM fragment?
                 if (fnSelector) {
-                  pngOptions.omitBackground = true;
+                  imgOptions.omitBackground = true;
 
                   // Make sure our selector is in the DOM.
                   await page.waitForSelector(fnSelector).then(async () => {
@@ -598,16 +598,16 @@ app.post('/snap', [
                     // from time to time so it's been left intact as a comment.
                     //
                     // @see https://humanitarian.atlassian.net/browse/SNAP-51
-                    await fragment.screenshot(pngOptions);
+                    await fragment.screenshot(imgOptions);
 
                     // const elementBoundingBox = await fragment.boundingBox();
-                    // pngOptions.clip = {
+                    // imgOptions.clip = {
                     //   x: elementBoundingBox.x,
                     //   y: elementBoundingBox.y,
                     //   width: elementBoundingBox.width,
                     //   height: elementBoundingBox.height,
                     // };
-                    // await page.screenshot(pngOptions);
+                    // await page.screenshot(imgOptions);
                   }).catch((err) => {
                     throw err;
                   });
@@ -618,15 +618,8 @@ app.post('/snap', [
                   }
 
                   // Finally, take the screenshot.
-                  await page.screenshot(pngOptions);
+                  await page.screenshot(imgOptions);
                 }
-              } else {
-                // If an artificial delay was specified, wait for it.
-                if (fnDelay) {
-                  await new Promise((r) => setTimeout(r, fnDelay));
-                }
-
-                await page.pdf(pdfOptions);
               }
             } catch (err) {
               log.error(err);
@@ -652,6 +645,24 @@ app.post('/snap', [
               res.end();
               lgParams.duration = duration;
               log.info(lgParams, `PNG successfully generated in ${duration} seconds.`);
+              return fs.unlink(tmpPath, cb);
+            });
+          } else if (fnOutput === 'jpg' || fnOutput === 'jpeg') {
+            res.contentType('image/jpeg');
+            res.sendFile(tmpPath, () => {
+              const duration = ((Date.now() - startTime) / 1000);
+              res.end();
+              lgParams.duration = duration;
+              log.info(lgParams, `JPEG successfully generated in ${duration} seconds.`);
+              return fs.unlink(tmpPath, cb);
+            });
+          } else if (fnOutput === 'webp') {
+            res.contentType('image/webp');
+            res.sendFile(tmpPath, () => {
+              const duration = ((Date.now() - startTime) / 1000);
+              res.end();
+              lgParams.duration = duration;
+              log.info(lgParams, `WEBP successfully generated in ${duration} seconds.`);
               return fs.unlink(tmpPath, cb);
             });
           } else {
