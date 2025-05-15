@@ -343,3 +343,45 @@ Currently available fonts:
 
 - Roboto (v18)
 - Roboto Condensed (v16)
+
+#### `POST /extract`
+
+|Default  |Required  |Type    |
+|---------|----------|--------|
+|_null_   |**yes**   |_N/A_   |
+
+### Required Parameters
+
+#### `url`
+String representing the URL you want to Snap.
+
+|Default  |Required  |Type    |
+|---------|----------|--------|
+|_null_   |**yes**¹  |String  |
+
+The URL must be valid. The protocol must be included. You may not include authentication in the URL (see `user`/`pass` parameters for HTTP Basic Auth).
+
+
+#### `element`
+String representing the element to extract.
+
+|Default  |Required  |Type    |
+|---------|----------|--------|
+|_null_   |**yes**¹  |String  |
+
+
+#### `attribute`
+String representing the attribute to extract.
+
+|Default  |Required  |Type    |
+|---------|----------|--------|
+|_null_   |**yes**¹  |String  |
+
+### Optional Parameters
+
+#### `selector`
+Specify a CSS selector. Send something very specific, such as an `#html-id`. If you send a generic selector that matches many elements on your page, then Snap Service will only return the **FIRST** element that matches your selector.
+
+|Default  |Required  |Type    |
+|---------|----------|--------|
+|_null_   |no        |String  |
