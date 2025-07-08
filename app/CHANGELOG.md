@@ -2,6 +2,43 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.3.0](https://github.com/UN-OCHA/tools-snap-service/compare/v4.1.2...v4.3.0) (2025-07-08)
+
+### Breaking Changes
+
+* **security:** pm2 Regular Expression Denial of Service vulnerability - https://github.com/advisories/GHSA-x5gf-qvw8-r2rm ([1284a59](https://github.com/UN-OCHA/tools-snap-service/commit/1284a59b017aa442b58bf8339ce2d4d91ce0683f))
+
+
+### Features
+
+* Add JPG and WEBP as output formats. ([c969f1f](https://github.com/UN-OCHA/tools-snap-service/commit/c969f1fc0b359b7c6692b91089daa637e46afb8e))
+
+
+### Bug Fixes
+
+* **security:** brace-expansion Regular Expression Denial of Service vulnerability - https://github.com/advisories/GHSA-v6h2-p8h4-qcjw ([fe294bb](https://github.com/UN-OCHA/tools-snap-service/commit/fe294bbd6c37973913920af231a917220de9a6e0))
+* **security:** pm2 Regular Expression Denial of Service vulnerability - https://github.com/advisories/GHSA-x5gf-qvw8-r2rm ([1284a59](https://github.com/UN-OCHA/tools-snap-service/commit/1284a59b017aa442b58bf8339ce2d4d91ce0683f))
+* **security:** Update Chromium/puppeteer to the current stable releases. ([757fa9e](https://github.com/UN-OCHA/tools-snap-service/commit/757fa9e8a946bbf62ceb9b310533dfea03347d36))
+* **security:** Update Puppeteer and Chrome. ([f0b3844](https://github.com/UN-OCHA/tools-snap-service/commit/f0b3844f0219c067c4243ef114e3a40cf3ca5686))
+
+
+
+## [4.2.0](https://github.com/UN-OCHA/tools-snap-service/compare/v4.1.2...v4.2.0) (2025-06-05)
+
+
+### Features
+
+* Add JPG and WEBP as output formats. ([c969f1f](https://github.com/UN-OCHA/tools-snap-service/commit/c969f1fc0b359b7c6692b91089daa637e46afb8e))
+
+### Bug Fixes
+
+* **security:** Update Chromium/puppeteer to the current stable releases. ([757fa9e](https://github.com/UN-OCHA/tools-snap-service/commit/757fa9e8a946bbf62ceb9b310533dfea03347d36))
+* **security:** Update Puppeteer and Chrome. ([f0b3844](https://github.com/UN-OCHA/tools-snap-service/commit/f0b3844f0219c067c4243ef114e3a40cf3ca5686))
+
+### Chores
+
+* Remove unused elastic apm code.
+
 ### [4.1.6](https://github.com/UN-OCHA/tools-snap-service/compare/v4.1.2...v4.1.6) (2025-05-05)
 
 
