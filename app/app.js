@@ -534,16 +534,29 @@ app.post('/snap', [
                 });
               });
 
+              // Store the main http request result, so we can check if we got an error.
+              let result;
+
               // We need to load the HTML differently depending on whether it's
               // HTML in the POST or a URL in the querystring.
               if (fnUrl) {
-                await page.goto(fnUrl, {
+                result = await page.goto(fnUrl, {
                   waitUntil: ['load', 'networkidle0'],
                 });
               } else {
-                await page.goto(`data:text/html,${fnHtml}`, {
+                result = await page.goto(`data:text/html,${fnHtml}`, {
                   waitUntil: ['load', 'networkidle0'],
                 });
+              }
+
+              // Throw an early error if the page load did not return OK.
+              // We handle this later, so we can return a sensible response to the user.
+              if (!result.ok()) {
+                const statusText = result.statusText() || `Upstream HTTP error ${result.status()}`;
+                let error = new Error(statusText);
+                error.code = result.status();
+                error.upstream = true;
+                throw error;
               }
 
               // Add a class indicating what type of Snap is happening. Sites
@@ -690,6 +703,20 @@ app.post('/snap', [
         //
         // Detect known issues and send more appropriate error codes.
         //
+
+        if (err.upstream) {
+          return res.status(502).json({
+            errors: [
+              {
+                location: 'query',
+                param: 'url',
+                value: req.query.url,
+                status: err.code,
+                msg: err.message,
+              },
+            ],
+          });
+        }
 
         // URL can't be reached.
         if (err.message.indexOf('ERR_NAME_NOT_RESOLVED') !== -1) {
