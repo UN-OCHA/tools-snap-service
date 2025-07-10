@@ -192,12 +192,14 @@ app.post('/snap', [
           location: 'query',
           param: 'url',
           value: undefined,
+          status: 400,
           msg: 'You must supply either `url` as a querystring parameter, or `html` as a URL-encoded form field.',
         },
         {
           location: 'body',
           param: 'html',
           value: undefined,
+          status: 400,
           msg: 'You must supply either `url` as a querystring parameter, or `html` as a URL-encoded form field.',
         },
       ],
@@ -212,12 +214,14 @@ app.post('/snap', [
           location: 'query',
           param: 'url',
           value: req.query.url,
+          status: 400,
           msg: 'You must supply either `url` as a querystring parameter, OR `html` as a URL-encoded form field, but not both.',
         },
         {
           location: 'body',
           param: 'html',
           value: req.body.html,
+          status: 400,
           msg: 'You must supply either `url` as a querystring parameter, OR `html` as a URL-encoded form field, but not both.',
         },
       ],
@@ -238,6 +242,7 @@ app.post('/snap', [
             location: 'query',
             param: 'url',
             value: req.query.url,
+            status: 400,
             msg: `${req.query.url} is not a valid URL. Make sure the protocol is present. Example: https://example.com/path`,
           },
         ],
@@ -253,6 +258,7 @@ app.post('/snap', [
             location: 'query',
             param: 'url',
             value: urlHash.hostname,
+            status: 403,
             msg: `${urlHash.hostname} does not match any allowed hostname. Please file an OPS ticket if you want to allow a new hostname.`,
           },
         ],
@@ -726,6 +732,7 @@ app.post('/snap', [
                 location: 'query',
                 param: 'url',
                 value: req.query.url,
+                status: 400,
                 msg: 'The URL could not be loaded. Confirm that it exists.',
               },
             ],
@@ -737,6 +744,7 @@ app.post('/snap', [
           return res.status(502).json({
             errors: [
               {
+                status: 502,
                 msg: 'Snap is working, but the target URL timed out.',
               },
             ],
@@ -751,6 +759,7 @@ app.post('/snap', [
         res.status(500).json({
           errors: [
             {
+              status: 500,
               msg: 'Internal Server Error',
             },
           ],
