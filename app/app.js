@@ -192,12 +192,14 @@ app.post('/snap', [
           location: 'query',
           param: 'url',
           value: undefined,
+          status: 400,
           msg: 'You must supply either `url` as a querystring parameter, or `html` as a URL-encoded form field.',
         },
         {
           location: 'body',
           param: 'html',
           value: undefined,
+          status: 400,
           msg: 'You must supply either `url` as a querystring parameter, or `html` as a URL-encoded form field.',
         },
       ],
@@ -212,12 +214,14 @@ app.post('/snap', [
           location: 'query',
           param: 'url',
           value: req.query.url,
+          status: 400,
           msg: 'You must supply either `url` as a querystring parameter, OR `html` as a URL-encoded form field, but not both.',
         },
         {
           location: 'body',
           param: 'html',
           value: req.body.html,
+          status: 400,
           msg: 'You must supply either `url` as a querystring parameter, OR `html` as a URL-encoded form field, but not both.',
         },
       ],
@@ -238,6 +242,7 @@ app.post('/snap', [
             location: 'query',
             param: 'url',
             value: req.query.url,
+            status: 400,
             msg: `${req.query.url} is not a valid URL. Make sure the protocol is present. Example: https://example.com/path`,
           },
         ],
@@ -253,6 +258,7 @@ app.post('/snap', [
             location: 'query',
             param: 'url',
             value: urlHash.hostname,
+            status: 403,
             msg: `${urlHash.hostname} does not match any allowed hostname. Please file an OPS ticket if you want to allow a new hostname.`,
           },
         ],
@@ -534,16 +540,30 @@ app.post('/snap', [
                 });
               });
 
+              // Store the main http request result, so we can check for errors.
+              let result;
+
               // We need to load the HTML differently depending on whether it's
               // HTML in the POST or a URL in the querystring.
               if (fnUrl) {
-                await page.goto(fnUrl, {
+                result = await page.goto(fnUrl, {
                   waitUntil: ['load', 'networkidle0'],
                 });
               } else {
-                await page.goto(`data:text/html,${fnHtml}`, {
+                result = await page.goto(`data:text/html,${fnHtml}`, {
                   waitUntil: ['load', 'networkidle0'],
                 });
+              }
+
+              // Throw an early error if the page load did not return OK.
+              // We handle this later, so we can return a sensible response
+              // to the user.
+              if (!result.ok()) {
+                const statusText = result.statusText() || `Upstream HTTP error ${result.status()}`;
+                let error = new Error(statusText);
+                error.code = result.status();
+                error.upstream = true;
+                throw error;
               }
 
               // Add a class indicating what type of Snap is happening. Sites
@@ -691,6 +711,20 @@ app.post('/snap', [
         // Detect known issues and send more appropriate error codes.
         //
 
+        if (err.upstream) {
+          return res.status(502).json({
+            errors: [
+              {
+                location: 'query',
+                param: 'url',
+                value: req.query.url,
+                status: err.code,
+                msg: err.message,
+              },
+            ],
+          });
+        }
+
         // URL can't be reached.
         if (err.message.indexOf('ERR_NAME_NOT_RESOLVED') !== -1) {
           return res.status(400).json({
@@ -699,6 +733,7 @@ app.post('/snap', [
                 location: 'query',
                 param: 'url',
                 value: req.query.url,
+                status: 400,
                 msg: 'The URL could not be loaded. Confirm that it exists.',
               },
             ],
@@ -710,6 +745,7 @@ app.post('/snap', [
           return res.status(502).json({
             errors: [
               {
+                status: 502,
                 msg: 'Snap is working, but the target URL timed out.',
               },
             ],
@@ -724,6 +760,7 @@ app.post('/snap', [
         res.status(500).json({
           errors: [
             {
+              status: 500,
               msg: 'Internal Server Error',
             },
           ],
