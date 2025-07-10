@@ -540,7 +540,7 @@ app.post('/snap', [
                 });
               });
 
-              // Store the main http request result, so we can check if we got an error.
+              // Store the main http request result, so we can check for errors.
               let result;
 
               // We need to load the HTML differently depending on whether it's
@@ -556,7 +556,8 @@ app.post('/snap', [
               }
 
               // Throw an early error if the page load did not return OK.
-              // We handle this later, so we can return a sensible response to the user.
+              // We handle this later, so we can return a sensible response
+              // to the user.
               if (!result.ok()) {
                 const statusText = result.statusText() || `Upstream HTTP error ${result.status()}`;
                 let error = new Error(statusText);
