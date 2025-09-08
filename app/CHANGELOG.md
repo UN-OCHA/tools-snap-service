@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.4.0](https://github.com/UN-OCHA/tools-snap-service/compare/v4.3.0...v4.4.0) (2025-09-08)
+
+
+### Features
+
+* Return an API error (502) if the page requested did not return HTTP OK. ([855787d](https://github.com/UN-OCHA/tools-snap-service/commit/855787df94ac0fbf031f739977b6b078de3811cf))
+* Return error 400 when the specified selector is not found. ([665552f](https://github.com/UN-OCHA/tools-snap-service/commit/665552fab4f36ea8e1110534b1c66d7393538298))
+
+
+### Bug Fixes
+
+* **chore:** Comment too long. ([f9e658d](https://github.com/UN-OCHA/tools-snap-service/commit/f9e658d248d02745931475ad100bcac34e27eea9))
+* **chore:** Ensure all error JSON blobs have a `status` property, so the Drupal module can use it. ([e9b773b](https://github.com/UN-OCHA/tools-snap-service/commit/e9b773ba0bac2d926c9453fdfd5823b408c67785))
+* **security:** brace-expansion Regular Expression Denial of Service vulnerability - https://github.com/advisories/GHSA-v6h2-p8h4-qcjw ([fe294bb](https://github.com/UN-OCHA/tools-snap-service/commit/fe294bbd6c37973913920af231a917220de9a6e0))
+* **security:** Update Chromium/puppeteer to the current stable releases. ([757fa9e](https://github.com/UN-OCHA/tools-snap-service/commit/757fa9e8a946bbf62ceb9b310533dfea03347d36))
+* **security:** Update Puppeteer and Chrome. ([f0b3844](https://github.com/UN-OCHA/tools-snap-service/commit/f0b3844f0219c067c4243ef114e3a40cf3ca5686))
+
 ## [4.3.0](https://github.com/UN-OCHA/tools-snap-service/compare/v4.1.2...v4.3.0) (2025-07-08)
 
 ### Breaking Changes
