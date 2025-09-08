@@ -705,11 +705,28 @@ app.post('/snap', [
           });
         }
 
+        // Selector not found.
+        if ((fnSelector) && (err.message.indexOf('Waiting for selector') !== -1 || err.name === 'TimeoutError')) {
+          return res.status(400).json({
+            errors: [
+              {
+                location: 'query',
+                param: 'selector',
+                value: req.query.selector,
+                msg: 'The selector could not be found or did not load in time.',
+              },
+            ],
+          });
+        }
+
         // URL timed out, throw shade.
         if (err.message.indexOf('ERR_TIMED_OUT') !== -1 || err.name === 'TimeoutError') {
           return res.status(502).json({
             errors: [
               {
+                location: 'query',
+                param: 'url',
+                value: req.query.url,
                 msg: 'Snap is working, but the target URL timed out.',
               },
             ],
