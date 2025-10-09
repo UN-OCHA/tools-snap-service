@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.5.0](https://github.com/UN-OCHA/tools-snap-service/compare/v4.3.0...v4.5.0) (2025-10-09)
+
+
+### Features
+
+* Return an API error (502) if the page requested did not return HTTP OK. ([855787d](https://github.com/UN-OCHA/tools-snap-service/commit/855787df94ac0fbf031f739977b6b078de3811cf))
+* Return error 400 when the specified selector is not found. ([665552f](https://github.com/UN-OCHA/tools-snap-service/commit/665552fab4f36ea8e1110534b1c66d7393538298))
+
+
+### Bug Fixes
+
+* **chore:** Comment too long. ([f9e658d](https://github.com/UN-OCHA/tools-snap-service/commit/f9e658d248d02745931475ad100bcac34e27eea9))
+* Ensure all error JSON blobs have a `status` property, so the Drupal module can use it. ([e9b773b](https://github.com/UN-OCHA/tools-snap-service/commit/e9b773ba0bac2d926c9453fdfd5823b408c67785))
+* **security:** Bump puppeteer to the current stable release and thus Chrome too. ([5cc683b](https://github.com/UN-OCHA/tools-snap-service/commit/5cc683bf7b04f322eefc3e64022a643521af826b))
+
 ## [4.4.0](https://github.com/UN-OCHA/tools-snap-service/compare/v4.3.0...v4.4.0) (2025-09-08)
 
 
