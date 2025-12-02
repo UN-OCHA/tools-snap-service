@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.7.0](https://github.com/UN-OCHA/tools-snap-service/compare/v4.6.0...v4.7.0) (2025-12-02)
+
+### Bug Fixes
+
+* **chore:** Bump puppeteer to the current release, 24.31.0. ([47e5e94](https://github.com/UN-OCHA/tools-snap-service/commit/47e5e948325e96ff77b07908bd58232ddb9155e9))
+* **security:** Updated versions of express and js-yaml. ([fd3f320](https://github.com/UN-OCHA/tools-snap-service/pull/267/commits/fd3f320979faa31d89c51841577d09073ecc095c))
+
 ## [4.6.0](https://github.com/UN-OCHA/tools-snap-service/compare/v4.5.0...v4.6.0) (2025-11-05)
 
 
