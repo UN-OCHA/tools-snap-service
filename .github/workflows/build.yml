@@ -9,6 +9,7 @@ on:
       - ops-*
       - SNAP-*
       - snap-*
+      - feature/*
   release:
     types: [published]
 
