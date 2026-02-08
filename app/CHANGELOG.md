@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.10.0](https://github.com/UN-OCHA/tools-snap-service/compare/v4.7.0...v4.10.0) (2026-02-08)
+
+
+### Features
+
+* **security:** Bump the docker image to nodejs 24 / Trixie. ([45fab4a](https://github.com/UN-OCHA/tools-snap-service/commit/45fab4a71b45caba4b519916950450e57ff774ec))
+
+
+### Bug Fixes
+
+* **security:** Bump lodash. ([59bc91d](https://github.com/UN-OCHA/tools-snap-service/commit/59bc91d05bb436cabb2fa8647cc695b94448d62a))
+* **security:** Bump packages with CVEs. ([7a08eb7](https://github.com/UN-OCHA/tools-snap-service/commit/7a08eb7cff6854636d84ad87f93ecc157e5d83bc))
+* **security:** Bump puppeteer to 24.34.0. ([3df2976](https://github.com/UN-OCHA/tools-snap-service/commit/3df297691534615456a277ec4b7636c9da424839))
+* **security:** Bump puppeteer to the current release. ([a46961f](https://github.com/UN-OCHA/tools-snap-service/commit/a46961f4e4157e66e019a24673b6167e75c4ee21))
+
 ## [4.9.0](https://github.com/UN-OCHA/tools-snap-service/compare/v4.7.0...v4.9.0) (2026-02-08)
 
 
