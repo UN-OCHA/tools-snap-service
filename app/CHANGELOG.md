@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.11.0](https://github.com/UN-OCHA/tools-snap-service/compare/v4.10.0...v4.11.0) (2026-03-09)
+
+### Bug Fixes
+
+* **security:** Bump puppeteer to 24.38.0 to be the latest stable and match the current browser. ([0f204bd](https://github.com/UN-OCHA/tools-snap-service/commit/0f204bd439ef91adb8d8df2691dda532ae7244ac))
+* **security:** Run `npm audit fix` to catch low-hanging ducks. ([3eda16d](https://github.com/UN-OCHA/tools-snap-service/commit/3eda16d9aad8b18d26434ffba2a45257ba452322))
+
 ## [4.10.0](https://github.com/UN-OCHA/tools-snap-service/compare/v4.7.0...v4.10.0) (2026-02-08)
 
 
