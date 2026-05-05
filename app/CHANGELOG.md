@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.12.0](https://github.com/UN-OCHA/tools-snap-service/compare/v4.11.1...v4.12.0) (2026-05-05)
+
+### Breaking
+
+* **security:** A pm2 update removed support for node <= v16.0.0.
+
+### Bug Fixes
+
+* **security:** Bump basic-ftp and follow-redirect via npm audit. ([9a3324a](https://github.com/UN-OCHA/tools-snap-service/commit/9a3324a44eb8d92703ebe10075956b0a808c398e))
+* **security:** Bump pm2 to the next major release. ([edd4e31](https://github.com/UN-OCHA/tools-snap-service/commit/edd4e31ae62acbd77fd2f8fe520747c18c92c79d))
+* **security:** Bump puppeteer to 24.42.0 to match the current browser. ([8ae5370](https://github.com/UN-OCHA/tools-snap-service/pull/292/commits/8ae53700ea3594056f100d1e9f096f98e4f3cd2f))
+
+
 ## [4.11.0](https://github.com/UN-OCHA/tools-snap-service/compare/v4.10.0...v4.11.0) (2026-03-09)
 
 ### Bug Fixes
