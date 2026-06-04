@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.12.1](https://github.com/UN-OCHA/tools-snap-service/compare/v4.12.0...v4.12.1) (2026-06-04)
+
+
+### Bug Fixes
+
+* **security:** Bump puppeteer to support the latest recommended chrome browser. ([1284a58](https://github.com/UN-OCHA/tools-snap-service/commit/1284a58e56a94c76a05bf6b9dead6374d8246c1d))
+* **security:** Run `apm audit fix` to auto-apply security fixes. ([80c919a](https://github.com/UN-OCHA/tools-snap-service/commit/80c919a47151ad56f7877755f6ed8e941884fd0e))
+
 ## [4.12.0](https://github.com/UN-OCHA/tools-snap-service/compare/v4.11.1...v4.12.0) (2026-05-05)
 
 ### Breaking
