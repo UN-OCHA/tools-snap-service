@@ -2,6 +2,65 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.12.2](https://github.com/UN-OCHA/tools-snap-service/compare/v4.12.0...v4.12.2) (2026-06-04)
+
+
+### Bug Fixes
+
+* **bug:** Ensure we skip *ALL* browser downloads by puppeteer. ([7eecf28](https://github.com/UN-OCHA/tools-snap-service/commit/7eecf282612b7cdd2209e46463d1f05b9aacff5f))
+* **security:** Bump puppeteer to support the latest recommended chrome browser. ([1284a58](https://github.com/UN-OCHA/tools-snap-service/commit/1284a58e56a94c76a05bf6b9dead6374d8246c1d))
+* **security:** Run `apm audit fix` to auto-apply security fixes. ([80c919a](https://github.com/UN-OCHA/tools-snap-service/commit/80c919a47151ad56f7877755f6ed8e941884fd0e))
+
+## [4.12.0](https://github.com/UN-OCHA/tools-snap-service/compare/v4.11.1...v4.12.0) (2026-05-05)
+
+### Breaking
+
+* **security:** A pm2 update removed support for node <= v16.0.0.
+
+### Bug Fixes
+
+* **security:** Bump basic-ftp and follow-redirect via npm audit. ([9a3324a](https://github.com/UN-OCHA/tools-snap-service/commit/9a3324a44eb8d92703ebe10075956b0a808c398e))
+* **security:** Bump pm2 to the next major release. ([edd4e31](https://github.com/UN-OCHA/tools-snap-service/commit/edd4e31ae62acbd77fd2f8fe520747c18c92c79d))
+* **security:** Bump puppeteer to 24.42.0 to match the current browser. ([8ae5370](https://github.com/UN-OCHA/tools-snap-service/pull/292/commits/8ae53700ea3594056f100d1e9f096f98e4f3cd2f))
+
+
+## [4.11.0](https://github.com/UN-OCHA/tools-snap-service/compare/v4.10.0...v4.11.0) (2026-03-09)
+
+### Bug Fixes
+
+* **security:** Bump puppeteer to 24.38.0 to be the latest stable and match the current browser. ([0f204bd](https://github.com/UN-OCHA/tools-snap-service/commit/0f204bd439ef91adb8d8df2691dda532ae7244ac))
+* **security:** Run `npm audit fix` to catch low-hanging ducks. ([3eda16d](https://github.com/UN-OCHA/tools-snap-service/commit/3eda16d9aad8b18d26434ffba2a45257ba452322))
+
+## [4.10.0](https://github.com/UN-OCHA/tools-snap-service/compare/v4.7.0...v4.10.0) (2026-02-08)
+
+
+### Features
+
+* **security:** Bump the docker image to nodejs 24 / Trixie. ([45fab4a](https://github.com/UN-OCHA/tools-snap-service/commit/45fab4a71b45caba4b519916950450e57ff774ec))
+
+
+### Bug Fixes
+
+* **security:** Bump lodash. ([59bc91d](https://github.com/UN-OCHA/tools-snap-service/commit/59bc91d05bb436cabb2fa8647cc695b94448d62a))
+* **security:** Bump packages with CVEs. ([7a08eb7](https://github.com/UN-OCHA/tools-snap-service/commit/7a08eb7cff6854636d84ad87f93ecc157e5d83bc))
+* **security:** Bump puppeteer to 24.34.0. ([3df2976](https://github.com/UN-OCHA/tools-snap-service/commit/3df297691534615456a277ec4b7636c9da424839))
+* **security:** Bump puppeteer to the current release. ([a46961f](https://github.com/UN-OCHA/tools-snap-service/commit/a46961f4e4157e66e019a24673b6167e75c4ee21))
+
+## [4.9.0](https://github.com/UN-OCHA/tools-snap-service/compare/v4.7.0...v4.9.0) (2026-02-08)
+
+
+### Features
+
+* **security:** Bump the docker image to nodejs 24 / Trixie. ([45fab4a](https://github.com/UN-OCHA/tools-snap-service/commit/45fab4a71b45caba4b519916950450e57ff774ec))
+
+
+### Bug Fixes
+
+* **security:** Bump lodash. ([59bc91d](https://github.com/UN-OCHA/tools-snap-service/commit/59bc91d05bb436cabb2fa8647cc695b94448d62a))
+* **security:** Bump packages with CVEs. ([7a08eb7](https://github.com/UN-OCHA/tools-snap-service/commit/7a08eb7cff6854636d84ad87f93ecc157e5d83bc))
+* **security:** Bump puppeteer to 24.34.0. ([3df2976](https://github.com/UN-OCHA/tools-snap-service/commit/3df297691534615456a277ec4b7636c9da424839))
+* **security:** Bump puppeteer to the current release. ([a46961f](https://github.com/UN-OCHA/tools-snap-service/commit/a46961f4e4157e66e019a24673b6167e75c4ee21))
+
 ## [4.8.0](https://github.com/UN-OCHA/tools-snap-service/compare/v4.7.0...v4.8.0) (2026-01-07)
 
 
