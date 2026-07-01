@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.0.0](https://github.com/UN-OCHA/tools-snap-service/compare/v4.12.2...v5.0.0) (2026-07-01)
+
+
+### Features
+
+* Enable WebGL so we may render mapbox-gl maps. ([c2d2fe9](https://github.com/UN-OCHA/tools-snap-service/commit/c2d2fe9d6b26c604126de32bd5345b7e88ff40ea))
+
+
+### Bug Fixes
+
+* **security:** Bump puppeteer to cover current chome versions. ([028b109](https://github.com/UN-OCHA/tools-snap-service/commit/028b109ccef2ead370bf969461941bddddea5d5e))
+* **security:** Run `npm audit` to update all packages with fixable security issues. ([9ead03b](https://github.com/UN-OCHA/tools-snap-service/commit/9ead03bec34f7fef815920eb81106fec475bbe79))
+
 ### [4.12.2](https://github.com/UN-OCHA/tools-snap-service/compare/v4.12.0...v4.12.2) (2026-06-04)
 
 
