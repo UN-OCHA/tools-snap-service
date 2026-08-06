@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.1.0](https://github.com/UN-OCHA/tools-snap-service/compare/v5.0.0...v5.1.0) (2026-08-06)
+
+
+### Features
+
+* Use federated auth for AWS services. ([348dc74](https://github.com/UN-OCHA/tools-snap-service/commit/348dc74c4276830092e1b049ccb164735f863ff9))
+
+
+### Bug Fixes
+
+* **security:** Bump puppeteer to the current version, to match chrome. ([1ea534a](https://github.com/UN-OCHA/tools-snap-service/commit/1ea534a27117ccfe4f41576ab5b6e605e1fd77c3))
+* **security:** Update packages with securty issues via `npm audit`. ([1009732](https://github.com/UN-OCHA/tools-snap-service/commit/1009732437dadfccb6688776c677b7a27277db30))
+
 ## [5.0.0](https://github.com/UN-OCHA/tools-snap-service/compare/v4.12.2...v5.0.0) (2026-07-01)
 
 
