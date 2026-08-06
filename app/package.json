@@ -23,7 +23,7 @@
     "method-override": "^3.0.0",
     "mime-types": "^2.1.35",
     "pm2": "^7.0.1",
-    "puppeteer": "^25.2.1"
+    "puppeteer": "^25.5.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.1.0",
@@ -37,5 +37,8 @@
     "skip": {
       "tag": true
     }
+  },
+  "allowScripts": {
+    "puppeteer@25.5.0": true
   }
 }
