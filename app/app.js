@@ -86,11 +86,13 @@ async function connectPuppeteer() {
     browser = await puppeteer.launch({
       executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/google-chrome',
       args: [
-        '--disable-gpu',
-        '--disable-software-rasterizer',
         '--remote-debugging-port=9222',
         '--remote-debugging-address=0.0.0.0',
         '--no-sandbox',
+        '--ignore-gpu-blocklist',
+        '--enable-unsafe-swiftshader',
+        '--use-gl=angle',
+        '--use-angle=swiftshader'
       ],
       headless: 'new',
       dumpio: false, // set to `true` for debugging

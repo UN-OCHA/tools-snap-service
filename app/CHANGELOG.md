@@ -2,6 +2,40 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.1.1](https://github.com/UN-OCHA/tools-snap-service/compare/v5.1.0...v5.1.1) (2026-09-08)
+
+
+### Bug Fixes
+
+* **security:** Bump puppeteer to the current release. ([a76ecf0](https://github.com/UN-OCHA/tools-snap-service/commit/a76ecf04e8f37be2d9368a700a70ec86d788cf9a))
+* **security:** Use npn audit fix to bump pakcages with fixes. ([a2acbd5](https://github.com/UN-OCHA/tools-snap-service/commit/a2acbd54e74952b58e06d08a723885a938a53a38))
+
+## [5.1.0](https://github.com/UN-OCHA/tools-snap-service/compare/v5.0.0...v5.1.0) (2026-08-06)
+
+
+### Features
+
+* Use federated auth for AWS services. ([348dc74](https://github.com/UN-OCHA/tools-snap-service/commit/348dc74c4276830092e1b049ccb164735f863ff9))
+
+
+### Bug Fixes
+
+* **security:** Bump puppeteer to the current version, to match chrome. ([1ea534a](https://github.com/UN-OCHA/tools-snap-service/commit/1ea534a27117ccfe4f41576ab5b6e605e1fd77c3))
+* **security:** Update packages with securty issues via `npm audit`. ([1009732](https://github.com/UN-OCHA/tools-snap-service/commit/1009732437dadfccb6688776c677b7a27277db30))
+
+## [5.0.0](https://github.com/UN-OCHA/tools-snap-service/compare/v4.12.2...v5.0.0) (2026-07-01)
+
+
+### Features
+
+* Enable WebGL so we may render mapbox-gl maps. ([c2d2fe9](https://github.com/UN-OCHA/tools-snap-service/commit/c2d2fe9d6b26c604126de32bd5345b7e88ff40ea))
+
+
+### Bug Fixes
+
+* **security:** Bump puppeteer to cover current chome versions. ([028b109](https://github.com/UN-OCHA/tools-snap-service/commit/028b109ccef2ead370bf969461941bddddea5d5e))
+* **security:** Run `npm audit` to update all packages with fixable security issues. ([9ead03b](https://github.com/UN-OCHA/tools-snap-service/commit/9ead03bec34f7fef815920eb81106fec475bbe79))
+
 ### [4.12.2](https://github.com/UN-OCHA/tools-snap-service/compare/v4.12.0...v4.12.2) (2026-06-04)
 
 
