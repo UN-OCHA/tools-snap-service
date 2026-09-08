@@ -187,7 +187,7 @@ app.post('/snap', [
   log.debug('Request received', { query: url.parse(req.url).query });
 
   // If neither `url` and `html` are present, return 400 requiring valid input.
-  if (!req.query.url && !req.body.html) {
+  if (!req.query?.url && !req.body?.html) {
     return res.status(400).json({
       errors: [
         {
@@ -209,7 +209,7 @@ app.post('/snap', [
   }
 
   // If both `url` and `html` are present, return 400 requiring valid input.
-  if (req.query.url && req.body.html) {
+  if (req.query?.url && req.body?.html) {
     return res.status(400).json({
       errors: [
         {
@@ -232,7 +232,7 @@ app.post('/snap', [
 
   // Ensure a passed url is on the permitted list or includes a substring that
   // is on the permitted list.
-  if (req.query.url) {
+  if (req.query?.url) {
     let urlHash;
 
     try {
@@ -280,8 +280,8 @@ app.post('/snap', [
   let sizeHtml = 0;
 
   // Assign validated querystring params to variables and set defaults.
-  const fnUrl = req.query.url || false;
-  const fnHtml = req.body.html || '';
+  const fnUrl = req.query?.url || false;
+  const fnHtml = req.body?.html || '';
   const fnWidth = Number(req.query.width) || 800;
   const fnHeight = Number(req.query.height) || 600;
   const fnScale = Number(req.query.scale) || 2;
