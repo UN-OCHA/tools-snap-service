@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.1.2](https://github.com/UN-OCHA/tools-snap-service/compare/v5.1.0...v5.1.2) (2026-09-08)
+
+
+### Bug Fixes
+
+* **bug:** Use conditional sub-property checks because express 5.2.1 changes how qs and body args are parsed. ([1ab6468](https://github.com/UN-OCHA/tools-snap-service/commit/1ab6468aaa8b82e756b7514c38ecf001097173fa))
+* **security:** Bump puppeteer to the current release. ([a76ecf0](https://github.com/UN-OCHA/tools-snap-service/commit/a76ecf04e8f37be2d9368a700a70ec86d788cf9a))
+* **security:** Use npn audit fix to bump pakcages with fixes. ([a2acbd5](https://github.com/UN-OCHA/tools-snap-service/commit/a2acbd54e74952b58e06d08a723885a938a53a38))
+* **tests:** Bump the eslint config to not whine about optional chaining. ([1e617bc](https://github.com/UN-OCHA/tools-snap-service/commit/1e617bcfa21191fe04dec99f7ca2a508f5440eda))
+
 ### [5.1.1](https://github.com/UN-OCHA/tools-snap-service/compare/v5.1.0...v5.1.1) (2026-09-08)
 
 
