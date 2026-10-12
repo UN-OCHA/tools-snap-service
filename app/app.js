@@ -20,7 +20,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const { query, body, validationResult } = require('express-validator');
-const url = require('url');
 const { Semaphore } = require('await-semaphore');
 const puppeteer = require('puppeteer');
 const mime = require('mime-types');
@@ -184,7 +183,7 @@ app.post('/snap', [
   query('block', 'Must be a comma-separated list of domains (alphanumeric, hyphens, dots, commas)').optional().matches(/^[A-Za-z0-9.,-]+$/),
 ], (req, res) => {
   // debug
-  log.debug('Request received', { query: url.parse(req.url).query });
+  log.debug('Request received', { query: new URL(req.query.url).search });
 
   // If neither `url` and `html` are present, return 400 requiring valid input.
   if (!req.query?.url && !req.body?.html) {
