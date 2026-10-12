@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.1.3](https://github.com/UN-OCHA/tools-snap-service/compare/v5.1.2...v5.1.3) (2026-10-12)
+
+
+### Bug Fixes
+
+* **security:** Security updates for moment, image-size, ip-address and pm2. ([df400b9](https://github.com/UN-OCHA/tools-snap-service/commit/df400b9d78cc8e542c5aa55f55085fa6fbb0a7c7))
+
 ### [5.1.2](https://github.com/UN-OCHA/tools-snap-service/compare/v5.1.0...v5.1.2) (2026-09-08)
 
 
