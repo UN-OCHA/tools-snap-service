@@ -20,11 +20,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const { query, body, validationResult } = require('express-validator');
-const url = require('url');
 const { Semaphore } = require('await-semaphore');
 const puppeteer = require('puppeteer');
 const mime = require('mime-types');
-const imgSize = require('image-size');
+const { imageSize } = require('image-size');
 const util = require('util');
 const log = require('./log');
 
@@ -184,7 +183,7 @@ app.post('/snap', [
   query('block', 'Must be a comma-separated list of domains (alphanumeric, hyphens, dots, commas)').optional().matches(/^[A-Za-z0-9.,-]+$/),
 ], (req, res) => {
   // debug
-  log.debug('Request received', { query: url.parse(req.url).query });
+  log.debug('Request received', { query: new URL(req.query.url).search });
 
   // If neither `url` and `html` are present, return 400 requiring valid input.
   if (!req.query?.url && !req.body?.html) {
@@ -426,8 +425,8 @@ app.post('/snap', [
                 src: `data:${mime.lookup(pdfLogoFile)};base64,${pdfLogoData.toString('base64')}`,
                 // Dimensions reduced to 3/4 size because the PDF contents are
                 // rendered at 96ppi but the header is 72ppi.
-                width: imgSize(pdfLogoFile).width * 0.75,
-                height: imgSize(pdfLogoFile).height * 0.75,
+                width: imageSize(pdfLogoData).width * 0.75,
+                height: imageSize(pdfLogoData).height * 0.75,
               };
 
               // Inject header with placeholder substitution for logos.
