@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.2.1](https://github.com/UN-OCHA/tools-snap-service/compare/v5.1.4...v5.2.1) (2026-11-16)
+
+* **security:** Bump yaml-js and pm2. ([cc66389](https://github.com/UN-OCHA/tools-snap-service/commit/cc66389e1a36d33c996de3777b4cc631391874f5))
+
+### Bug Fixes
+
+* **security:** Bump puppeteer to 25.16.0, the current release. ([1306d31](https://github.com/UN-OCHA/tools-snap-service/commit/1306d31f12c2259e2658ff677927362a81188b79))
+
+### [5.2.0](https://github.com/UN-OCHA/tools-snap-service/compare/v5.1.5...v5.2.0) (2026-11-16)
+
+
+### Bug Fixes
+
+* **security:** Re-build the service after bumping the base docker image to 24.22.3 ([6d3ad95](https://github.com/UN-OCHA/tools-snap-service/commit/6d3ad95ee5abfbf4e06c70d79b98dbe11d6110b7))
+
+### [5.1.5](https://github.com/UN-OCHA/tools-snap-service/compare/v5.1.4...v5.1.5) (2026-11-08)
+
+
+### Bug Fixes
+
+* **security:** Bump puppeteer to 25.16.0, the current release. ([980450e](https://github.com/UN-OCHA/tools-snap-service/commit/980450e56d796c57d2396b951dbd5ae31c57f441))
+
+* chore(deps): bump qs from 6.16.0 to 6.17.1 ([80e57b9](https://github.com/UN-OCHA/tools-snap-service/commit/80e57b90c257a8a7582244a151dd07431c7bc322))
+* chore(deps): bump follow-redirects from 1.16.0 to 1.16.3 ([5ff6f62](https://github.com/UN-OCHA/tools-snap-service/commit/5ff6f62c9461595679cd564d080c86e44ed6955c))
+* chore(deps): bump body-parser from 2.3.0 to 2.4.0 ([6e73073](https://github.com/UN-OCHA/tools-snap-service/commit/6e73073b15a62b7c10cb3f291ed6af000ddd162d))
+
 ### [5.1.4](https://github.com/UN-OCHA/tools-snap-service/compare/v5.1.2...v5.1.4) (2026-10-12)
 
 
