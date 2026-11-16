@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.2.1](https://github.com/UN-OCHA/tools-snap-service/compare/v5.1.4...v5.2.1) (2026-11-16)
+
+* **security:** Bump yaml-js and pm2. ([cc66389](https://github.com/UN-OCHA/tools-snap-service/commit/cc66389e1a36d33c996de3777b4cc631391874f5))
+
+### Bug Fixes
+
+* **security:** Bump puppeteer to 25.16.0, the current release. ([1306d31](https://github.com/UN-OCHA/tools-snap-service/commit/1306d31f12c2259e2658ff677927362a81188b79))
+
 ### [5.2.0](https://github.com/UN-OCHA/tools-snap-service/compare/v5.1.5...v5.2.0) (2026-11-16)
 
 
