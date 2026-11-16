@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [5.2.0](https://github.com/UN-OCHA/tools-snap-service/compare/v5.1.5...v5.2.0) (2026-11-16)
+
+
+### Bug Fixes
+
+* **security:** Re-build the service after bumping the base docker image to 24.22.3 ([6d3ad95](https://github.com/UN-OCHA/tools-snap-service/commit/6d3ad95ee5abfbf4e06c70d79b98dbe11d6110b7))
+
 ### [5.1.5](https://github.com/UN-OCHA/tools-snap-service/compare/v5.1.4...v5.1.5) (2026-11-08)
 
 
